@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="RAC," />
+  <meta name="keywords" content="iBeacon," />
 
 
 
@@ -93,20 +93,18 @@
 
 
 
-<meta name="description" content="​    最近做了一个蓝牙相关的项目，项目的前辈当时是用的ReactiveCocoa（RAC）做的，才开始接手的时候，看的一头雾水。经过一段时间自学，现在对RAC略知一二。 FunctionalReactiveProgrammingFRP是一种响应变化的编程范式。 就像上面的登录界面，在用户输入用户名和密码之前，登陆按钮是处于无法点击状态的，只有当用户名和密码都被填入一定值的时候，才可以点击登陆按">
-<meta name="keywords" content="RAC">
+<meta name="description" content="因为最近在做的项目是关于蓝牙连接的项目，前辈在做这个项目的时候，除了用ReactiveCocoa以外，还使用了iBeacon技术。 对于从未接触蓝牙这块的我，感觉打开了新世界大门。 iBeaconiBeacon是基于地理位置的微定位技术，使用的是Apple提供的CoreLocation（BLE使用的是CoreBluetooth）。根据名字，应该很清楚，使用iBeacon是需要开启定位的，而使用BL">
+<meta name="keywords" content="iBeacon">
 <meta property="og:type" content="article">
-<meta property="og:title" content="项目里的ReactiveCocoa">
-<meta property="og:url" content="http://yoursite.com/2017/07/28/项目里的ReactiveCocoa/index.html">
+<meta property="og:title" content="关于iBeacon">
+<meta property="og:url" content="http://yoursite.com/2017/08/06/关于iBeacon/index.html">
 <meta property="og:site_name" content="阿灿的随想录">
-<meta property="og:description" content="​    最近做了一个蓝牙相关的项目，项目的前辈当时是用的ReactiveCocoa（RAC）做的，才开始接手的时候，看的一头雾水。经过一段时间自学，现在对RAC略知一二。 FunctionalReactiveProgrammingFRP是一种响应变化的编程范式。 就像上面的登录界面，在用户输入用户名和密码之前，登陆按钮是处于无法点击状态的，只有当用户名和密码都被填入一定值的时候，才可以点击登陆按">
+<meta property="og:description" content="因为最近在做的项目是关于蓝牙连接的项目，前辈在做这个项目的时候，除了用ReactiveCocoa以外，还使用了iBeacon技术。 对于从未接触蓝牙这块的我，感觉打开了新世界大门。 iBeaconiBeacon是基于地理位置的微定位技术，使用的是Apple提供的CoreLocation（BLE使用的是CoreBluetooth）。根据名字，应该很清楚，使用iBeacon是需要开启定位的，而使用BL">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/img/FRP.png">
-<meta property="og:updated_time" content="2017-07-29T13:17:20.000Z">
+<meta property="og:updated_time" content="2017-08-06T13:48:26.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="项目里的ReactiveCocoa">
-<meta name="twitter:description" content="​    最近做了一个蓝牙相关的项目，项目的前辈当时是用的ReactiveCocoa（RAC）做的，才开始接手的时候，看的一头雾水。经过一段时间自学，现在对RAC略知一二。 FunctionalReactiveProgrammingFRP是一种响应变化的编程范式。 就像上面的登录界面，在用户输入用户名和密码之前，登陆按钮是处于无法点击状态的，只有当用户名和密码都被填入一定值的时候，才可以点击登陆按">
-<meta name="twitter:image" content="http://yoursite.com/img/FRP.png">
+<meta name="twitter:title" content="关于iBeacon">
+<meta name="twitter:description" content="因为最近在做的项目是关于蓝牙连接的项目，前辈在做这个项目的时候，除了用ReactiveCocoa以外，还使用了iBeacon技术。 对于从未接触蓝牙这块的我，感觉打开了新世界大门。 iBeaconiBeacon是基于地理位置的微定位技术，使用的是Apple提供的CoreLocation（BLE使用的是CoreBluetooth）。根据名字，应该很清楚，使用iBeacon是需要开启定位的，而使用BL">
 
 
 
@@ -134,13 +132,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/07/28/项目里的ReactiveCocoa/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/08/06/关于iBeacon/"/>
 
 
 
 
 
-  <title>项目里的ReactiveCocoa | 阿灿的随想录</title>
+  <title>关于iBeacon | 阿灿的随想录</title>
   
 
 
@@ -259,7 +257,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/28/项目里的ReactiveCocoa/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/06/关于iBeacon/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Rues">
@@ -276,7 +274,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">项目里的ReactiveCocoa</h1>
+          <h1 class="post-title" itemprop="name headline">关于iBeacon</h1>
         
 
         <div class="post-meta">
@@ -288,8 +286,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-28T18:59:44+08:00">
-                2017-07-28
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-06T18:54:02+08:00">
+                2017-08-06
               </time>
             
 
@@ -323,31 +321,67 @@
       
 
       
-        <p>​    最近做了一个蓝牙相关的项目，项目的前辈当时是用的ReactiveCocoa（RAC）做的，才开始接手的时候，看的一头雾水。经过一段时间自学，现在对RAC略知一二。</p>
-<h2 id="FunctionalReactiveProgramming"><a href="#FunctionalReactiveProgramming" class="headerlink" title="FunctionalReactiveProgramming"></a>FunctionalReactiveProgramming</h2><p>FRP是一种响应变化的编程范式。<img src="/img/FRP.png" alt="FRP"></p>
-<p>就像上面的登录界面，在用户输入用户名和密码之前，登陆按钮是处于无法点击状态的，只有当用户名和密码都被填入一定值的时候，才可以点击登陆按钮。这种一个按钮会由于另外几个控件的改变而改变的联动就是FRP。</p>
-<h2 id="ReactiveCocoa"><a href="#ReactiveCocoa" class="headerlink" title="ReactiveCocoa"></a>ReactiveCocoa</h2><p>RAC是github上的一个开源项目，可以说是将响应式编程做到了极致。RAC中，通过<strong>RACsignal</strong>来发送信号以执行各种操作</p>
-<p>在这里，<a href="limboy.me">limboy(李忠)</a> 的文章里写的很好</p>
-<p>他把信号比作水龙头，但是水龙头里装的是直径与水龙头内径一样的玻璃球(Value)，这样，玻璃球就是依次出来的（没有并发）。水龙头是关着的，需要有接收方（Subscriber）打开，这样只要有玻璃球(Value)出现，就会自动给接收方(subscriber)。还可以在水龙头上加一个滤嘴(Filter)，不符合的东西也不让过。还可以加一个改动装置，把球改成符合自己的需求（map）。也可以合并多个水龙头(combineLastest:reduce:)，这样只有有一个水龙头出玻璃球，这个新水龙头的接收方就会得到这个球。</p>
-<p>比如</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//filter某个属性满足一定条件才执行。  </span></div><div class="line"></div><div class="line">  [[RACObserve(self, count) filter:^BOOL(id count) &#123;</div><div class="line">  <span class="keyword">if</span> ([count integerValue] == <span class="number">5</span>) &#123;            </div><div class="line">		<span class="keyword">return</span> YES;        &#125;</div><div class="line">	<span class="keyword">else</span>&#123;           </div><div class="line">	 	<span class="keyword">return</span> NO;        </div><div class="line">	&#125;   </div><div class="line"> &#125;]subscribeNext:^(id count) &#123;<span class="comment">//上面return YES 才执行   </span></div><div class="line"></div><div class="line"> NSLog(@<span class="string">"数量为===%@"</span>,count);    &#125;];</div></pre></td></tr></table></figure>
-<p>RAC还在<strong>UIButton、UITextFiled</strong>等的Category中添加了很多方法，可以直接设置事件。</p>
-<h2 id="统一了KVO-Event-Notification等的处理"><a href="#统一了KVO-Event-Notification等的处理" class="headerlink" title="统一了KVO Event Notification等的处理"></a>统一了KVO Event Notification等的处理</h2><blockquote>
-<p>KVO</p>
-</blockquote>
-<p>RAC中监听属性改变不再像KVO中用<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">而是使用block</div><div class="line"></div><div class="line">```javascript</div><div class="line">// 只有当名字以&apos;j&apos;开头，才会被记录</div><div class="line">[[RACAble(self.username) filter:^(NSString *newName) &#123;</div><div class="line">       return [newName hasPrefix:@&quot;j&quot;];</div><div class="line">   &#125;]</div><div class="line">   subscribeNext:^(NSString *newName) &#123;</div><div class="line">       NSLog(@&quot;%@&quot;, newName);</div><div class="line">   &#125;];</div></pre></td></tr></table></figure></p>
-<blockquote>
-<p>Notification</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[[NSNotificationCenter defaultCenter]rac_addObserverForName:@<span class="string">"ReceiveData"</span> object:nil] subscribeNext:^(NSNotification * _Nullable x) &#123;</div><div class="line">                NSlog(@<span class="string">"%@"</span>,x);</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
-<h2 id="冷热信号"><a href="#冷热信号" class="headerlink" title="冷热信号"></a>冷热信号</h2><p>上面提到的只有subscriber订阅时才生效的信号叫做<strong>冷信号</strong></p>
-<p>有冷信号，自然就有<strong>热信号</strong></p>
-<ul>
-<li>热信号是主动的，不管你有没有订阅事件，它会时刻推送。</li>
-<li>热信号可以有多个订阅者，信号和订阅者可以共享信息，多个订阅者可以在订阅开始时同时接收到这个时间及以后的信号（热信号创建时若没有订阅者，它仍然会进行信号发送），而冷信号多个订阅者订阅时，是将信号完整的分别发送给订阅者。</li>
+        <p>因为最近在做的项目是关于蓝牙连接的项目，前辈在做这个项目的时候，除了用ReactiveCocoa以外，还使用了iBeacon技术。</p>
+<p>对于从未接触蓝牙这块的我，感觉打开了新世界大门。</p>
+<h2 id="iBeacon"><a href="#iBeacon" class="headerlink" title="iBeacon"></a>iBeacon</h2><p>iBeacon是基于地理位置的微定位技术，使用的是Apple提供的CoreLocation（BLE使用的是CoreBluetooth）。根据名字，应该很清楚，使用iBeacon是需要开启定位的，而使用BLE只需要开启蓝牙。  </p>
+<h2 id="相关术语"><a href="#相关术语" class="headerlink" title="相关术语"></a>相关术语</h2><ul>
+<li>UUID：UUID是Universally UniqueIdentifier（通用唯一标识符）的缩写，实际上是一个随机字符串。在iBeacon中，UUID通常用于表示顶层标识，如果生成一个UUID给iBeacon设备，那么一个设备检测到你的iBeacon时，它就知道它是在和哪个iBeacon通信了。</li>
+<li>major：用于将相关的beacon标识为一组。</li>
+<li>minor：用于标识特定的beacon设备，每个设备都有唯一的minor编号。</li>
 </ul>
-<p>冷热信号的区分，美团点评技术团队的<a href="https://tech.meituan.com/talk-about-reactivecocoas-cold-signal-and-hot-signal-part-1.html" target="_blank" rel="external">细说ReactiveCocoa的冷热信号</a>文章写的非常的好。</p>
-<p>因为项目的需要，本人还在不断学习，归纳的东西还不够成熟，希望自己能加油吧。</p>
+<p>下面用一个商场的例子来解释这三个术语</p>
+<p>你用有特定UUID的设备与商场里的UUID设备进行通信，一个商店中的所有设备都会被分配到相同的major编号，应用程序根据major编号，就可以知道你大概在哪个商店。而每个商店的每个beacon设备都有唯一的minor编号，那程序通过这个minor编号，就知道你位于商店的某一个位置</p>
+<h2 id="iBeacon属性"><a href="#iBeacon属性" class="headerlink" title="iBeacon属性"></a>iBeacon属性</h2><p>iOS中的ibeacon通信数据有</p>
+<ul>
+<li>（NSUUID）ProximityUUID</li>
+<li>（NSNumber）major</li>
+<li>（NSNumber）minor</li>
+<li>（CLProximity）proximity</li>
+<li>（CLLocationAccuracy）accuracy</li>
+<li>(NSInteger) rssi</li>
+</ul>
+<p>分别含义是：</p>
+<ul>
+<li>proximityUUID、major、minor表示ibeacon的uuid、major、minor</li>
+<li>proximity是Apple提供的几个表示距离的属性<ul>
+<li>CLProximityUnknown-没有数据</li>
+<li>CLProximityImmediate-十厘米以内</li>
+<li>CLProximityNear-一米以内</li>
+<li>CLProximityFar-一米以外</li>
+</ul>
+</li>
+<li>accuracy表示大约距离</li>
+<li>RSSI表示信号强度</li>
+</ul>
+<p>根据属性我们可以看到，Apple的判断方式很有趣，它并不去仔细推断距离，而是使用贴近（Immediate）、一米以内（Near）、一米以外（Far）三种状态。距离在1m以内时，RSSI值基本上成比例减少，而在1米以上时，由于各种因素，RSSI是上下波动状态，所以无法推断距离，判定为Far</p>
+<h2 id="iBeacon方法"><a href="#iBeacon方法" class="headerlink" title="iBeacon方法"></a>iBeacon方法</h2><p>Apple在iOS4中增加了地理围栏API，可以用来在设备进出某个区域时获得通知，包括了：</p>
+<ul>
+<li>-startMonitoringForRegion:</li>
+<li>-locationManager:didEnterRegion:</li>
+<li>-locationManager:didExitRegion:</li>
+</ul>
+<p>这种检测iBeacon的方式叫做<strong>monitoring</strong>。</p>
+<p>用这几种方法可以使程序在后台运行时检测iBeacon，但是只能同时检测20个Region，且不能推测设备与Beacon的距离。</p>
+<p>除了使用地理围栏API，Apple还在iOS7中新增加了iBeacon的专用检测方式，也就是<strong>ranging</strong></p>
+<p>通过<strong>CLLocationManager</strong>的方法</p>
+<ul>
+<li><code>-startRangingBeaconsInRegion:</code> 检测特定iBeacon。</li>
+</ul>
+<p>当检测到beacon的时候，<strong>CLLocationManager</strong>的delegate </p>
+<ul>
+<li><code>-locationManager：didRangeBeacons:inRegion:</code>会被调用，通知调用者被检测到的beacons。这个方法会返回一个<strong>CLbeacon</strong>数组，根据里面的<strong>proximity</strong>(上文所提到的属性)就可以判断设备与beacon之间的距离。</li>
+</ul>
+<h2 id="iBeacon行为"><a href="#iBeacon行为" class="headerlink" title="iBeacon行为"></a>iBeacon行为</h2><p>根据<a href="https://tech.meituan.com/" target="_blank" rel="external">美团点评技术团队</a>的文章，暂时有以下结论</p>
+<ul>
+<li>检测到beacon的时间跟设备进行蓝牙扫描的时间间隔有关，每当设备扫描时，就能发现iBeacon region的变化。</li>
+<li>在rangging打开的情况下，设备会每秒钟做一次扫描，也就是说状态更新最多延迟一秒。</li>
+<li>程序在后台运行，并且monitoring打开的时候，设备可能每隔数分钟做一次扫描。iOS7响应较慢，iOS7.1后有较大改善。</li>
+<li>如果存在设置<code>notifyEnterStateOnDisplay=yes</code>的beacon，iOS会在屏幕从黑屏点亮的时候进行一次扫描。</li>
+<li>设备重启并不影响iBeacon后台检测的执行</li>
+<li>iOS7中，在多任务界面中杀掉程序会终止iBeacon检测的执行，iOS7.1改变了这一行为，被杀掉的app还可以继续进行iBeacon的检测。</li>
+</ul>
+<p>在才接触这个项目的初期，好奇于项目与我事先准备的BLE协议实现有些区别，后来了解到用到了iBeacon技术，起初好奇为什么锁屏点亮和锁屏黑屏有什么区别，以为只是因为亮屏可能会激活后台。后来在了解了iBeacon之后，才知道，还有这种操作。所以啊，我们永远都不能放弃学习~。</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p>美团点评技术团队：<a href="https://tech.meituan.com/iBeacaon-first-glance.html" target="_blank" rel="external">iBeacon初探</a></p>
 
       
     </div>
@@ -377,7 +411,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/RAC/" rel="tag"># RAC</a>
+            <a href="/tags/iBeacon/" rel="tag"># iBeacon</a>
           
         </div>
       
@@ -390,8 +424,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/24/随想/" rel="next" title="随想">
-                <i class="fa fa-chevron-left"></i> 随想
+              <a href="/2017/07/28/项目里的ReactiveCocoa/" rel="next" title="项目里的ReactiveCocoa">
+                <i class="fa fa-chevron-left"></i> 项目里的ReactiveCocoa
               </a>
             
           </div>
@@ -399,10 +433,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/08/06/关于iBeacon/" rel="prev" title="关于iBeacon">
-                关于iBeacon <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -545,7 +575,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#FunctionalReactiveProgramming"><span class="nav-number">1.</span> <span class="nav-text">FunctionalReactiveProgramming</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ReactiveCocoa"><span class="nav-number">2.</span> <span class="nav-text">ReactiveCocoa</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#统一了KVO-Event-Notification等的处理"><span class="nav-number">3.</span> <span class="nav-text">统一了KVO Event Notification等的处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#冷热信号"><span class="nav-number">4.</span> <span class="nav-text">冷热信号</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#iBeacon"><span class="nav-number">1.</span> <span class="nav-text">iBeacon</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相关术语"><span class="nav-number">2.</span> <span class="nav-text">相关术语</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iBeacon属性"><span class="nav-number">3.</span> <span class="nav-text">iBeacon属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iBeacon方法"><span class="nav-number">4.</span> <span class="nav-text">iBeacon方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iBeacon行为"><span class="nav-number">5.</span> <span class="nav-text">iBeacon行为</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">5.1.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
             
 
           </div>
