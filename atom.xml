@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-08-13T15:23:22.000Z</updated>
+  <updated>2017-08-23T10:40:24.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,91 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>关于Runloop与线程</title>
+    <link href="http://yoursite.com/2017/08/23/%E5%85%B3%E4%BA%8ERunloop%E4%B8%8E%E7%BA%BF%E7%A8%8B/"/>
+    <id>http://yoursite.com/2017/08/23/关于Runloop与线程/</id>
+    <published>2017-08-23T08:24:37.000Z</published>
+    <updated>2017-08-23T10:40:24.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="RunLoop"><a href="#RunLoop" class="headerlink" title="RunLoop"></a>RunLoop</h2><p>​    RunLoop是每一个iOS程序员应该都听过的一个名字，翻译过来大概是叫运行循环，在开发的初期几乎见不到RunLoop的身影。但它其实无处不在，最简单的例子就是Objective-C中的main函数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">int main(int argc, char * argv[]) &#123;</div><div class="line">    @autoreleasepool &#123;</div><div class="line">        return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在UIApplicationMain中，就含有一个Runloop，是系统启动时创建的Runloop。</p>
+<p>它有这么几个作用：</p>
+<ul>
+<li>保证App程序不退出</li>
+<li>监听用户行为事件</li>
+<li>监听时钟事件</li>
+<li>监听网络事件</li>
+<li>渲染UI</li>
+</ul>
+<p>如果没有事件发生，Runloop则会进入休眠状态。</p>
+<h2 id="监听事件"><a href="#监听事件" class="headerlink" title="监听事件"></a>监听事件</h2><p><strong>监听NSTimer</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">    NSTimer * timer = [NSTimer timerWithTimeInterval:1.0 target:self selector:@selector(updataTimer) userInfo:nil repeats:YES];</div><div class="line"></div><div class="line">    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];</div><div class="line"></div><div class="line">//相当于上面两句</div><div class="line">   [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(updataTimer) userInfo:nil repeats:YES];</div></pre></td></tr></table></figure>
+<p>上面的代码是创建一个Timer，再通知Runloop每隔1s执行一次updataTimer方法</p>
+<p>代码看上去虽然没什么问题，但是我们可以发现一个现象：如果我们在当前的Controller中添加了UI控件，当我们做 UI事件（触摸，拖动）时，我们可以发现每隔一秒执行方法的Timer突然停止了，当我们做完这些操作时，Timer又恢复了。</p>
+<p>这一现象的出现，就牵扯到Runloop的模式了，也就是<code>[[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];</code>中的Mode。</p>
+<p>RunLoop有五种模式，分别是</p>
+<ul>
+<li>NSDefaultRunLoopMode：默认 Mode，主线程就是在这个 Mode 下运行(默认情况下运行)</li>
+<li>UITrackingRunLoopMode：UI Mode，优先级最高，用于监听UI事件，当发生UI事件时，这个Mode的Runloop优先调用</li>
+<li>NSRunLoopCommonModes：占位 Mode，其实不是一种真正的 Mode ，但在这一模式下，默认Mode和UI Mode都可以被调用（不会因UI操作卡住Timer操作）</li>
+<li>UIInitializationRunLoopMode：在刚启动 App 时进入的第一个 Mode，启动完成后就不再使用。</li>
+<li>GSEventReceiveRunLoopMode：接受系统事件的内部 Mode</li>
+</ul>
+<p>在五种模式中，作为开发者，最常用的其实也就前三种模式。</p>
+<p>上面的几个方法中，我们的Runloop为<code>NSDefaultRunLoopMode</code>，在这种情况（默认模式）下，当发生UI事件时，系统会优先调用<code>UITrackingRunLoopMode</code>而不去管默认模式，所以才造成了Timer不执行的情况。</p>
+<p>如果我们将<code>NSDefaultRunLoopMode</code>改为<code>NSRunLoopCommonModes</code>就可以解决问题。</p>
+<p><strong>那么为什么苹果工程师要分UI模式和Default模式呢？</strong></p>
+<p>其实很简单，有耗时操作的存在，当我们在Timer中执行耗时操作时（例如sleep等），如果用占位模式，那么当我们对UI进行操作时，就会回调Timer的方法，因为是耗时操作，就会将界面卡住。</p>
+<p><strong>那么怎么既让我们在进行UI操作的时候执行回调，又不卡住界面呢？</strong></p>
+<p>其实更简单，因为App中的线程不止主线程一个，在苹果漫长的开发中，苹果工程师将UI界面放在了主线程单线程执行，所以，只要我们把耗时操作放到子线程执行，就不会再出现卡住的情况了</p>
+<h2 id="线程与RunLoop"><a href="#线程与RunLoop" class="headerlink" title="线程与RunLoop"></a>线程与RunLoop</h2><p>我们先创建一个自定义线程类，来重写它的-dealloc方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">//LYC_Thread.h</div><div class="line">-(void)dealloc&#123;</div><div class="line">    NSLog(@&quot;线程结束&quot;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>再进行线程创建</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">//ViewController.m</div><div class="line">#import &quot;LYC_Thread.h&quot;</div><div class="line">@interface ViewController ()</div><div class="line">@property (nonatomic,strong) LYC_Thread *thread;        /**&lt; 线程  */</div><div class="line">@end</div><div class="line"></div><div class="line">@implementation ViewController</div><div class="line"></div><div class="line">- (void)viewDidLoad &#123;</div><div class="line">    [super viewDidLoad];</div><div class="line">    </div><div class="line">    _thread = [[LYC_Thread alloc]initWithBlock:^&#123;</div><div class="line">            NSTimer * timer = [NSTimer timerWithTimeInterval:1.0 target:self selector:@selector(updataTimer) userInfo:nil repeats:YES];</div><div class="line">            [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];</div><div class="line">        NSLog(@&quot;线程执行&quot;);</div><div class="line">    &#125;];</div><div class="line">    </div><div class="line">    [_thread start];</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line">- (void)updataTimer &#123;</div><div class="line">    NSLog(@&quot;耗时操作&quot;);</div><div class="line">    [NSThread sleepForTimeInterval:1.0];</div><div class="line">    NSLog(@&quot;执行完毕&quot;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>乍一看似乎没有问题，然而当我们运行时发现，操作台的打印效果是这样</p>
+<p><img src="/img/Thread.png" alt="操作台"></p>
+<p>通过几个方法，我们可以看到，<code>NSThread</code>并没有被释放，但是却并没有执行耗时操作，这是为什么呢？</p>
+<p>这是因为这个<code>NSThread</code>只是一个对象，而不是线程的本身。</p>
+<p>线程是CPU去调用的，CPU负责在线程池里拿出一条线程去执行<code>NSThread</code>的任务，一旦结束，线程便没有了。</p>
+<p>所以我们要让线程长期存在，并不是去强引用<code>NSThread</code>，而是让NSThread有执行不完的任务，这样，线程才会一直存在。</p>
+<p>于是我们加入一个死循环在thread中并取消对<code>LYC_Thread</code>的强引用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">//ViewController.m</div><div class="line">- (void)viewDidLoad &#123;</div><div class="line">    [super viewDidLoad];</div><div class="line">        </div><div class="line">    LYC_Thread *thread = [[LYC_Thread alloc]initWithBlock:^&#123;</div><div class="line">            NSTimer * timer = [NSTimer timerWithTimeInterval:1.0 target:self selector:@selector(updataTimer) userInfo:nil repeats:YES];</div><div class="line">        while (true) &#123;</div><div class="line">            </div><div class="line">        &#125;;</div><div class="line">            [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];</div><div class="line">        NSLog(@&quot;线程执行&quot;);</div><div class="line">    &#125;];</div><div class="line">    </div><div class="line">    [thread start];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>此时控制台什么也没有打印，也就是说NSThread并没有被释放，也证明了线程并没有被回收</p>
+<p>但是，我们加入死循环时，是没有加入事件的。那如果我们在加入死循环时还想加入事件，怎么办呢？</p>
+<p>前面我们说到，<code>RunLoop</code>的作用相当于一个死循环，而且<code>RunLoop</code>还可以监听各种事件。</p>
+<p>所以，实现这种需求，<code>RunLoop</code>最为合适。</p>
+<p>其实每一条<strong>线程</strong>里都默认有一个<code>RunLoop</code>，只不过默认不开启。我们可以使用<code>[[NSRunLoop currentRunLoop] run];</code>语句对<code>RunLoop</code>进行开启。</p>
+<p>开启之后，我们的控制台就会输出这样的信息：</p>
+<p><img src="/img/控制台.png" alt="控制台信息"></p>
+<p>我们可以发现，”线程执行”语句没有输出，也证明了<code>RunLoop</code>相当于是一个死循环</p>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>除了开启和运用RunLoop，我们还应该知道如何去关闭RunLoop</p>
+<ul>
+<li>用<code>[[NSRunLoop currentRunLoop] runUntilDate:]</code>方法，可以设定循环的时间</li>
+<li>用<code>[NSThread exit]</code>关闭<code>NSThread</code>线程对象</li>
+</ul>
+<p>另外，其实主线程和子线程差别也没那么多（本质上应该是相同的）。</p>
+<p>我们新建一个子线程后，当我们关闭主线程，子线程仍然能够独立运行，只是主线程的UI不再相应了。</p>
+<p>前面提到的<code>在苹果漫长的开发中，苹果工程师将UI界面放在了主线程单线程执行</code>就是主线程与子线程的区别。</p>
+<p>如果我们多线程操作UI，那么就会发生<strong>资源抢夺</strong>情况，如果要解决这种情况，就需要进行上锁操作。</p>
+<p>苹果工程师们在<code>多线程上锁</code>和<code>主线程单线程执行</code>的选择中，选择了后者。</p>
+<p>所以UIKit框架下的控件我们都使用<code>nonatomic</code>非原子属性修饰。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;RunLoop&quot;&gt;&lt;a href=&quot;#RunLoop&quot; class=&quot;headerlink&quot; title=&quot;RunLoop&quot;&gt;&lt;/a&gt;RunLoop&lt;/h2&gt;&lt;p&gt;​    RunLoop是每一个iOS程序员应该都听过的一个名字，翻译过来大概是叫运行循环，在开发的
+    
+    </summary>
+    
+    
+      <category term="RunLoop" scheme="http://yoursite.com/tags/RunLoop/"/>
+    
+      <category term="iOS" scheme="http://yoursite.com/tags/iOS/"/>
+    
+  </entry>
   
   <entry>
     <title>iOS的本地推送</title>

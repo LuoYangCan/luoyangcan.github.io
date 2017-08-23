@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="RunLoop,iOS," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="阿灿的随想录" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="RunLoop​    RunLoop是每一个iOS程序员应该都听过的一个名字，翻译过来大概是叫运行循环，在开发的初期几乎见不到RunLoop的身影。但它其实无处不在，最简单的例子就是Objective-C中的main函数。 12345int main(int argc, char * argv[]) &amp;#123;    @autoreleasepool &amp;#123;        return">
+<meta name="keywords" content="RunLoop,iOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于Runloop与线程">
+<meta property="og:url" content="http://yoursite.com/2017/08/23/关于Runloop与线程/index.html">
+<meta property="og:site_name" content="阿灿的随想录">
+<meta property="og:description" content="RunLoop​    RunLoop是每一个iOS程序员应该都听过的一个名字，翻译过来大概是叫运行循环，在开发的初期几乎见不到RunLoop的身影。但它其实无处不在，最简单的例子就是Objective-C中的main函数。 12345int main(int argc, char * argv[]) &amp;#123;    @autoreleasepool &amp;#123;        return">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/img/Thread.png">
+<meta property="og:image" content="http://yoursite.com/img/控制台.png">
+<meta property="og:updated_time" content="2017-08-23T10:40:24.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="关于Runloop与线程">
+<meta name="twitter:description" content="RunLoop​    RunLoop是每一个iOS程序员应该都听过的一个名字，翻译过来大概是叫运行循环，在开发的初期几乎见不到RunLoop的身影。但它其实无处不在，最简单的例子就是Objective-C中的main函数。 12345int main(int argc, char * argv[]) &amp;#123;    @autoreleasepool &amp;#123;        return">
+<meta name="twitter:image" content="http://yoursite.com/img/Thread.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/08/23/关于Runloop与线程/"/>
+
+
+
+
+
+  <title>关于Runloop与线程 | 阿灿的随想录</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">阿灿的随想录</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">物极必反，否极泰来</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于我
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/23/关于Runloop与线程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rues">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/headers.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阿灿的随想录">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">关于Runloop与线程</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-23T16:24:37+08:00">
+                2017-08-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="RunLoop"><a href="#RunLoop" class="headerlink" title="RunLoop"></a>RunLoop</h2><p>​    RunLoop是每一个iOS程序员应该都听过的一个名字，翻译过来大概是叫运行循环，在开发的初期几乎见不到RunLoop的身影。但它其实无处不在，最简单的例子就是Objective-C中的main函数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">int main(int argc, char * argv[]) &#123;</div><div class="line">    @autoreleasepool &#123;</div><div class="line">        return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在UIApplicationMain中，就含有一个Runloop，是系统启动时创建的Runloop。</p>
+<p>它有这么几个作用：</p>
+<ul>
+<li>保证App程序不退出</li>
+<li>监听用户行为事件</li>
+<li>监听时钟事件</li>
+<li>监听网络事件</li>
+<li>渲染UI</li>
+</ul>
+<p>如果没有事件发生，Runloop则会进入休眠状态。</p>
+<h2 id="监听事件"><a href="#监听事件" class="headerlink" title="监听事件"></a>监听事件</h2><p><strong>监听NSTimer</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">    NSTimer * timer = [NSTimer timerWithTimeInterval:1.0 target:self selector:@selector(updataTimer) userInfo:nil repeats:YES];</div><div class="line"></div><div class="line">    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];</div><div class="line"></div><div class="line">//相当于上面两句</div><div class="line">   [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(updataTimer) userInfo:nil repeats:YES];</div></pre></td></tr></table></figure>
+<p>上面的代码是创建一个Timer，再通知Runloop每隔1s执行一次updataTimer方法</p>
+<p>代码看上去虽然没什么问题，但是我们可以发现一个现象：如果我们在当前的Controller中添加了UI控件，当我们做 UI事件（触摸，拖动）时，我们可以发现每隔一秒执行方法的Timer突然停止了，当我们做完这些操作时，Timer又恢复了。</p>
+<p>这一现象的出现，就牵扯到Runloop的模式了，也就是<code>[[NSRunLoop currentRunLoop] addTimer:timer forMode:NSDefaultRunLoopMode];</code>中的Mode。</p>
+<p>RunLoop有五种模式，分别是</p>
+<ul>
+<li>NSDefaultRunLoopMode：默认 Mode，主线程就是在这个 Mode 下运行(默认情况下运行)</li>
+<li>UITrackingRunLoopMode：UI Mode，优先级最高，用于监听UI事件，当发生UI事件时，这个Mode的Runloop优先调用</li>
+<li>NSRunLoopCommonModes：占位 Mode，其实不是一种真正的 Mode ，但在这一模式下，默认Mode和UI Mode都可以被调用（不会因UI操作卡住Timer操作）</li>
+<li>UIInitializationRunLoopMode：在刚启动 App 时进入的第一个 Mode，启动完成后就不再使用。</li>
+<li>GSEventReceiveRunLoopMode：接受系统事件的内部 Mode</li>
+</ul>
+<p>在五种模式中，作为开发者，最常用的其实也就前三种模式。</p>
+<p>上面的几个方法中，我们的Runloop为<code>NSDefaultRunLoopMode</code>，在这种情况（默认模式）下，当发生UI事件时，系统会优先调用<code>UITrackingRunLoopMode</code>而不去管默认模式，所以才造成了Timer不执行的情况。</p>
+<p>如果我们将<code>NSDefaultRunLoopMode</code>改为<code>NSRunLoopCommonModes</code>就可以解决问题。</p>
+<p><strong>那么为什么苹果工程师要分UI模式和Default模式呢？</strong></p>
+<p>其实很简单，有耗时操作的存在，当我们在Timer中执行耗时操作时（例如sleep等），如果用占位模式，那么当我们对UI进行操作时，就会回调Timer的方法，因为是耗时操作，就会将界面卡住。</p>
+<p><strong>那么怎么既让我们在进行UI操作的时候执行回调，又不卡住界面呢？</strong></p>
+<p>其实更简单，因为App中的线程不止主线程一个，在苹果漫长的开发中，苹果工程师将UI界面放在了主线程单线程执行，所以，只要我们把耗时操作放到子线程执行，就不会再出现卡住的情况了</p>
+<h2 id="线程与RunLoop"><a href="#线程与RunLoop" class="headerlink" title="线程与RunLoop"></a>线程与RunLoop</h2><p>我们先创建一个自定义线程类，来重写它的-dealloc方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">//LYC_Thread.h</div><div class="line">-(void)dealloc&#123;</div><div class="line">    NSLog(@&quot;线程结束&quot;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>再进行线程创建</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">//ViewController.m</div><div class="line">#import &quot;LYC_Thread.h&quot;</div><div class="line">@interface ViewController ()</div><div class="line">@property (nonatomic,strong) LYC_Thread *thread;        /**&lt; 线程  */</div><div class="line">@end</div><div class="line"></div><div class="line">@implementation ViewController</div><div class="line"></div><div class="line">- (void)viewDidLoad &#123;</div><div class="line">    [super viewDidLoad];</div><div class="line">    </div><div class="line">    _thread = [[LYC_Thread alloc]initWithBlock:^&#123;</div><div class="line">            NSTimer * timer = [NSTimer timerWithTimeInterval:1.0 target:self selector:@selector(updataTimer) userInfo:nil repeats:YES];</div><div class="line">            [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];</div><div class="line">        NSLog(@&quot;线程执行&quot;);</div><div class="line">    &#125;];</div><div class="line">    </div><div class="line">    [_thread start];</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line">- (void)updataTimer &#123;</div><div class="line">    NSLog(@&quot;耗时操作&quot;);</div><div class="line">    [NSThread sleepForTimeInterval:1.0];</div><div class="line">    NSLog(@&quot;执行完毕&quot;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>乍一看似乎没有问题，然而当我们运行时发现，操作台的打印效果是这样</p>
+<p><img src="/img/Thread.png" alt="操作台"></p>
+<p>通过几个方法，我们可以看到，<code>NSThread</code>并没有被释放，但是却并没有执行耗时操作，这是为什么呢？</p>
+<p>这是因为这个<code>NSThread</code>只是一个对象，而不是线程的本身。</p>
+<p>线程是CPU去调用的，CPU负责在线程池里拿出一条线程去执行<code>NSThread</code>的任务，一旦结束，线程便没有了。</p>
+<p>所以我们要让线程长期存在，并不是去强引用<code>NSThread</code>，而是让NSThread有执行不完的任务，这样，线程才会一直存在。</p>
+<p>于是我们加入一个死循环在thread中并取消对<code>LYC_Thread</code>的强引用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">//ViewController.m</div><div class="line">- (void)viewDidLoad &#123;</div><div class="line">    [super viewDidLoad];</div><div class="line">        </div><div class="line">    LYC_Thread *thread = [[LYC_Thread alloc]initWithBlock:^&#123;</div><div class="line">            NSTimer * timer = [NSTimer timerWithTimeInterval:1.0 target:self selector:@selector(updataTimer) userInfo:nil repeats:YES];</div><div class="line">        while (true) &#123;</div><div class="line">            </div><div class="line">        &#125;;</div><div class="line">            [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];</div><div class="line">        NSLog(@&quot;线程执行&quot;);</div><div class="line">    &#125;];</div><div class="line">    </div><div class="line">    [thread start];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>此时控制台什么也没有打印，也就是说NSThread并没有被释放，也证明了线程并没有被回收</p>
+<p>但是，我们加入死循环时，是没有加入事件的。那如果我们在加入死循环时还想加入事件，怎么办呢？</p>
+<p>前面我们说到，<code>RunLoop</code>的作用相当于一个死循环，而且<code>RunLoop</code>还可以监听各种事件。</p>
+<p>所以，实现这种需求，<code>RunLoop</code>最为合适。</p>
+<p>其实每一条<strong>线程</strong>里都默认有一个<code>RunLoop</code>，只不过默认不开启。我们可以使用<code>[[NSRunLoop currentRunLoop] run];</code>语句对<code>RunLoop</code>进行开启。</p>
+<p>开启之后，我们的控制台就会输出这样的信息：</p>
+<p><img src="/img/控制台.png" alt="控制台信息"></p>
+<p>我们可以发现，”线程执行”语句没有输出，也证明了<code>RunLoop</code>相当于是一个死循环</p>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>除了开启和运用RunLoop，我们还应该知道如何去关闭RunLoop</p>
+<ul>
+<li>用<code>[[NSRunLoop currentRunLoop] runUntilDate:]</code>方法，可以设定循环的时间</li>
+<li>用<code>[NSThread exit]</code>关闭<code>NSThread</code>线程对象</li>
+</ul>
+<p>另外，其实主线程和子线程差别也没那么多（本质上应该是相同的）。</p>
+<p>我们新建一个子线程后，当我们关闭主线程，子线程仍然能够独立运行，只是主线程的UI不再相应了。</p>
+<p>前面提到的<code>在苹果漫长的开发中，苹果工程师将UI界面放在了主线程单线程执行</code>就是主线程与子线程的区别。</p>
+<p>如果我们多线程操作UI，那么就会发生<strong>资源抢夺</strong>情况，如果要解决这种情况，就需要进行上锁操作。</p>
+<p>苹果工程师们在<code>多线程上锁</code>和<code>主线程单线程执行</code>的选择中，选择了后者。</p>
+<p>所以UIKit框架下的控件我们都使用<code>nonatomic</code>非原子属性修饰。</p>
+
+      
+    </div>
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+    
+</div>
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/RunLoop/" rel="tag"><i class="fa fa-tag"></i> RunLoop</a>
+          
+            <a href="/tags/iOS/" rel="tag"><i class="fa fa-tag"></i> iOS</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/11/iOS的本地推送/" rel="next" title="iOS的本地推送">
+                <i class="fa fa-chevron-left"></i> iOS的本地推送
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="uyan_frame"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/headers.png"
+               alt="Rues" />
+          <p class="site-author-name" itemprop="name">Rues</p>
+           
+              <p class="site-description motion-element" itemprop="description">纸上得来终觉浅，绝知此事要躬行</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LuoYangCan/" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/1794015444/" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/he-rui-6-47/activities/" target="_blank" title="ZhiHu">
+                  
+                    <i class="fa fa-fw fa-ravelry"></i>
+                  
+                  ZhiHu
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="/atom.xml" target="_blank" title="RSS">
+                  
+                    <i class="fa fa-fw fa-rss"></i>
+                  
+                  RSS
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=k--m-L3q8v308PL90-X86-7y_v_98Pz_/" target="_blank" title="Mail">
+                  
+                    <i class="fa fa-fw fa-envelope-o"></i>
+                  
+                  Mail
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#RunLoop"><span class="nav-number">1.</span> <span class="nav-text">RunLoop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#监听事件"><span class="nav-number">2.</span> <span class="nav-text">监听事件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程与RunLoop"><span class="nav-number">3.</span> <span class="nav-text">线程与RunLoop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后记"><span class="nav-number">4.</span> <span class="nav-text">后记</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rues</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2140142"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+<script type="text/javascript" color="128,138,135" opacity='0.9' zIndex="-2" count="84" src="//cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js"></script>
+
+</body>
+</html>
