@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="RunLoop,iOS," />
+  <meta name="keywords" content="iOS,RunLoop," />
 
 
 
@@ -95,20 +95,20 @@
 
 
 
-<meta name="description" content="RunLoop​    RunLoop是每一个iOS程序员应该都听过的一个名字，翻译过来大概是叫运行循环，在开发的初期几乎见不到RunLoop的身影。但它其实无处不在，最简单的例子就是Objective-C中的main函数。 12345int main(int argc, char * argv[]) &amp;#123;    @autoreleasepool &amp;#123;        return">
-<meta name="keywords" content="RunLoop,iOS">
+<meta name="description" content="RunLoop​    RunLoop是每一个iOS程序员应该都听过的一个名字，翻译过来大概是叫运行循环，在iOS攻城狮们的开发初期，几乎见不到RunLoop的身影。但它其实无处不在，最简单的例子就是Objective-C中的main函数。 12345int main(int argc, char * argv[]) &amp;#123;    @autoreleasepool &amp;#123;">
+<meta name="keywords" content="iOS,RunLoop">
 <meta property="og:type" content="article">
 <meta property="og:title" content="关于Runloop与线程">
 <meta property="og:url" content="http://yoursite.com/2017/08/23/关于Runloop与线程/index.html">
 <meta property="og:site_name" content="阿灿的随想录">
-<meta property="og:description" content="RunLoop​    RunLoop是每一个iOS程序员应该都听过的一个名字，翻译过来大概是叫运行循环，在开发的初期几乎见不到RunLoop的身影。但它其实无处不在，最简单的例子就是Objective-C中的main函数。 12345int main(int argc, char * argv[]) &amp;#123;    @autoreleasepool &amp;#123;        return">
+<meta property="og:description" content="RunLoop​    RunLoop是每一个iOS程序员应该都听过的一个名字，翻译过来大概是叫运行循环，在iOS攻城狮们的开发初期，几乎见不到RunLoop的身影。但它其实无处不在，最简单的例子就是Objective-C中的main函数。 12345int main(int argc, char * argv[]) &amp;#123;    @autoreleasepool &amp;#123;">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/img/Thread.png">
 <meta property="og:image" content="http://yoursite.com/img/控制台.png">
-<meta property="og:updated_time" content="2017-08-23T10:40:24.000Z">
+<meta property="og:updated_time" content="2017-08-25T09:54:18.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="关于Runloop与线程">
-<meta name="twitter:description" content="RunLoop​    RunLoop是每一个iOS程序员应该都听过的一个名字，翻译过来大概是叫运行循环，在开发的初期几乎见不到RunLoop的身影。但它其实无处不在，最简单的例子就是Objective-C中的main函数。 12345int main(int argc, char * argv[]) &amp;#123;    @autoreleasepool &amp;#123;        return">
+<meta name="twitter:description" content="RunLoop​    RunLoop是每一个iOS程序员应该都听过的一个名字，翻译过来大概是叫运行循环，在iOS攻城狮们的开发初期，几乎见不到RunLoop的身影。但它其实无处不在，最简单的例子就是Objective-C中的main函数。 12345int main(int argc, char * argv[]) &amp;#123;    @autoreleasepool &amp;#123;">
 <meta name="twitter:image" content="http://yoursite.com/img/Thread.png">
 
 
@@ -326,7 +326,7 @@
       
 
       
-        <h2 id="RunLoop"><a href="#RunLoop" class="headerlink" title="RunLoop"></a>RunLoop</h2><p>​    RunLoop是每一个iOS程序员应该都听过的一个名字，翻译过来大概是叫运行循环，在开发的初期几乎见不到RunLoop的身影。但它其实无处不在，最简单的例子就是Objective-C中的main函数。</p>
+        <h2 id="RunLoop"><a href="#RunLoop" class="headerlink" title="RunLoop"></a>RunLoop</h2><p>​    RunLoop是每一个iOS程序员应该都听过的一个名字，翻译过来大概是叫运行循环，在iOS攻城狮们的开发初期，几乎见不到RunLoop的身影。但它其实无处不在，最简单的例子就是Objective-C中的main函数。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">int main(int argc, char * argv[]) &#123;</div><div class="line">    @autoreleasepool &#123;</div><div class="line">        return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>在UIApplicationMain中，就含有一个Runloop，是系统启动时创建的Runloop。</p>
 <p>它有这么几个作用：</p>
@@ -426,9 +426,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/RunLoop/" rel="tag"><i class="fa fa-tag"></i> RunLoop</a>
-          
             <a href="/tags/iOS/" rel="tag"><i class="fa fa-tag"></i> iOS</a>
+          
+            <a href="/tags/RunLoop/" rel="tag"><i class="fa fa-tag"></i> RunLoop</a>
           
         </div>
       
