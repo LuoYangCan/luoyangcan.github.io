@@ -384,16 +384,13 @@ NSLog(@&quot;iOS10 收到本地通知:{\\\\nbody:%@，\\\\ntitle:%@,\\\\nsubtitl
   </entry>
   
   <entry>
-    <title></title>
+    <title>随想</title>
     <link href="http://yoursite.com/2017/07/24/%E9%9A%8F%E6%83%B3/"/>
     <id>http://yoursite.com/2017/07/24/随想/</id>
-    <published>2017-07-24T08:55:34.000Z</published>
-    <updated>2017-08-23T16:40:05.000Z</updated>
+    <published>2017-07-24T05:54:47.000Z</published>
+    <updated>2017-08-27T16:23:23.000Z</updated>
     
-    <content type="html"><![CDATA[<p> title: 随想</p>
-<p> date: 2017-07-24 13:54:47</p>
-<p> tags: 随想</p>
-<pre><code>本来按理说像我这样的肚子里没有诗歌文学，脑子里没有代码技术的人，是不需要开博客的。
+    <content type="html"><![CDATA[<pre><code>本来按理说像我这样的肚子里没有诗歌文学，脑子里没有代码技术的人，是不需要开博客的。
 </code></pre><p>​<br>​<br>​    </p>
 <pre><code>后来想了一想，有些东西还是写出来好一点，索性就花了点时间创建了这个博客来监督自己。
 </code></pre><p>​<br>​    </p>
@@ -402,14 +399,14 @@ NSLog(@&quot;iOS10 收到本地通知:{\\\\nbody:%@，\\\\ntitle:%@,\\\\nsubtitl
     
     <summary type="html">
     
-      &lt;p&gt; title: 随想&lt;/p&gt;
-&lt;p&gt; date: 2017-07-24 13:54:47&lt;/p&gt;
-&lt;p&gt; tags: 随想&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;本来按理说像我这样的肚子里没有诗歌文学，脑子里没有代码技术的人，是不需要开博客的。
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;​&lt;
+      &lt;pre&gt;&lt;code&gt;本来按理说像我这样的肚子里没有诗歌文学，脑子里没有代码技术的人，是不需要开博客的。
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;​&lt;br&gt;​&lt;br&gt;​    &lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;后来想了一想，有些东西还是写出来好一点，索性就花了点时间创建了这个博客来监督自己
     
     </summary>
     
+    
+      <category term="随想" scheme="http://yoursite.com/tags/%E9%9A%8F%E6%83%B3/"/>
     
   </entry>
   
