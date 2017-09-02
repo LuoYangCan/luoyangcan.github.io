@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="iOS,runtime," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="阿灿的随想录" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="曾觉得iOS很好学，也想着学一段时间就可以精通这门语言，但是随着开发的越来越深入，才能意识到，iOS绝不像外表这样简单，他的内涵真是太深了，感觉自己真是一个什么也不知道的Objc小白。 Runtime和消息发送机制是理解iOS运行过程避不开的一道坎，虽然平时很少用，但是却是我们Objc程序员需要了解的。 Runtime 因为Objc是一门动态语言，所以它总会在运行时（而不是编译时）进行工作。所以光">
+<meta name="keywords" content="iOS,runtime">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Objc的消息发送机制与Runtime (1)">
+<meta property="og:url" content="http://yoursite.com/2017/09/02/关于runtime/index.html">
+<meta property="og:site_name" content="阿灿的随想录">
+<meta property="og:description" content="曾觉得iOS很好学，也想着学一段时间就可以精通这门语言，但是随着开发的越来越深入，才能意识到，iOS绝不像外表这样简单，他的内涵真是太深了，感觉自己真是一个什么也不知道的Objc小白。 Runtime和消息发送机制是理解iOS运行过程避不开的一道坎，虽然平时很少用，但是却是我们Objc程序员需要了解的。 Runtime 因为Objc是一门动态语言，所以它总会在运行时（而不是编译时）进行工作。所以光">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/img/objc_msgsend.jpg">
+<meta property="og:image" content="http://yoursite.com/img/超类关系图.png">
+<meta property="og:updated_time" content="2017-09-02T10:53:12.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Objc的消息发送机制与Runtime (1)">
+<meta name="twitter:description" content="曾觉得iOS很好学，也想着学一段时间就可以精通这门语言，但是随着开发的越来越深入，才能意识到，iOS绝不像外表这样简单，他的内涵真是太深了，感觉自己真是一个什么也不知道的Objc小白。 Runtime和消息发送机制是理解iOS运行过程避不开的一道坎，虽然平时很少用，但是却是我们Objc程序员需要了解的。 Runtime 因为Objc是一门动态语言，所以它总会在运行时（而不是编译时）进行工作。所以光">
+<meta name="twitter:image" content="http://yoursite.com/img/objc_msgsend.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/02/关于runtime/"/>
+
+
+
+
+
+  <title>Objc的消息发送机制与Runtime (1) | 阿灿的随想录</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">阿灿的随想录</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">物极必反，否极泰来</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于我
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/02/关于runtime/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rues">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/headers.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阿灿的随想录">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Objc的消息发送机制与Runtime (1)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-02T12:19:55+08:00">
+                2017-09-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>曾觉得iOS很好学，也想着学一段时间就可以精通这门语言，但是随着开发的越来越深入，才能意识到，iOS绝不像外表这样简单，他的内涵真是太深了，感觉自己真是一个什么也不知道的Objc小白。</p>
+<p>Runtime和消息发送机制是理解iOS运行过程避不开的一道坎，虽然平时很少用，但是却是我们Objc程序员需要了解的。</p>
+<h1 id="Runtime"><a href="#Runtime" class="headerlink" title="Runtime"></a>Runtime</h1><hr>
+<p>因为Objc是一门动态语言，所以它总会在运行时（而不是编译时）进行工作。所以光有一个编译器是不够的，还需要一个运行时系统（runtime system）执行编译后代码。这便是Runtime系统，它是整个Objc运行框架的基石。</p>
+<h2 id="Objc与Runtime的交互"><a href="#Objc与Runtime的交互" class="headerlink" title="Objc与Runtime的交互"></a>Objc与Runtime的交互</h2><hr>
+<p><strong>objc从三种不同的层级上与Runtime系统交互，分别是</strong>：</p>
+<h3 id="Objective-C-源代码"><a href="#Objective-C-源代码" class="headerlink" title="Objective-C 源代码"></a>Objective-C 源代码</h3><p>部分情况下，runtime都是系统在幕后执行，我们只需要在前台好好写Objc代码就行。</p>
+<p>消息执行会使用到一些编译器为实现动态语言特性而创建的数据结构和函数。</p>
+<p><strong>Objc中的类、方法和协议等在runtime中都由一些数据结构定义</strong></p>
+<h3 id="NSObject的方法"><a href="#NSObject的方法" class="headerlink" title="NSObject的方法"></a>NSObject的方法</h3><p>Cocoa中大多数类都继承于<code>NSObject</code>类，所以也就继承了它的方法（NSProxy除外）。</p>
+<p>NSObject中有许多的方法，自然也有许多作用，比如</p>
+<ul>
+<li>抽象接口作用，比如<code>description</code>方法需要重载它并为你定义的类提供描述内容。</li>
+<li>在运行时获得类的信息并检查一些特性，比如<ul>
+<li><code>class</code>返回对象的类</li>
+<li><code>isKindOfClass:</code>和<code>isMemberofClass:</code>则检查对象是否在指定的类继承体系中。</li>
+<li><code>respondsToSelector:</code>检查对象能否响应指定消息（是否有指定方法）。</li>
+<li><code>conformsToProtocol</code>检查对象是否实现了指定协议方法</li>
+<li><code>methodForSelector:</code>返回指定方法实现的地址</li>
+</ul>
+</li>
+</ul>
+<h3 id="Runtime的函数"><a href="#Runtime的函数" class="headerlink" title="Runtime的函数"></a>Runtime的函数</h3><p>Runtime系统是一个有一系列函数和数据结构组成，具有公共接口的动态共享库。头文件在<code>/user/include/objc</code>中。在<a href="https://developer.apple.com/documentation/objectivec/objective_c_runtime" target="_blank" rel="external">Objective-C Runtime Reference</a>中有对Runtime函数的详细文档。</p>
+<h2 id="Runtime基础数据结构"><a href="#Runtime基础数据结构" class="headerlink" title="Runtime基础数据结构"></a>Runtime基础数据结构</h2><hr>
+<p>在一个类似[a someFuc]的方法调用中，编译阶段编译器并不知道someFuc要实现哪一段代码而只是确定了要向接受者发送someFuc消息，只有到运行的时候，才会发送消息进行方法的确定。这里我们可以看一下objc的底层实现。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">//main.m</div><div class="line">int main(int argc, const char * argv[])&#123;</div><div class="line">    @autoreleasepool&#123;</div><div class="line">        Person * p = [[Person alloc] init];</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上函数在底层其实是这样的</p>
+<p><img src="/img/objc_msgsend.jpg" alt="底层"></p>
+<p>如上图所示，其实Objc所有方法在底层都会变成一个函数，那就是<code>objc_msgSend()</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">id objc_msgSend ( id self, SEL op, ...);</div></pre></td></tr></table></figure>
+<p>这里面有两个参数值得注意，一个是<code>id</code>，一个是<code>SEL</code>，鉴于id比较复杂，我们先讲讲<code>SEL</code></p>
+<h3 id="SEL"><a href="#SEL" class="headerlink" title="SEL"></a>SEL</h3><p>它是<code>selector</code>在Objc中的表示类型。<code>selector</code>是方法选择器，相当于区分各个方法的一个ID，这个ID的数据结构就是SEL</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">typedef struct objc_selector *SEL;</div></pre></td></tr></table></figure>
+<p>我们可以用Objc编译器命令<code>@selector()</code>或Runtime的<code>sel_registerName</code>获得一个<code>SEL</code>类型的方法选择器。</p>
+<h3 id="id"><a href="#id" class="headerlink" title="id"></a>id</h3><p>作为开发者，大家应该对id都不会陌生，它是一个指向类实例的指针</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">typedef struct objc_object *id;</div></pre></td></tr></table></figure>
+<p>在这之中，<code>objc_object</code>是这样的一个结构体</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">//objc-private.h</div><div class="line">struct objc_object &#123;</div><div class="line">private:</div><div class="line">    isa_t isa;</div><div class="line"></div><div class="line">public:</div><div class="line"></div><div class="line">    // ISA() assumes this is NOT a tagged pointer object</div><div class="line">    Class ISA();</div><div class="line"></div><div class="line">    // getIsa() allows this to be a tagged pointer object</div><div class="line">    Class getIsa();</div><div class="line">    ... 此处省略其他方法声明</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>结构体重包含一个<code>isa</code>指针，类型为<code>isa_t</code>根据<code>isa</code>就可以找到对象所属的类。</p>
+<p><code>isa</code>指针又涉及到引用计数原理的知识了，这里就不做详尽描述了。</p>
+<p>objc_object中又有属性值得我们注意</p>
+<h4 id="Class"><a href="#Class" class="headerlink" title="Class"></a>Class</h4><p><code>Class</code>其实是一个指向<code>objc_class</code>结构体的指针</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">typedef struct objc_class *Class;</div></pre></td></tr></table></figure>
+<p>这个<code>objc_class</code>又包含很多方法了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">struct objc_class : objc_object &#123;</div><div class="line">    // Class ISA;</div><div class="line">    Class superclass;</div><div class="line">    cache_t cache;             // formerly cache pointer and vtable</div><div class="line">    class_data_bits_t bits;    // class_rw_t * plus custom rr/alloc flags</div><div class="line">    class_rw_t *data() &#123; </div><div class="line">        return bits.data();</div><div class="line">    &#125;</div><div class="line">    ... 省略其他方法</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>我们可以看到<code>objc_class</code>继承于<code>objc_object</code>，所以我们可以说一个Objc类本来就是一个对象。</p>
+<p>为了处理类和对象的关系，runtime创建了一种叫<strong>元类（Meta Class）</strong>的东西，<strong>类对象所属类型就叫元类</strong>，它用来表述类对象本身所具备的元数据。这就是类方法的定义，每个类仅有一个类对象，每个类也只有一个与之相关的元类。</p>
+<p>当我们使用类似<code>[p alloc]</code>的类方法时，事实上是把这个消息发送给了一个类对象，这个类对象必须是一个元类的实例，而这个元类也是一个<strong>根元类(root meta class)</strong>的实例。所有元类都指向根元类为其超类。所有元类的方法列表都有能够响应消息的类方法。</p>
+<p>所以当<code>[p alloc]</code>这条消息发给类对象的时候，<code>objc_msgSend()</code>会去它的元类里面去查找能够响应消息的方法，如果找到了，然后就对这个类对象执行方法调用。</p>
+<p><img src="/img/超类关系图.png" alt="关系图"></p>
+<p>根据上图，我们可以看到方法，类，元类的关系。有趣的是<strong>根元类</strong>的超类是<strong>根类</strong>（根类在实际运用中就是<code>NSObject</code>），<code>isa</code>指向了自己。</p>
+<p>而<code>NSObject</code>的超类为<code>nil</code>，也就是说它没有超类。</p>
+<p>可以看到运行时一个类还关联了它的超类指针(superclass)，类名，成员变量，方法，缓存，还有附属协议。</p>
+<h5 id="cache-t"><a href="#cache-t" class="headerlink" title="cache_t"></a>cache_t</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">struct cache_t &#123;</div><div class="line">    struct bucket_t *_buckets;</div><div class="line">    mask_t _mask;</div><div class="line">    mask_t _occupied;</div><div class="line">    ... 省略其他方法</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>_buckets</code>存储<code>IMP</code>。<code>_mask</code>和<code>_occupied</code>对应<code>vtable</code>。</p>
+<p><code>cache</code>是优化的一个机制，如果我们实例对象每收到一个消息都去<code>isa</code>指向的类方法列表中遍历，那效率就太低了。</p>
+<p>所以系统会把调用的方法存到<code>cache</code>中，然后在收到消息后优先在<code>cache</code>中查找（理论上讲 如果一个方法被调用一次，那它就很有可能在今后还会被调用）。</p>
+<p><code>bucket_t</code>中存储了指针与IMP的键值对：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">struct bucket_t &#123;</div><div class="line">private:</div><div class="line">    cache_key_t _key;</div><div class="line">    IMP _imp;</div><div class="line"></div><div class="line">public:</div><div class="line">    inline cache_key_t key() const &#123; return _key; &#125;</div><div class="line">    inline IMP imp() const &#123; return (IMP)_imp; &#125;</div><div class="line">    inline void setKey(cache_key_t newKey) &#123; _key = newKey; &#125;</div><div class="line">    inline void setImp(IMP newImp) &#123; _imp = newImp; &#125;</div><div class="line"></div><div class="line">    void set(cache_key_t newKey, IMP newImp);</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>详细的细节都在<code>objc-cache.mm</code>文件中</p>
+<h5 id="class-data-bits-t"><a href="#class-data-bits-t" class="headerlink" title="class_data_bits_t"></a>class_data_bits_t</h5><p><code>class_data_bits_t</code>包含的信息太多了，主要有<code>class_rw_t</code>,<code>retain/release/autorelease/retaincount</code>和<code>alloc</code>等信息。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">//objc-runtime-new.h</div><div class="line">struct class_data_bits_t &#123;</div><div class="line"></div><div class="line">	// Values are the FAST_ flags above.</div><div class="line">	uintptr_t bits;</div><div class="line">	class_rw_t* data() &#123;</div><div class="line">	   return (class_rw_t *)(bits &amp; FAST_DATA_MASK);</div><div class="line">	&#125;</div><div class="line">... 省略其他方法</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>联系前面的<code>Class</code>，我们可以注意到<code>objc_class</code>的<code>data</code>方法返回的是<code>class_data_bits_t</code>的<code>data</code>方法，最终返回的是<code>class_rw_t</code>，有好几层。</p>
+<p>在<code>class_data_bits_t</code>里又包含了一个<code>bits</code>，这个指针跟不同的<code>FAST_</code>前缀的掩码做按位与操作，可获得不同的数据。<code>bits</code>在内存中每个位的含义有三种排列顺序：</p>
+<p>32位：</p>
+<table>
+<thead>
+<tr>
+<th>0</th>
+<th>1</th>
+<th>2-31</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FAST_IS_SWIFT</td>
+<td>FAST_HAS_DEFAULT_RR</td>
+<td>FAST_DATA_MASK</td>
+</tr>
+</tbody>
+</table>
+<p>64位兼容版：</p>
+<table>
+<thead>
+<tr>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3-46</th>
+<th>47-63</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FAST_IS_SWIFT</td>
+<td>FAST_HAS_DEFAULT_RR</td>
+<td>FAST_REQUIRES_RAW_ISA</td>
+<td>FAST_DATA_MASK</td>
+<td>空闲</td>
+</tr>
+</tbody>
+</table>
+<p>64位不兼容：</p>
+<table>
+<thead>
+<tr>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th>3-46</th>
+<th>47</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>FAST_IS_WIFT</td>
+<td>FAST_REQUIRES_RAW_ISA</td>
+<td>FAST_HAS_CXXDTOR</td>
+<td>FAST_DATA_MASK</td>
+<td>FAST_HAS_CXX_CTOR</td>
+</tr>
+<tr>
+<td>48</td>
+<td>49</td>
+<td>50</td>
+<td>51</td>
+<td>52-63</td>
+</tr>
+<tr>
+<td>FAST_HAS_DEFAULT_AWZ</td>
+<td>FAST_HAS_DEFAULT_RR</td>
+<td>FAST_ALLOC</td>
+<td>FAST_SHIFTED_SIZE_SHIFT</td>
+<td>空闲</td>
+</tr>
+</tbody>
+</table>
+<p>64位不兼容中每个宏对应含义如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">// class is a Swift class</div><div class="line">#define FAST_IS_SWIFT           (1UL&lt;&lt;0)</div><div class="line">// class&apos;s instances requires raw isa</div><div class="line">#define FAST_REQUIRES_RAW_ISA   (1UL&lt;&lt;1)</div><div class="line">// class or superclass has .cxx_destruct implementation</div><div class="line">//   This bit is aligned with isa_t-&gt;hasCxxDtor to save an instruction.</div><div class="line">#define FAST_HAS_CXX_DTOR       (1UL&lt;&lt;2)</div><div class="line">// data pointer</div><div class="line">#define FAST_DATA_MASK          0x00007ffffffffff8UL</div><div class="line">// class or superclass has .cxx_construct implementation</div><div class="line">#define FAST_HAS_CXX_CTOR       (1UL&lt;&lt;47)</div><div class="line">// class or superclass has default alloc/allocWithZone: implementation</div><div class="line">// Note this is is stored in the metaclass.</div><div class="line">#define FAST_HAS_DEFAULT_AWZ    (1UL&lt;&lt;48)</div><div class="line">// class or superclass has default retain/release/autorelease/retainCount/</div><div class="line">//   _tryRetain/_isDeallocating/retainWeakReference/allowsWeakReference</div><div class="line">#define FAST_HAS_DEFAULT_RR     (1UL&lt;&lt;49)</div><div class="line">// summary bit for fast alloc path: !hasCxxCtor and </div><div class="line">//   !instancesRequireRawIsa and instanceSize fits into shiftedSize</div><div class="line">#define FAST_ALLOC              (1UL&lt;&lt;50)</div><div class="line">// instance size in units of 16 bytes</div><div class="line">//   or 0 if the instance size is too big in this field</div><div class="line">//   This field must be LAST</div><div class="line">#define FAST_SHIFTED_SIZE_SHIFT 51</div></pre></td></tr></table></figure>
+<p>在这里除了<code>FAST_DATA_MASK</code>是用一段空间储存数据外，其他宏都是用1bit存bool值。</p>
+<p><code>class_data_bits_t</code>提供了三个方法用于位操作：<code>getBit</code>,<code>setBits</code>和<code>clearBits</code></p>
+<p>而<code>FAST_DATA_MASK</code>的存储区域里面其实就是存储了指向<code>class_rw_t</code>的指针</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">class_rw_t* data() &#123;</div><div class="line">   return (class_rw_t *)(bits &amp; FAST_DATA_MASK);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+      
+    </div>
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------感谢您的阅读<i class="fa fa-paw"></i>本文已经结束-------------</div>
+    
+</div>
+    
+</div>
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"><i class="fa fa-tag"></i> iOS</a>
+          
+            <a href="/tags/runtime/" rel="tag"><i class="fa fa-tag"></i> runtime</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/29/七夕/" rel="next" title="七夕">
+                <i class="fa fa-chevron-left"></i> 七夕
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="uyan_frame"></div>
+    
+  </div>
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/headers.png"
+               alt="Rues" />
+          <p class="site-author-name" itemprop="name">Rues</p>
+           
+              <p class="site-description motion-element" itemprop="description">纸上得来终觉浅，绝知此事要躬行</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LuoYangCan/" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/1794015444/" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/he-rui-6-47/activities/" target="_blank" title="ZhiHu">
+                  
+                    <i class="fa fa-fw fa-ravelry"></i>
+                  
+                  ZhiHu
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="/atom.xml" target="_blank" title="RSS">
+                  
+                    <i class="fa fa-fw fa-rss"></i>
+                  
+                  RSS
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=k--m-L3q8v308PL90-X86-7y_v_98Pz_/" target="_blank" title="Mail">
+                  
+                    <i class="fa fa-fw fa-envelope-o"></i>
+                  
+                  Mail
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Runtime"><span class="nav-number">1.</span> <span class="nav-text">Runtime</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Objc与Runtime的交互"><span class="nav-number">1.1.</span> <span class="nav-text">Objc与Runtime的交互</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Objective-C-源代码"><span class="nav-number">1.1.1.</span> <span class="nav-text">Objective-C 源代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NSObject的方法"><span class="nav-number">1.1.2.</span> <span class="nav-text">NSObject的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Runtime的函数"><span class="nav-number">1.1.3.</span> <span class="nav-text">Runtime的函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Runtime基础数据结构"><span class="nav-number">1.2.</span> <span class="nav-text">Runtime基础数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SEL"><span class="nav-number">1.2.1.</span> <span class="nav-text">SEL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#id"><span class="nav-number">1.2.2.</span> <span class="nav-text">id</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Class"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">Class</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#cache-t"><span class="nav-number">1.2.2.1.1.</span> <span class="nav-text">cache_t</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#class-data-bits-t"><span class="nav-number">1.2.2.1.2.</span> <span class="nav-text">class_data_bits_t</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rues</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2140142"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+<script type="text/javascript" color="128,138,135" opacity='0.9' zIndex="-2" count="84" src="//cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js"></script>
+
+</body>
+</html>
