@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-09-02T11:03:52.000Z</updated>
+  <updated>2017-09-03T11:26:19.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2017/09/02/%E5%85%B3%E4%BA%8Eruntime/"/>
     <id>http://yoursite.com/2017/09/02/关于runtime/</id>
     <published>2017-09-02T04:19:55.000Z</published>
-    <updated>2017-09-02T11:03:52.000Z</updated>
+    <updated>2017-09-03T11:26:19.000Z</updated>
     
     <content type="html"><![CDATA[<p>曾觉得iOS很好学，也想着学一段时间就可以精通这门语言，但是随着开发的越来越深入，才能意识到，iOS绝不像外表这样简单，他的内涵真是太深了，感觉自己真是一个什么也不知道的Objc小白。</p>
 <p>Runtime和消息发送机制是理解iOS运行过程避不开的一道坎，虽然平时很少用，但是却是我们Objc程序员需要了解的。</p>
@@ -165,7 +165,17 @@
 <p><code>class_data_bits_t</code>提供了三个方法用于位操作：<code>getBit</code>,<code>setBits</code>和<code>clearBits</code></p>
 <p>而<code>FAST_DATA_MASK</code>的存储区域里面其实就是存储了指向<code>class_rw_t</code>的指针</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">class_rw_t* data() &#123;</div><div class="line">   return (class_rw_t *)(bits &amp; FAST_DATA_MASK);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://yulingtianxia.com/blog/2014/11/05/objective-c-runtime/" target="_blank" rel="external">杨萧玉的blog</a></p>
+<h4 id="Category"><a href="#Category" class="headerlink" title="Category"></a>Category</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">typedef struct category_t *Category;</div></pre></td></tr></table></figure>
+<p><code>Category</code>为现有的类提供了拓展，存储了类别中可以拓展的实例方法、实例属性和类方法、类属性(objc2016新增特性)。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">struct category_t &#123;</div><div class="line">    const char *name;</div><div class="line">    classref_t cls;</div><div class="line">    struct method_list_t *instanceMethods;</div><div class="line">    struct method_list_t *classMethods;</div><div class="line">    struct protocol_list_t *protocols;</div><div class="line">    struct property_list_t *instanceProperties;</div><div class="line">    // Fields below this point are not always present on disk.</div><div class="line">    struct property_list_t *_classProperties;</div><div class="line"></div><div class="line">    method_list_t *methodsForMeta(bool isMeta) &#123;</div><div class="line">        if (isMeta) return classMethods;</div><div class="line">        else return instanceMethods;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    property_list_t *propertiesForMeta(bool isMeta, struct header_info *hi);</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>App 启动加载镜像文件的时候，会简介调用到<code>attachCategories</code>函数，完成向类中添加<code>Category</code>的工作。</p>
+<h4 id="Method"><a href="#Method" class="headerlink" title="Method"></a>Method</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">typedef struct method_t *Method;</div></pre></td></tr></table></figure>
+<p>它存储了方法名，方法类型和方法实现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">struct method_t &#123;</div><div class="line">    SEL name;</div><div class="line">    const char *types;</div><div class="line">    IMP imp;</div><div class="line"></div><div class="line">    struct SortBySELAddress :</div><div class="line">        public std::binary_function&lt;const method_t&amp;,</div><div class="line">                                    const method_t&amp;, bool&gt;</div><div class="line">    &#123;</div><div class="line">        bool operator() (const method_t&amp; lhs,</div><div class="line">                         const method_t&amp; rhs)</div><div class="line">        &#123; return lhs.name &lt; rhs.name; &#125;</div><div class="line">    &#125;;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>方法名类型为<code>SEL</code>，方法类型<code>types</code>是个<code>char</code>指针，存储着方法的参数类型和返回值类型。</p>
+<p><code>imp</code>指向了方法实现，其实是一个函数指针。</p>
+<h4 id="Ivar"><a href="#Ivar" class="headerlink" title="Ivar"></a>Ivar</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">typedef struct ivar_t *Ivar;</div><div class="line"></div><div class="line"></div><div class="line">struct ivar_t &#123;</div><div class="line">    int32_t *offset;</div><div class="line">    const char *name;</div><div class="line">    const char *type;</div><div class="line">    // alignment is sometimes -1; use alignment() instead</div><div class="line">    uint32_t alignment_raw;</div><div class="line">    uint32_t size;</div><div class="line"></div><div class="line">    uint32_t alignment() const &#123;</div><div class="line">        if (alignment_raw == ~(uint32_t)0) return 1U &lt;&lt; WORD_SHIFT;</div><div class="line">        return 1 &lt;&lt; alignment_raw;</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://yulingtianxia.com/blog/2014/11/05/objective-c-runtime/" target="_blank" rel="external">杨萧玉的博客</a></p>
 ]]></content>
     
     <summary type="html">
