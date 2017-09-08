@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-09-03T11:26:19.000Z</updated>
+  <updated>2017-09-08T14:02:07.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2017/09/02/%E5%85%B3%E4%BA%8Eruntime/"/>
     <id>http://yoursite.com/2017/09/02/关于runtime/</id>
     <published>2017-09-02T04:19:55.000Z</published>
-    <updated>2017-09-03T11:26:19.000Z</updated>
+    <updated>2017-09-08T14:02:07.000Z</updated>
     
     <content type="html"><![CDATA[<p>曾觉得iOS很好学，也想着学一段时间就可以精通这门语言，但是随着开发的越来越深入，才能意识到，iOS绝不像外表这样简单，他的内涵真是太深了，感觉自己真是一个什么也不知道的Objc小白。</p>
 <p>Runtime和消息发送机制是理解iOS运行过程避不开的一道坎，虽然平时很少用，但是却是我们Objc程序员需要了解的。</p>
@@ -175,6 +175,10 @@
 <p>方法名类型为<code>SEL</code>，方法类型<code>types</code>是个<code>char</code>指针，存储着方法的参数类型和返回值类型。</p>
 <p><code>imp</code>指向了方法实现，其实是一个函数指针。</p>
 <h4 id="Ivar"><a href="#Ivar" class="headerlink" title="Ivar"></a>Ivar</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">typedef struct ivar_t *Ivar;</div><div class="line"></div><div class="line"></div><div class="line">struct ivar_t &#123;</div><div class="line">    int32_t *offset;</div><div class="line">    const char *name;</div><div class="line">    const char *type;</div><div class="line">    // alignment is sometimes -1; use alignment() instead</div><div class="line">    uint32_t alignment_raw;</div><div class="line">    uint32_t size;</div><div class="line"></div><div class="line">    uint32_t alignment() const &#123;</div><div class="line">        if (alignment_raw == ~(uint32_t)0) return 1U &lt;&lt; WORD_SHIFT;</div><div class="line">        return 1 &lt;&lt; alignment_raw;</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h4 id="IMP"><a href="#IMP" class="headerlink" title="IMP"></a>IMP</h4><p><code>IMP</code>在<code>objc.h</code>中为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">typedef void (*IMP)(void /* id, SEL, ... */);</div></pre></td></tr></table></figure>
+<p>它就是一个函数指针，由编译器生成。当我们发起一个Objc消息后，最终会执行什么代码，就由这个指针指定。<code>IMP</code>这个函数指针指向了方法的实现。</p>
+<h1 id="感悟"><a href="#感悟" class="headerlink" title="感悟"></a>感悟</h1><p>iOS Runtime真是博大精深，这还没走到最深层，就由一大堆底层概念，所以 学习之路漫漫啊。</p>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://yulingtianxia.com/blog/2014/11/05/objective-c-runtime/" target="_blank" rel="external">杨萧玉的博客</a></p>
 ]]></content>
     
