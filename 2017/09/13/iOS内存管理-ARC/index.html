@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="iOS,ARC," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="阿灿的随想录" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="众所周知，Apple从OS X Lion和iOS 5引入了新的内存管理功能——自动引用计数(ARC)功能。这些功能对于我们开发者说也是需要去了解的一个重要知识点。 自动引用计数 12在Objective-C中采用Automatic Reference Counting机制，让编译器来进行内存管理。在新一代Apple LLVM编译器中设置ARC为有效状态，就无需在此键入retain和release代">
+<meta name="keywords" content="iOS,ARC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS内存管理 - ARC">
+<meta property="og:url" content="http://yoursite.com/2017/09/13/iOS内存管理-ARC/index.html">
+<meta property="og:site_name" content="阿灿的随想录">
+<meta property="og:description" content="众所周知，Apple从OS X Lion和iOS 5引入了新的内存管理功能——自动引用计数(ARC)功能。这些功能对于我们开发者说也是需要去了解的一个重要知识点。 自动引用计数 12在Objective-C中采用Automatic Reference Counting机制，让编译器来进行内存管理。在新一代Apple LLVM编译器中设置ARC为有效状态，就无需在此键入retain和release代">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-09-13T08:33:45.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS内存管理 - ARC">
+<meta name="twitter:description" content="众所周知，Apple从OS X Lion和iOS 5引入了新的内存管理功能——自动引用计数(ARC)功能。这些功能对于我们开发者说也是需要去了解的一个重要知识点。 自动引用计数 12在Objective-C中采用Automatic Reference Counting机制，让编译器来进行内存管理。在新一代Apple LLVM编译器中设置ARC为有效状态，就无需在此键入retain和release代">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/13/iOS内存管理-ARC/"/>
+
+
+
+
+
+  <title>iOS内存管理 - ARC | 阿灿的随想录</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">阿灿的随想录</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">物极必反，否极泰来</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于我
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/13/iOS内存管理-ARC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rues">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/headers.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阿灿的随想录">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">iOS内存管理 - ARC</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-13T16:31:46+08:00">
+                2017-09-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>众所周知，Apple从OS X Lion和iOS 5引入了新的内存管理功能——自动引用计数(ARC)功能。这些功能对于我们开发者说也是需要去了解的一个重要知识点。</p>
+<h1 id="自动引用计数"><a href="#自动引用计数" class="headerlink" title="自动引用计数"></a>自动引用计数</h1><hr>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">在Objective-C中采用Automatic Reference Counting机制，让编译器来进行内存管理。在新一代Apple LLVM编译器中设置ARC为有效状态，就无需在此键入retain和release代码，这在降低程序崩溃、内存泄漏等风险的同时，很大程度上减少了开发程序的工作量。编译器完全清楚目标对象，并能立刻释放那些不再被使用的对象。如此一来，应用程序将具有可预测性，且能流畅运行，速度也将大幅提升。</div><div class="line">								--------- Apple</div></pre></td></tr></table></figure>
+<p>ARC的机制可以用开关房间里的灯的事例来说明：</p>
+<ul>
+<li>进入房间的人需要灯光照明。</li>
+<li>离开房间的人不需要灯光照明。</li>
+<li>如果离开房间的人因不需要照明而把灯关掉，那房间里剩下的人则不能得到照明。</li>
+</ul>
+<p>解决办法就是使房间还有至少1人的情况下保持开灯，无人时关灯。</p>
+<p>为了判断是否还有人在房间里，我们导入计数功能来计算“需要照明的人数”：</p>
+<ul>
+<li>第一个人进入房间，“需要照明人数”+1，计数值由0变为1</li>
+<li>之后每有一个人进入房间，“需要照明人数”就+1。</li>
+<li>每当有人离开房间，“需要照明人数”就-1 。</li>
+<li>最后一个人下班离开房间时，“需要照明人数”就从1减到了0，所以要关灯。</li>
+</ul>
+<p>我们将这个事例套入到objc的中，对应的关系如下：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">对照明设备所做操作</th>
+<th style="text-align:left">对objc对象所做动作</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">开灯</td>
+<td style="text-align:left">生成对象</td>
+</tr>
+<tr>
+<td style="text-align:left">需要照明</td>
+<td style="text-align:left">持有对象</td>
+</tr>
+<tr>
+<td style="text-align:left">不需要照明</td>
+<td style="text-align:left">释放对象</td>
+</tr>
+<tr>
+<td style="text-align:left">关灯</td>
+<td style="text-align:left">废弃对象</td>
+</tr>
+</tbody>
+</table>
+<p>上述中的<code>生成</code>、<code>持有</code>、<code>释放</code>、<code>废弃</code>概念可以对应objc的这些方法：</p>
+<table>
+<thead>
+<tr>
+<th>对象操作</th>
+<th>Objective-C方法</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>生成并持有对象</td>
+<td>alloc/new/copy/mutableCopy等方法</td>
+</tr>
+<tr>
+<td>持有对象</td>
+<td>retain方法</td>
+</tr>
+<tr>
+<td>释放对象</td>
+<td>release方法</td>
+</tr>
+<tr>
+<td>废弃对象</td>
+<td>dealloc方法</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p>我们可以用一下思路来看内存管理，不必去纠结引用计数</p>
+<ul>
+<li>自己生成的对象，自己持有。</li>
+<li>非自己生成的对象，自己也可以持有。</li>
+<li>不再需要自己持有的对象时释放。</li>
+<li>非自己持有的对象无法释放。</li>
+</ul>
+<h2 id="自己生成的对象，自己持有"><a href="#自己生成的对象，自己持有" class="headerlink" title="自己生成的对象，自己持有"></a>自己生成的对象，自己持有</h2><p>使用以下名称开头的方法名意味着自己生成的对象只有自己持有：</p>
+<ul>
+<li>alloc</li>
+<li>new</li>
+<li>copy</li>
+<li>mutableCopy</li>
+</ul>
+<h3 id="alloc-new"><a href="#alloc-new" class="headerlink" title="alloc/new"></a>alloc/new</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">//自己生成并持有对象</div><div class="line">id obj1 = [[NSObject alloc] init];</div><div class="line">//自己持有对象</div><div class="line"></div><div class="line"></div><div class="line">//自己生成并持有对象</div><div class="line">id obj2 = [NSObject new];</div><div class="line">//自己持有对象</div></pre></td></tr></table></figure>
+<p>一般来说，<code>[NSObject new]</code>与<code>[[NSObject alloc] init]</code>是完全一样的。</p>
+<p>区别在于<code>alloc</code>因将关联对象内存分配到相邻区域从而更加省时省力。</p>
+<p><code>alloc</code>也可以用自定义的<code>init</code>方法(例如<code>initWithFrame</code>)而new只能用默认的init。</p>
+<h3 id="copy"><a href="#copy" class="headerlink" title="copy"></a>copy</h3><p><code>copy</code>用基于NSCopying方法约定，由各类实现的<code>copyWithZone：</code>方法生成并持有对象的副本。与<code>copy</code>方法类似。</p>
+<p><code>mutableCopy</code>利用基于<code>NSMutableCopying</code>方法约定，由各类实现的<code>mutableCopyWithZone：</code>方法生成并持有对象的副本。</p>
+<p>区别在于，<code>copy</code>方法生成不可变更的对象，而<code>mutableCopy</code>生成可变更的对象。类似<code>NSArray</code>与<code>NSMutableArray</code>类对象的差异。这里还涉及到一个深浅拷贝的知识点。</p>
+<p>两个方法虽然生成的是对象的副本，但是同<code>alloc</code>、<code>new</code>一样在<strong>自己生成并持有对象</strong>这点上没有改变。</p>
+<h2 id="非自己生成的对象，自己也能持有"><a href="#非自己生成的对象，自己也能持有" class="headerlink" title="非自己生成的对象，自己也能持有"></a>非自己生成的对象，自己也能持有</h2><p>用上述方法以外的方法（即用<code>alloc</code>、<code>new</code>、<code>copy</code>和<code>mutableCopy</code>以外的方法）取得的对象，因为非自己生成持有，所以自己不是该对象的持有者。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">//取得非自己生成并持有的对象</div><div class="line">id obj = [NSMutableArray array];</div><div class="line">//取得的对象存在，但自己不持有对象</div><div class="line">[obj retain];</div><div class="line">//自己持有该对象</div></pre></td></tr></table></figure>
+<p>通过<code>retain</code>方法，非自己生成的对象跟用<code>alloc/new/copy/mutableCopy</code>生成并持有的对象一样名称为了自己所持有的。</p>
+<h2 id="不再需要自己持有的对象时释放"><a href="#不再需要自己持有的对象时释放" class="headerlink" title="不再需要自己持有的对象时释放"></a>不再需要自己持有的对象时释放</h2><p>自己持有的对象，一旦不需要，持有者有义务释放该对象。释放使用<code>release</code>方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">//自己生成并持有对象</div><div class="line">id obj = [[NSObject alloc] init];</div><div class="line">//自己持有对象</div><div class="line">[obj release];</div><div class="line">/* </div><div class="line">	释放对象</div><div class="line">	</div><div class="line">	指向对象的指针仍然被保留在变量obj中</div><div class="line">	</div><div class="line">	对象一经释放就不可被访问</div><div class="line">*/</div><div class="line"></div><div class="line"></div><div class="line">//取得非自己生成并持有的对象</div><div class="line">id obj = [NSMutableArray array];</div><div class="line"></div><div class="line">//取得的对象存在 但自己不持有</div><div class="line"></div><div class="line">[obj retain];</div><div class="line"></div><div class="line">//持有对象</div><div class="line"></div><div class="line">[obj release];</div><div class="line"></div><div class="line">/*</div><div class="line">	释放对象</div><div class="line">	对象不可再被访问</div><div class="line">*/</div></pre></td></tr></table></figure>
+<p>如果要用某个方法生成对象，并将其返还给该方法的调用方，则需要以下方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">- (id) allocObject &#123;</div><div class="line">    //自己生成并持有</div><div class="line">  id obj = [[NSOBject alloc] init];</div><div class="line">  //自己持有对象</div><div class="line">  return obj;</div><div class="line">&#125;</div><div class="line"></div><div class="line">/*</div><div class="line">	原封不动的返回alloc方法生成并持有的对象，就能让调用方也持有该对象。</div><div class="line">*/</div><div class="line"></div><div class="line"></div><div class="line">//取得非自己生成并持有的对象</div><div class="line"></div><div class="line">id obj1 =[obj0 allocObject];</div><div class="line"></div><div class="line">//自己持有对象</div></pre></td></tr></table></figure>
+<p>注意，<code>allocObject</code>方法符合<code>以alloc/new/copy/mutableCopy方法开头</code>并用驼峰拼写法命名的命名规则。因此它与<code>alloc</code>方法生成并持有对象的情况完全相同。</p>
+<p>若使取得的对象存在，但自己不持有对象，就需要这样</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">-(id)Object&#123;</div><div class="line">    id obj = [[NSObject alloc] init];</div><div class="line">  //自己持有对象</div><div class="line">  [obj autorelease];</div><div class="line">  //取得对象存在，但不持有</div><div class="line">  return obj;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上例中，我们使用了<code>autorelease</code>方法。用该方法，可以使取得的对象存在，但自己不持有对象。</p>
+<p><code>autorelease</code>提供这样的功能，使对象在超出指定的生存范围时能够自动并正确地释放(调用<code>release</code>)。</p>
+<p>使用<code>[NSmutableArray array]</code>方法取得谁都不持有的对象，就是通过<code>autorelease</code>实现的。</p>
+<h2 id="无法释放非自己持有的对象"><a href="#无法释放非自己持有的对象" class="headerlink" title="无法释放非自己持有的对象"></a>无法释放非自己持有的对象</h2><p>对于用<code>alloc/new/copy/mutableCopy</code>方法生成并持有的对象，或是用<code>retain</code>方法持有的对象，由于持有者是自己，所以在不需要该对象时需要将其释放。</p>
+<p>而由此以外所得到的对象绝对不能释放。倘若在应用程序中释放了非自己持有的对象就会造成崩溃。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">/**释放完不再需要的对象后再次释放**/</div><div class="line"></div><div class="line">//自己生成并持有对象</div><div class="line">id obj =[[NSObject alloc] init];</div><div class="line">//自己持有对象</div><div class="line">[obj release];</div><div class="line">//对象已释放</div><div class="line">[obj release];</div><div class="line">//程序崩溃</div><div class="line"></div><div class="line"></div><div class="line">/**取得对象存在，但自己不持有时释放**/</div><div class="line">id obj1 = [obj0 object];</div><div class="line">//取得的对象存在，但自己不持有对象</div><div class="line">[obj1 release];</div><div class="line">//程序崩溃</div></pre></td></tr></table></figure>
+<p>如以上例子，释放非自己持有的对象会造成程序崩溃，因此绝对不要去释放非自己持有的对象。</p>
+
+      
+    </div>
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------感谢您的阅读<i class="fa fa-paw"></i>本文已经结束-------------</div>
+    
+</div>
+    
+</div>
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"><i class="fa fa-tag"></i> iOS</a>
+          
+            <a href="/tags/ARC/" rel="tag"><i class="fa fa-tag"></i> ARC</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/02/关于runtime/" rel="next" title="Objc的消息发送机制与Runtime (1)">
+                <i class="fa fa-chevron-left"></i> Objc的消息发送机制与Runtime (1)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="uyan_frame"></div>
+    
+  </div>
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/headers.png"
+               alt="Rues" />
+          <p class="site-author-name" itemprop="name">Rues</p>
+           
+              <p class="site-description motion-element" itemprop="description">纸上得来终觉浅，绝知此事要躬行</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LuoYangCan/" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/1794015444/" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/he-rui-6-47/activities/" target="_blank" title="ZhiHu">
+                  
+                    <i class="fa fa-fw fa-ravelry"></i>
+                  
+                  ZhiHu
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="/atom.xml" target="_blank" title="RSS">
+                  
+                    <i class="fa fa-fw fa-rss"></i>
+                  
+                  RSS
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=k--m-L3q8v308PL90-X86-7y_v_98Pz_/" target="_blank" title="Mail">
+                  
+                    <i class="fa fa-fw fa-envelope-o"></i>
+                  
+                  Mail
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#自动引用计数"><span class="nav-number">1.</span> <span class="nav-text">自动引用计数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#自己生成的对象，自己持有"><span class="nav-number">1.1.</span> <span class="nav-text">自己生成的对象，自己持有</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#alloc-new"><span class="nav-number">1.1.1.</span> <span class="nav-text">alloc/new</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#copy"><span class="nav-number">1.1.2.</span> <span class="nav-text">copy</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#非自己生成的对象，自己也能持有"><span class="nav-number">1.2.</span> <span class="nav-text">非自己生成的对象，自己也能持有</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不再需要自己持有的对象时释放"><span class="nav-number">1.3.</span> <span class="nav-text">不再需要自己持有的对象时释放</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#无法释放非自己持有的对象"><span class="nav-number">1.4.</span> <span class="nav-text">无法释放非自己持有的对象</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rues</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2140142"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+<script type="text/javascript" color="128,138,135" opacity='0.9' zIndex="-2" count="60" src="//cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js"></script>
+
+</body>
+</html>
