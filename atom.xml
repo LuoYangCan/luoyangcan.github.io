@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-09-13T08:33:45.000Z</updated>
+  <updated>2017-09-13T08:36:07.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,11 +20,11 @@
     <link href="http://yoursite.com/2017/09/13/iOS%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86-ARC/"/>
     <id>http://yoursite.com/2017/09/13/iOS内存管理-ARC/</id>
     <published>2017-09-13T08:31:46.000Z</published>
-    <updated>2017-09-13T08:33:45.000Z</updated>
+    <updated>2017-09-13T08:36:07.000Z</updated>
     
     <content type="html"><![CDATA[<p>众所周知，Apple从OS X Lion和iOS 5引入了新的内存管理功能——自动引用计数(ARC)功能。这些功能对于我们开发者说也是需要去了解的一个重要知识点。</p>
 <h1 id="自动引用计数"><a href="#自动引用计数" class="headerlink" title="自动引用计数"></a>自动引用计数</h1><hr>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">在Objective-C中采用Automatic Reference Counting机制，让编译器来进行内存管理。在新一代Apple LLVM编译器中设置ARC为有效状态，就无需在此键入retain和release代码，这在降低程序崩溃、内存泄漏等风险的同时，很大程度上减少了开发程序的工作量。编译器完全清楚目标对象，并能立刻释放那些不再被使用的对象。如此一来，应用程序将具有可预测性，且能流畅运行，速度也将大幅提升。</div><div class="line">								--------- Apple</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">在Objective-C中采用Automatic Reference Counting机制，让编译器来进行内存管理。</div><div class="line">在新一代Apple LLVM编译器中设置ARC为有效状态，就无需在此键入retain和release代码，</div><div class="line">这在降低程序崩溃、内存泄漏等风险的同时，很大程度上减少了开发程序的工作量。</div><div class="line">编译器完全清楚目标对象，并能立刻释放那些不再被使用的对象。</div><div class="line">如此一来，应用程序将具有可预测性，且能流畅运行，速度也将大幅提升。</div><div class="line">								--------- Apple</div></pre></td></tr></table></figure>
 <p>ARC的机制可以用开关房间里的灯的事例来说明：</p>
 <ul>
 <li>进入房间的人需要灯光照明。</li>
