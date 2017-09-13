@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-09-13T08:36:07.000Z</updated>
+  <updated>2017-09-13T10:20:42.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2017/09/13/iOS%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86-ARC/"/>
     <id>http://yoursite.com/2017/09/13/iOS内存管理-ARC/</id>
     <published>2017-09-13T08:31:46.000Z</published>
-    <updated>2017-09-13T08:36:07.000Z</updated>
+    <updated>2017-09-13T10:20:42.000Z</updated>
     
     <content type="html"><![CDATA[<p>众所周知，Apple从OS X Lion和iOS 5引入了新的内存管理功能——自动引用计数(ARC)功能。这些功能对于我们开发者说也是需要去了解的一个重要知识点。</p>
 <h1 id="自动引用计数"><a href="#自动引用计数" class="headerlink" title="自动引用计数"></a>自动引用计数</h1><hr>
@@ -94,7 +94,7 @@
 </tbody>
 </table>
 <hr>
-<p>我们可以用一下思路来看内存管理，不必去纠结引用计数</p>
+<p>我们可以用以下思路来看内存管理，不必去纠结引用计数</p>
 <ul>
 <li>自己生成的对象，自己持有。</li>
 <li>非自己生成的对象，自己也可以持有。</li>
@@ -122,7 +122,7 @@
 <h2 id="不再需要自己持有的对象时释放"><a href="#不再需要自己持有的对象时释放" class="headerlink" title="不再需要自己持有的对象时释放"></a>不再需要自己持有的对象时释放</h2><p>自己持有的对象，一旦不需要，持有者有义务释放该对象。释放使用<code>release</code>方法。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">//自己生成并持有对象</div><div class="line">id obj = [[NSObject alloc] init];</div><div class="line">//自己持有对象</div><div class="line">[obj release];</div><div class="line">/* </div><div class="line">	释放对象</div><div class="line">	</div><div class="line">	指向对象的指针仍然被保留在变量obj中</div><div class="line">	</div><div class="line">	对象一经释放就不可被访问</div><div class="line">*/</div><div class="line"></div><div class="line"></div><div class="line">//取得非自己生成并持有的对象</div><div class="line">id obj = [NSMutableArray array];</div><div class="line"></div><div class="line">//取得的对象存在 但自己不持有</div><div class="line"></div><div class="line">[obj retain];</div><div class="line"></div><div class="line">//持有对象</div><div class="line"></div><div class="line">[obj release];</div><div class="line"></div><div class="line">/*</div><div class="line">	释放对象</div><div class="line">	对象不可再被访问</div><div class="line">*/</div></pre></td></tr></table></figure>
 <p>如果要用某个方法生成对象，并将其返还给该方法的调用方，则需要以下方法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">- (id) allocObject &#123;</div><div class="line">    //自己生成并持有</div><div class="line">  id obj = [[NSOBject alloc] init];</div><div class="line">  //自己持有对象</div><div class="line">  return obj;</div><div class="line">&#125;</div><div class="line"></div><div class="line">/*</div><div class="line">	原封不动的返回alloc方法生成并持有的对象，就能让调用方也持有该对象。</div><div class="line">*/</div><div class="line"></div><div class="line"></div><div class="line">//取得非自己生成并持有的对象</div><div class="line"></div><div class="line">id obj1 =[obj0 allocObject];</div><div class="line"></div><div class="line">//自己持有对象</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">- (id) allocObject &#123;</div><div class="line">    //自己生成并持有</div><div class="line">  id obj = [[NSObject alloc] init];</div><div class="line">  //自己持有对象</div><div class="line">  return obj;</div><div class="line">&#125;</div><div class="line"></div><div class="line">/*</div><div class="line">	原封不动的返回alloc方法生成并持有的对象，就能让调用方也持有该对象。</div><div class="line">*/</div><div class="line"></div><div class="line"></div><div class="line">//取得非自己生成并持有的对象</div><div class="line"></div><div class="line">id obj1 =[obj0 allocObject];</div><div class="line"></div><div class="line">//自己持有对象</div></pre></td></tr></table></figure>
 <p>注意，<code>allocObject</code>方法符合<code>以alloc/new/copy/mutableCopy方法开头</code>并用驼峰拼写法命名的命名规则。因此它与<code>alloc</code>方法生成并持有对象的情况完全相同。</p>
 <p>若使取得的对象存在，但自己不持有对象，就需要这样</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">-(id)Object&#123;</div><div class="line">    id obj = [[NSObject alloc] init];</div><div class="line">  //自己持有对象</div><div class="line">  [obj autorelease];</div><div class="line">  //取得对象存在，但不持有</div><div class="line">  return obj;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
