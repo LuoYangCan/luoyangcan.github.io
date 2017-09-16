@@ -103,7 +103,7 @@
 <meta property="og:site_name" content="阿灿的随想录">
 <meta property="og:description" content="众所周知，Apple从OS X Lion和iOS 5引入了新的内存管理功能——自动引用计数(ARC)功能。这些功能对于我们开发者说也是需要去了解的一个重要知识点。 自动引用计数 123456在Objective-C中采用Automatic Reference Counting机制，让编译器来进行内存管理。在新一代Apple LLVM编译器中设置ARC为有效状态，就无需在此键入retain和rele">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-09-16T12:25:31.000Z">
+<meta property="og:updated_time" content="2017-09-16T12:31:22.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS内存管理 - ARC">
 <meta name="twitter:description" content="众所周知，Apple从OS X Lion和iOS 5引入了新的内存管理功能——自动引用计数(ARC)功能。这些功能对于我们开发者说也是需要去了解的一个重要知识点。 自动引用计数 123456在Objective-C中采用Automatic Reference Counting机制，让编译器来进行内存管理。在新一代Apple LLVM编译器中设置ARC为有效状态，就无需在此键入retain和rele">
@@ -394,7 +394,8 @@
 </tr>
 </tbody>
 </table>
-<h1 id="引用计数的储存"><a href="#引用计数的储存" class="headerlink" title="引用计数的储存"></a>引用计数的储存</h1><p>objc中有些对象如果支持使用TaggedPointer，苹果会直接将其指针值作为引用计数返回。</p>
+<h1 id="引用计数的储存"><a href="#引用计数的储存" class="headerlink" title="引用计数的储存"></a>引用计数的储存</h1><hr>
+<p>objc中有些对象如果支持使用TaggedPointer，苹果会直接将其指针值作为引用计数返回。</p>
 <p>如果当前设备是64位环境并且使用objective-c 2.0，那么“一些”对象会使用其<code>isa</code>指针的一部分控件来存储它的引用计数。</p>
 <h2 id="TaggedPointer"><a href="#TaggedPointer" class="headerlink" title="TaggedPointer"></a>TaggedPointer</h2><p>判断当前对象是否在使用TaggedPointer(观察标志位是否为1)</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">#if SUPPORT_MSB_TAGGED_POINTERS</div><div class="line">#   define TAG_MASK (1ULL&lt;&lt;63)</div><div class="line">#else</div><div class="line">#   define TAG_MASK 1</div><div class="line"></div><div class="line">inline bool </div><div class="line">objc_object::isTaggedPointer() </div><div class="line">&#123;</div><div class="line">#if SUPPORT_TAGGED_POINTERS</div><div class="line">    return ((uintptr_t)this &amp; TAG_MASK);</div><div class="line">#else</div><div class="line">    return false;</div><div class="line">#endif</div><div class="line">&#125;</div></pre></td></tr></table></figure>
@@ -460,8 +461,7 @@
 <li>值的类型为<code>__darwin_size_t</code>。这里保存的值其实就是引用计数减一。</li>
 </ul>
 <p>用散列表保存引用计数的优势也很明显，即如果出现故障导致对象的内存块损坏，只要引用计数表没有被破坏，依然可以顺藤摸瓜找到内存块的地址。</p>
-<h2 id="获取引用计数"><a href="#获取引用计数" class="headerlink" title="获取引用计数"></a>获取引用计数</h2><hr>
-<p>在非ARC环境，可以使用<code>retainCount</code>方法获取某个对象的引用计数，其会调用<code>objc_object</code>的<code>rootRetainCount()</code>方法：</p>
+<h2 id="获取引用计数"><a href="#获取引用计数" class="headerlink" title="获取引用计数"></a>获取引用计数</h2><p>在非ARC环境，可以使用<code>retainCount</code>方法获取某个对象的引用计数，其会调用<code>objc_object</code>的<code>rootRetainCount()</code>方法：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">- (NSUInteger)retainCount&#123;</div><div class="line">    return ((id)self)-&gt;rootRetainCount();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>ARC时代除了使用Core Foundation库中的<code>CFGetRetainCount()</code>，也可以用Runtime的<code>_objc_rootRetainCount(id obj)</code>方法来获取引用计数，此时需要引入<code>&lt;objc/runtime.h&gt;</code>头文件。这个函数也是调用<code>objc_object</code>的<code>rootRetainCount()</code>方法：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">inline uintptr_t </div><div class="line">objc_object::rootRetainCount()</div><div class="line">&#123;</div><div class="line">    assert(!UseGC);</div><div class="line">    if (isTaggedPointer()) return (uintptr_t)this;</div><div class="line"></div><div class="line">    sidetable_lock();</div><div class="line">    isa_t bits = LoadExclusive(&amp;isa.bits);</div><div class="line">    if (bits.indexed) &#123;</div><div class="line">        uintptr_t rc = 1 + bits.extra_rc;</div><div class="line">        if (bits.has_sidetable_rc) &#123;</div><div class="line">            rc += sidetable_getExtraRC_nolock();</div><div class="line">        &#125;</div><div class="line">        sidetable_unlock();</div><div class="line">        return rc;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    sidetable_unlock();</div><div class="line">    return sidetable_retainCount();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
