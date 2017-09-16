@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-09-16T12:20:40.000Z</updated>
+  <updated>2017-09-16T12:25:31.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2017/09/13/iOS%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86-ARC/"/>
     <id>http://yoursite.com/2017/09/13/iOS内存管理-ARC/</id>
     <published>2017-09-13T08:31:46.000Z</published>
-    <updated>2017-09-16T12:20:40.000Z</updated>
+    <updated>2017-09-16T12:25:31.000Z</updated>
     
     <content type="html"><![CDATA[<p>众所周知，Apple从OS X Lion和iOS 5引入了新的内存管理功能——自动引用计数(ARC)功能。这些功能对于我们开发者说也是需要去了解的一个重要知识点。</p>
 <h1 id="自动引用计数"><a href="#自动引用计数" class="headerlink" title="自动引用计数"></a>自动引用计数</h1><hr>
@@ -159,7 +159,8 @@
 <li>值的类型为<code>__darwin_size_t</code>。这里保存的值其实就是引用计数减一。</li>
 </ul>
 <p>用散列表保存引用计数的优势也很明显，即如果出现故障导致对象的内存块损坏，只要引用计数表没有被破坏，依然可以顺藤摸瓜找到内存块的地址。</p>
-<h2 id="获取引用计数"><a href="#获取引用计数" class="headerlink" title="获取引用计数"></a>获取引用计数</h2><p>在非ARC环境，可以使用<code>retainCount</code>方法获取某个对象的引用计数，其会调用<code>objc_object</code>的<code>rootRetainCount()</code>方法：</p>
+<h2 id="获取引用计数"><a href="#获取引用计数" class="headerlink" title="获取引用计数"></a>获取引用计数</h2><hr>
+<p>在非ARC环境，可以使用<code>retainCount</code>方法获取某个对象的引用计数，其会调用<code>objc_object</code>的<code>rootRetainCount()</code>方法：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">- (NSUInteger)retainCount&#123;</div><div class="line">    return ((id)self)-&gt;rootRetainCount();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>ARC时代除了使用Core Foundation库中的<code>CFGetRetainCount()</code>，也可以用Runtime的<code>_objc_rootRetainCount(id obj)</code>方法来获取引用计数，此时需要引入<code>&lt;objc/runtime.h&gt;</code>头文件。这个函数也是调用<code>objc_object</code>的<code>rootRetainCount()</code>方法：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">inline uintptr_t </div><div class="line">objc_object::rootRetainCount()</div><div class="line">&#123;</div><div class="line">    assert(!UseGC);</div><div class="line">    if (isTaggedPointer()) return (uintptr_t)this;</div><div class="line"></div><div class="line">    sidetable_lock();</div><div class="line">    isa_t bits = LoadExclusive(&amp;isa.bits);</div><div class="line">    if (bits.indexed) &#123;</div><div class="line">        uintptr_t rc = 1 + bits.extra_rc;</div><div class="line">        if (bits.has_sidetable_rc) &#123;</div><div class="line">            rc += sidetable_getExtraRC_nolock();</div><div class="line">        &#125;</div><div class="line">        sidetable_unlock();</div><div class="line">        return rc;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    sidetable_unlock();</div><div class="line">    return sidetable_retainCount();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
@@ -186,7 +187,8 @@
 <p><code>weak</code>表的作用是在对象执行<code>dealloc</code>的时候将所有指向该对象的<code>weak</code>指针的值设为<code>nil</code>，避免悬空指针。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">//weak表的结构</div><div class="line">struct weak_table_t&#123;</div><div class="line">    weak_entry_t *weak_entries;</div><div class="line">  size_t num_entries;</div><div class="line">  uintptr_t mask;</div><div class="line">  uintptr_t max_hash_displacement;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
 <p>苹果用一个全局<code>weak</code>表保存所有<code>weak</code>引用，将对象作为键，<code>weak_entry_t</code>作为值。<code>weak_entry_t</code>中保存了所有指向该对象的<code>weak</code>指针。</p>
-<h1 id="iOS的内存管理"><a href="#iOS的内存管理" class="headerlink" title="iOS的内存管理"></a>iOS的内存管理</h1><p>我们可以用以下思路来看内存管理，不必去纠结引用计数</p>
+<h1 id="iOS的内存管理"><a href="#iOS的内存管理" class="headerlink" title="iOS的内存管理"></a>iOS的内存管理</h1><hr>
+<p>我们可以用以下思路来看内存管理，不必去纠结引用计数</p>
 <ul>
 <li>自己生成的对象，自己持有。</li>
 <li>非自己生成的对象，自己也可以持有。</li>
