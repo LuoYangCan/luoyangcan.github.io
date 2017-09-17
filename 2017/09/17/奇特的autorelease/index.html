@@ -103,7 +103,7 @@
 <meta property="og:site_name" content="阿灿的随想录">
 <meta property="og:description" content="引言一说到Objective-C的内存管理，就不得不提到Autorelease。 顾名思义，autorelease就是自动释放，这看起来很ARC，但其实它更像C语言中的局部变量特性。 1234567&amp;#123;    int a;&amp;#125;/*	因超出变量作用域	局部变量int a 被废弃。*/ 一般来说，autorelease会像C语言的局部变量那样对待对象的实例，一旦超出作用域，对象实例的r">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-09-17T12:27:53.000Z">
+<meta property="og:updated_time" content="2017-09-17T12:30:52.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="奇特的autorelease">
 <meta name="twitter:description" content="引言一说到Objective-C的内存管理，就不得不提到Autorelease。 顾名思义，autorelease就是自动释放，这看起来很ARC，但其实它更像C语言中的局部变量特性。 1234567&amp;#123;    int a;&amp;#125;/*	因超出变量作用域	局部变量int a 被废弃。*/ 一般来说，autorelease会像C语言的局部变量那样对待对象的实例，一旦超出作用域，对象实例的r">
@@ -336,13 +336,13 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">//表示如下</div><div class="line">NSAutoreleasePool *pool = [[[NSAutoreleasePool alloc]init]autorealease];</div><div class="line">id obj = [[NSObject alloc] init];</div><div class="line">[pool drain];</div><div class="line">//相当于[obj release]对象被释放</div></pre></td></tr></table></figure>
 <p>但是，为什么说是一般情况下autorelease像C语言的局部变量一样呢。</p>
 <p>这就涉及到autorelease的原理机制了</p>
-<h1 id="Autorelease"><a href="#Autorelease" class="headerlink" title="Autorelease"></a>Autorelease</h1><p>其实在没有人工添加Autoreleasepool的情况下，Autorealease对象是在当前的<code>runloop</code>结束时释放的，而它能释放的原因也是系统在每个runloop中都加入了自动释放池push和pop。</p>
+<h1 id="Autorelease"><a href="#Autorelease" class="headerlink" title="Autorelease"></a>Autorelease</h1><hr>
+<p>其实在没有人工添加Autoreleasepool的情况下，Autorealease对象是在当前的<code>runloop</code>结束时释放的，而它能释放的原因也是系统在每个runloop中都加入了自动释放池push和pop。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">__weak id reference = nil;</div><div class="line">-(void)viewdidLoad&#123;</div><div class="line">    [super viewDidLoad];</div><div class="line">  NSString *str = [NSString string WithFormat:@&quot;Reus&quot;];</div><div class="line">  //str是一个autorelease对象，设置一个weak的引用来观察它</div><div class="line">  reference = str;</div><div class="line">&#125;</div><div class="line">- (void) viewWillAppear:(BOOL)animated&#123;</div><div class="line">    [super viewWillAppear:animated];</div><div class="line">  NSLog(@&quot;%@&quot;,reference); //Console: Reus</div><div class="line">&#125;</div><div class="line">- (void)viewDidAppear:(BOOL)animated&#123;</div><div class="line">    [super viewDidAppear:animated];</div><div class="line">  NSlog(@&quot;%@&quot;,reference);//Console: (null)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>因为这个vc在loadView之后就add到了window上，所以<code>viewDidLoad</code>和<code>viewWillAppear</code>是在同一个runloop调用的，因此在<code>viewWillAppear</code>中，这个autorelease的变量依然有值。</p>
 <p>当然我们也可以手动干预</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">-(void)viewDidLoad&#123;</div><div class="line">    [super viewDidLoad];</div><div class="line">  @autoreleasepool &#123;</div><div class="line">      NSString *str = [NSString stringWithFormat:@&quot;Reus&quot;];</div><div class="line">  &#125;</div><div class="line">  NSLog(@&quot;%@&quot;,str); //Console: (null)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="AutoreleasePoolPage"><a href="#AutoreleasePoolPage" class="headerlink" title="AutoreleasePoolPage"></a>AutoreleasePoolPage</h2><hr>
-<p>ARC下，我们用<code>@autoreleasepool{}</code>来使用一个AutoreleasePool，随后编译器会转化为这样</p>
+<h2 id="AutoreleasePoolPage"><a href="#AutoreleasePoolPage" class="headerlink" title="AutoreleasePoolPage"></a>AutoreleasePoolPage</h2><p>ARC下，我们用<code>@autoreleasepool{}</code>来使用一个AutoreleasePool，随后编译器会转化为这样</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">void *context = objc_autoreleasePoolPush();</div><div class="line">//&#123;&#125;中的代码</div><div class="line">objc_autoreleasePoolPop(context);</div></pre></td></tr></table></figure>
 <p>这两个函数都是对<code>AutoreleasePoolPage</code>的简单封装，所以自动释放机制核心在于这个类.</p>
 <p><code>AutoreleasePoolPage</code>是一个C++实现的类</p>
