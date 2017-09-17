@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-09-17T12:30:52.000Z</updated>
+  <updated>2017-09-17T12:32:39.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2017/09/17/%E5%A5%87%E7%89%B9%E7%9A%84autorelease/"/>
     <id>http://yoursite.com/2017/09/17/奇特的autorelease/</id>
     <published>2017-09-17T07:06:48.000Z</published>
-    <updated>2017-09-17T12:30:52.000Z</updated>
+    <updated>2017-09-17T12:32:39.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h1><p>一说到Objective-C的内存管理，就不得不提到Autorelease。</p>
 <p>顾名思义，autorelease就是自动释放，这看起来很ARC，但其实它更像C语言中的局部变量特性。</p>
@@ -62,7 +62,7 @@
 </ul>
 <h3 id="嵌套AutoreleasePool"><a href="#嵌套AutoreleasePool" class="headerlink" title="嵌套AutoreleasePool"></a>嵌套AutoreleasePool</h3><p>因为上面也讲到了，pop的时候总是会释放到上次的push位置为止，多层嵌套也就是多个哨兵对象，一层一层的释放，互不影响。</p>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><hr>
-<p><a href="blog.sunnyxx.com">sunnyxx的博客</a></p>
+<p><a href="http://blog.sunnyxx.com" target="_blank" rel="external">sunnyxx的博客</a></p>
 ]]></content>
     
     <summary type="html">
