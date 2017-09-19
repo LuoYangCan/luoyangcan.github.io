@@ -82,7 +82,7 @@
     <link href="http://yoursite.com/2017/09/13/iOS%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86-ARC/"/>
     <id>http://yoursite.com/2017/09/13/iOS内存管理-ARC/</id>
     <published>2017-09-13T08:31:46.000Z</published>
-    <updated>2017-09-17T03:40:29.000Z</updated>
+    <updated>2017-09-19T12:54:42.000Z</updated>
     
     <content type="html"><![CDATA[<p>众所周知，Apple从OS X Lion和iOS 5引入了新的内存管理功能——自动引用计数(ARC)功能。这些功能对于我们开发者说也是需要去了解的一个重要知识点。</p>
 <h1 id="自动引用计数"><a href="#自动引用计数" class="headerlink" title="自动引用计数"></a>自动引用计数</h1><hr>
@@ -155,6 +155,17 @@
 </tr>
 </tbody>
 </table>
+<h2 id="ARC规则"><a href="#ARC规则" class="headerlink" title="ARC规则"></a>ARC规则</h2><p>在ARC有效的情况下编译源代码，需要遵守一定的规则：</p>
+<ul>
+<li>不能使用/retain/release/retainCount/autorelease</li>
+<li>不能使用NSAllocateObject/NSDeallocateObject</li>
+<li>须遵守内存管理的方法命名规则</li>
+<li>不要显式调用dealloc（别用[super dealloc]）</li>
+<li>使用@autoreleasepool块替代NSAutoreleasePool</li>
+<li>不能使用NSZone</li>
+<li>对象型变量不能作为C语言结构体(struct/union)的成员</li>
+<li>转换id和void *(__bridge)</li>
+</ul>
 <h1 id="引用计数的储存"><a href="#引用计数的储存" class="headerlink" title="引用计数的储存"></a>引用计数的储存</h1><hr>
 <p>objc中有些对象如果支持使用TaggedPointer，苹果会直接将其指针值作为引用计数返回。</p>
 <p>如果当前设备是64位环境并且使用objective-c 2.0，那么“一些”对象会使用其<code>isa</code>指针的一部分控件来存储它的引用计数。</p>
