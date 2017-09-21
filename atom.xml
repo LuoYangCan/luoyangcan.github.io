@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-09-21T08:44:32.000Z</updated>
+  <updated>2017-09-21T12:16:09.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -17,10 +17,10 @@
   
   <entry>
     <title>PY语言基础</title>
-    <link href="http://yoursite.com/2017/09/21/PY%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/"/>
-    <id>http://yoursite.com/2017/09/21/PY语言基础/</id>
-    <published>2017-09-21T08:44:40.000Z</published>
-    <updated>2017-09-21T08:44:32.000Z</updated>
+    <link href="http://yoursite.com/2017/09/20/PY%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/"/>
+    <id>http://yoursite.com/2017/09/20/PY语言基础/</id>
+    <published>2017-09-20T14:16:40.000Z</published>
+    <updated>2017-09-21T12:16:09.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><hr>
 <p>因为最近没事干想学下爬虫玩一下，顺便因为自己是信息安全专业，学一下py应该还蛮有趣的。</p>
@@ -32,9 +32,9 @@
 <p>由于计算机使用二进制，所以有时候用十六进制表示整数比较方便。</p>
 <p>十六进制用<code>0x</code>前缀和0~9,a~f表示。例如<code>0xff00</code></p>
 <h2 id="浮点数"><a href="#浮点数" class="headerlink" title="浮点数"></a>浮点数</h2><p>浮点数就是小数。</p>
-<p>之所以叫他浮点数，是因为用科学计数法表示时，一个浮点数的小数点位置是可变的。就像<code>1.23x10^{9}</code>和<code>12.3x10^{8}</code>完全相等。</p>
+<p>之所以叫他浮点数，是因为用科学计数法表示时，一个浮点数的小数点位置是可变的。就像<code>1.23x10^9</code>和<code>12.3x10^8</code>完全相等。</p>
 <p>对于很大的数或很小的浮点数，就必须用科学计数法表示</p>
-<p>在Python中文名用e替代10。也就是说<code>1.23x10^{9}</code>等价于<code>1.23e9</code></p>
+<p>在Python中文名用e替代10。也就是说<code>1.23x10^9</code>等价于<code>1.23e9</code></p>
 <h2 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h2><p>字符串是以单引号<code>‘</code>和双引号<code>&quot;</code>括起来的任意文本</p>
 <p>单引号双引号都可以用，只要不混用。</p>
 <p>如果<code>&#39;</code>本来就是一个字符，那可以用<code>&quot;&quot;</code>括起来。</p>
@@ -119,6 +119,12 @@
 <h3 id="tuple"><a href="#tuple" class="headerlink" title="tuple"></a>tuple</h3><p>tuple和list非常相似，但是tuple一旦初始化就不能修改（除非里面有个list)。有点像objc中的NSArray</p>
 <p>因为tuple不可变，所以相对来说是更安全的。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">//定义tuple</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>t = (<span class="number">1</span>,<span class="number">2</span>)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>t</div><div class="line">(<span class="number">1</span>, <span class="number">2</span>)</div><div class="line"></div><div class="line">//定义一个空的tuple</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>t =()</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>t </div><div class="line">()</div><div class="line"></div><div class="line">//定义一个元素的tuple</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>t = (<span class="number">1</span>,)</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>t </div><div class="line">(<span class="number">1</span>,)</div><div class="line">/**Python在显示只有一个的tuple时，也会加一个逗号，防止我们误解成数学上的括号**/</div></pre></td></tr></table></figure>
+<h1 id="判断"><a href="#判断" class="headerlink" title="判断"></a>判断</h1><p>Python中也有<code>if - else</code>语句</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">age = <span class="number">20</span></div><div class="line"><span class="keyword">if</span> age &gt;= <span class="number">18</span>:</div><div class="line">  	print(<span class="string">'your age is'</span>,age)</div><div class="line">    print(<span class="string">'adult'</span>)</div></pre></td></tr></table></figure>
+<p>如果<code>if</code>判断为<code>True</code>，就把缩进的两行print语句执行了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">age = <span class="number">3</span></div><div class="line"><span class="keyword">if</span> age &gt;= <span class="number">18</span>:</div><div class="line">  print(<span class="string">'adult'</span>)</div><div class="line"><span class="keyword">elif</span> age &gt;=<span class="number">6</span>:</div><div class="line">  print(<span class="string">'tennager'</span>)</div><div class="line"><span class="keyword">else</span>:</div><div class="line">  print(<span class="string">'kid'</span>)</div></pre></td></tr></table></figure>
+<p>和你想的一样，这个<code>elif</code>是<code>else if</code>的缩写</p>
+<p><code>if</code>的特点是从上往下判断，如果上面有一个判断为<code>True</code>，就会忽略掉剩下的<code>elif</code>和<code>else</code>。</p>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><hr>
 <p><a href="https:www.liaoxuefeng.com" target="_blank" rel="external">廖雪峰的官方网站</a></p>
 ]]></content>
