@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-09-25T10:03:51.000Z</updated>
+  <updated>2017-09-28T13:39:48.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2017/09/24/PY%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/"/>
     <id>http://yoursite.com/2017/09/24/PY语言基础/</id>
     <published>2017-09-24T15:04:40.000Z</published>
-    <updated>2017-09-25T10:03:51.000Z</updated>
+    <updated>2017-09-28T13:39:48.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><hr>
 <p>因为最近没事干想学下爬虫玩一下，顺便因为自己是信息安全专业，学一下py应该还蛮有趣的。</p>
@@ -143,6 +143,18 @@
 <p>set可看成数学意义上的无序无重复元素的集合，所以两个st可以做交并集等操作</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;&gt;&gt; </span>s1 = set([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>s2 = set([<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>])</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>s1 &amp; s2</div><div class="line">&#123;<span class="number">2</span>, <span class="number">3</span>&#125;</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>s1 | s2</div><div class="line">&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;</div></pre></td></tr></table></figure>
 <p><strong>set同样不能放入可变对象</strong></p>
+<h1 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h1><h2 id="调用函数"><a href="#调用函数" class="headerlink" title="调用函数"></a>调用函数</h2><p>Python内置了很多函数，我们可以直接调用(比如绝对值函数abs)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">//调用abs函数</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>abs(<span class="number">100</span>)</div><div class="line"><span class="number">100</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>abs(<span class="number">-20</span>)</div><div class="line"><span class="number">20</span></div></pre></td></tr></table></figure>
+<p>如果传入的参数不对，会报<code>TypeError</code>的错误</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">//数据类型转换</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>int(<span class="number">12.34</span>)</div><div class="line"><span class="number">12</span></div><div class="line"><span class="meta">&gt;&gt;&gt; </span>str(<span class="number">1.23</span>)</div><div class="line"><span class="string">'1.23'</span></div><div class="line"></div><div class="line">//把函数名赋给变量</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>a = abs</div><div class="line"><span class="meta">&gt;&gt;&gt; </span>a(<span class="number">-1</span>)</div><div class="line"><span class="number">1</span></div></pre></td></tr></table></figure>
+<h2 id="定义函数"><a href="#定义函数" class="headerlink" title="定义函数"></a>定义函数</h2><p>在Python中，定义一个函数要使用<code>def</code>语句，依次写出函数名、括号、括号中的参数和冒号，最后，在缩进块中编写函数体，用<code>return</code>返回。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">//自定义函数</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_abs</span><span class="params">(x)</span>:</span></div><div class="line">  <span class="keyword">if</span> x &gt;= <span class="number">0</span>:</div><div class="line">    <span class="keyword">return</span> x</div><div class="line">  <span class="keyword">else</span>:</div><div class="line">    <span class="keyword">return</span> -x</div></pre></td></tr></table></figure>
+<p>如果我们把<code>my_abs()</code>的函数定义保存为<code>abstest.py</code>，那么，可以在该目录下启动Python解释器。用<code>from abstest import my_abs</code>来导入<code>my_abs()</code>函数</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">//定义空函数</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">nop</span><span class="params">()</span>:</span></div><div class="line">  <span class="keyword">pass</span></div></pre></td></tr></table></figure>
+<p><code>pass</code>可用来做占位符，比如我们还没想好写什么，可以先放一个<code>pass</code>让代码跑起来</p>
+<p><strong>Python是可以返回多个值的</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">move</span><span class="params">(x, y, step, angle=<span class="number">0</span>)</span>:</span></div><div class="line">  nx = x + step * math.cos(angle)</div><div class="line">  ny = y - step * math.sin(angle)</div><div class="line">  <span class="keyword">return</span> nx, ny</div></pre></td></tr></table></figure>
+<p>其实返回的值并不是严格意义上的多值，而是一个tuple。</p>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><hr>
 <p><a href="https:www.liaoxuefeng.com" target="_blank" rel="external">廖雪峰的官方网站</a></p>
 ]]></content>
