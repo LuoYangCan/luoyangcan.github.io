@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-09-28T13:39:48.000Z</updated>
+  <updated>2017-10-16T16:05:17.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,85 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>关于@property</title>
+    <link href="http://yoursite.com/2017/10/11/about-property/"/>
+    <id>http://yoursite.com/2017/10/11/about-property/</id>
+    <published>2017-10-11T13:59:48.000Z</published>
+    <updated>2017-10-16T16:05:17.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>不论是初入iOS开发还是已经是老江湖的开发者，想必<code>@property</code> 已经成为了我们最熟悉的一个语法。</p>
+<p>“属性”(property)作为Objc的一项特性，主要作用就在于封装对象中的数据。Objc对象通常会把所需要的数据保存为各种实例变量。</p>
+<p>实例变量一般通过”存取方法”(access method)访问。</p>
+<p>获取方法(getter)用于读取变量值</p>
+<p>设置方法(setter)用于写入变量值</p>
+<p>在正规的Objc编码风格中，存取方法有这严格的命名规范。</p>
+<p>正是因为这样的命名规范，所以Objc这门语言才能根据名称自动创建出存取方法。</p>
+<h1 id="关于-property"><a href="#关于-property" class="headerlink" title="关于@property"></a>关于@property</h1><hr>
+<p>想必大家应该都知道或者了解，<code>@property</code>语句相当于系统自动为我们生成了<code>getter</code>和<code>setter</code>方法。</p>
+<p>想必大家还应该知道，我们常常在调用实例变量的时候，会出现一个前面带<strong>下划线</strong>的变量，这个变量我们也从未去特意声明过。辣么这个“下划线变量”到底是哪里来的？</p>
+<p>没错，就是棒棒的<code>@property</code>带来的。</p>
+<p>所以我们可以说<code>@property = ivar(实例变量) + getter + setter</code>。</p>
+<p>比如下面这个经典的例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">@interface Person : NSObject</div><div class="line">@property NSString *firstName;</div><div class="line">@property NSString *lastName;</div><div class="line">@end</div></pre></td></tr></table></figure>
+<p>上面的写法等价于：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">@interface Person : NSObject</div><div class="line">- (NSString *)firstName;</div><div class="line">- (void)setFirstName:(NSString *)firstName;</div><div class="line">- (NSString *)lastName;</div><div class="line">- (void)setLastName:(NSString *)lastName;</div><div class="line">@end</div></pre></td></tr></table></figure>
+<h2 id="ivar"><a href="#ivar" class="headerlink" title="ivar"></a>ivar</h2><p>说到ivar，就要涉及到内存管理的知识了</p>
+<p>还是那个例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">@interface Person : NSObject</div><div class="line">&#123;</div><div class="line">    NSString *_firstName;</div><div class="line">  	NSInteger _age;</div><div class="line">&#125;</div><div class="line">@end</div><div class="line"></div><div class="line">  </div><div class="line">  </div><div class="line">  </div><div class="line">@implementation AClass</div><div class="line">- (instancetype)init&#123;</div><div class="line">    if (self = [super init])&#123;</div><div class="line">        _age = 1;</div><div class="line">    &#125;</div><div class="line">  return self;</div><div class="line">&#125;</div><div class="line">@end</div></pre></td></tr></table></figure>
+<p>这个Person类被编译之后变成一个描述(arm64)，Person占用24个字节，前8个字节是isa指针，中间八个字节是NSString指针，后八个字节是NSInteger的值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">| isa | NSString * _firstName | NSInteger _age |</div></pre></td></tr></table></figure>
+<p>调用<code>[[Person alloc]init]</code>的时候，会分配出24个字节的内存出来：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">| 0 | 0 | 0 |</div></pre></td></tr></table></figure>
+<p>然后往前8个字节放isa地址</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">//alloc完成后</div><div class="line">| isa | 0 | 0 |</div></pre></td></tr></table></figure>
+<p>然后调用alloc出来的init方法，把_age的值赋为1，因为_firstName没有初始化，所以还是0。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">//init之后</div><div class="line">| isa | 0 | 1 |</div></pre></td></tr></table></figure>
+<p><code>isa</code>指向了这个类的元类，也就是meta，meta里存储了父类/ivar结构/方法等内容，关于这个，在<a href="http://luoyangcan.top/2017/09/13/iOS%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86-ARC/" target="_blank" rel="external">另一篇文章中</a>可以看到。</p>
+<h2 id="getter与setter"><a href="#getter与setter" class="headerlink" title="getter与setter"></a>getter与setter</h2><p>前言说了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Objc对象通常会把所需要的数据保存为各种实例变量。</div><div class="line"></div><div class="line">实例变量一般通过&quot;存取方法&quot;(access method)访问。</div><div class="line"></div><div class="line">获取方法(getter)用于读取变量值</div><div class="line"></div><div class="line">设置方法(setter)用于写入变量值</div></pre></td></tr></table></figure>
+<p>这个观念，几乎都深深的刻在所有程序猿的脑海中。</p>
+<p>所以iOS开发者在使用<code>@property</code>带来的便利的同时，不能忘记这个重要的想法。</p>
+<p>我们所用到的<code>person.firstName = @&quot;Reus&quot;</code>其实是一个语法糖，等同于<code>[person setFirstName:@&quot;Reus&quot;]</code>。</p>
+<p>在过去我们需要声明对应的实例变量<code>@synthesize person = _person</code>。</p>
+<p>现在，一句<code>@property</code>已经可以做到以上所有的步骤了，并且善用<code>@property</code>对于内存管理来说，也是一件好事。</p>
+<h1 id="property的那些事"><a href="#property的那些事" class="headerlink" title="property的那些事"></a>property的那些事</h1><p>property在runtime中是<code>objc_property_t</code>，定义如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">typedef struct objc_property *objc_property_t;</div></pre></td></tr></table></figure>
+<p>而<code>objc_property</code>是一个结构体，包含了<code>name</code>和<code>attributes</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">struct property_t &#123;</div><div class="line">    const char *name;</div><div class="line">    const char *attributes;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>attributes本质是<code>objc_property_attribute_t</code>，定义了properrty的一些属性。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">typedef struct&#123;</div><div class="line">    const char *name;</div><div class="line"> 	const char *value;</div><div class="line">&#125; objc_property_attribute_t;</div></pre></td></tr></table></figure>
+<p>attributes的具体内容大概包括<code>类型</code>，<code>原子性</code>，<code>内存语义</code>，<code>对应的实例变量</code>。</p>
+<p>我们定义一个string的property<code>@property (nonatomic, copy) NSString *string;</code>，通过<code>property_getAttributes(property)</code>获取到attributes并打印，结果为<code>T@&quot;NSString&quot;,C,N,V_string</code></p>
+<p>T代表类型，C代表Copy，N代表nonatomic，V代表实例变量。</p>
+<h1 id="自动合成"><a href="#自动合成" class="headerlink" title="自动合成"></a>自动合成</h1><p>完成属性定义后，编译器会自动编写访问这些属性所需的方法，此过程叫“自动合成”(autosynthesis)。这个过程是在编译的时候由编译器执行。除了生成getter、setter之外，编译器还要向类中添加适当类型的实例变量，并且在属性名前面加下划线，以此作为实例变量的名字。</p>
+<p>可通过<code>@synthesize</code>语法来指定实例变量的名字。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">@implementation Person</div><div class="line">@synthesize firstName = _myFirstName;</div><div class="line">@synthesize lastName = _myLastName;</div><div class="line">@end</div></pre></td></tr></table></figure>
+<p><a href="http://weibo.com/luohanchenyilong/" target="_blank" rel="external">微博@iOS程序犭袁</a>曾反编译过相关代码，他大致生成了五个东西</p>
+<ul>
+<li><code>OBJC_IVAR_$类名$属性名称</code>：该属性的“偏移量”(offset)，这个偏移量是“硬编码” (hardcode)，表示该变量距离存放对象的内存区域的起始地址有多远。</li>
+<li>setter与getter方法对应的实现函数</li>
+<li><code>ivar_list</code>：成员变量列表</li>
+<li><code>method_list</code>：方法列表</li>
+<li><code>prop_list</code>：属性列表</li>
+</ul>
+<p>我们每次增加一个属性，系统都会在<code>ivar_list</code>中添加一个成员变量的描述，在<code>method_list</code>中增加setter与getter方法的描述，在<code>prop_list</code>中增加一个属性的描述，再计算偏移量，给出setter与getter方法对应的实现。在setter方法中从偏移量位置开始赋值，在getter方法中从偏移量开始取值，为了读取正确的字节数，系统偏移量的指针类型进行了强转。</p>
+<h1 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h1><p>一般情况下，我们应该多用@property，因为它可以进行某种程度的自动内存管理。但是我们在用@property这样方便的语法时，也千万不能忘记他的本质，这样才更有利于我们对于开发的理解。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://segmentfault.com/q/1010000000185056" target="_blank" rel="external">segmentfault</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;不论是初入iOS开发还是已经是老江湖的开发者，想必&lt;code&gt;@property&lt;/code&gt; 已经成为了我们最熟悉的一个语法。&lt;/p&gt;
+&lt;
+    
+    </summary>
+    
+    
+      <category term="iOS" scheme="http://yoursite.com/tags/iOS/"/>
+    
+  </entry>
   
   <entry>
     <title>PY语言基础</title>
@@ -953,9 +1032,9 @@ NSLog(@&quot;iOS10 收到本地通知:{\\\\nbody:%@，\\\\ntitle:%@,\\\\nsubtitl
     </summary>
     
     
-      <category term="iBeacon" scheme="http://yoursite.com/tags/iBeacon/"/>
-    
       <category term="iOS" scheme="http://yoursite.com/tags/iOS/"/>
+    
+      <category term="iBeacon" scheme="http://yoursite.com/tags/iBeacon/"/>
     
   </entry>
   
