@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-10-16T16:05:17.000Z</updated>
+  <updated>2017-10-19T08:36:40.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -17,10 +17,10 @@
   
   <entry>
     <title>关于@property</title>
-    <link href="http://yoursite.com/2017/10/11/about-property/"/>
-    <id>http://yoursite.com/2017/10/11/about-property/</id>
-    <published>2017-10-11T13:59:48.000Z</published>
-    <updated>2017-10-16T16:05:17.000Z</updated>
+    <link href="http://yoursite.com/2017/10/18/about-property/"/>
+    <id>http://yoursite.com/2017/10/18/about-property/</id>
+    <published>2017-10-18T13:59:48.000Z</published>
+    <updated>2017-10-19T08:36:40.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>不论是初入iOS开发还是已经是老江湖的开发者，想必<code>@property</code> 已经成为了我们最熟悉的一个语法。</p>
 <p>“属性”(property)作为Objc的一项特性，主要作用就在于封装对象中的数据。Objc对象通常会把所需要的数据保存为各种实例变量。</p>
@@ -38,6 +38,28 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">@interface Person : NSObject</div><div class="line">@property NSString *firstName;</div><div class="line">@property NSString *lastName;</div><div class="line">@end</div></pre></td></tr></table></figure>
 <p>上面的写法等价于：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">@interface Person : NSObject</div><div class="line">- (NSString *)firstName;</div><div class="line">- (void)setFirstName:(NSString *)firstName;</div><div class="line">- (NSString *)lastName;</div><div class="line">- (void)setLastName:(NSString *)lastName;</div><div class="line">@end</div></pre></td></tr></table></figure>
+<h2 id="property属性关键字"><a href="#property属性关键字" class="headerlink" title="@property属性关键字"></a>@property属性关键字</h2><p>属性可拥有的特质分为四类：</p>
+<ul>
+<li><p>原子性 —— <code>nonatomic</code></p>
+<p>在默认情况下，由编译器合成的方法会通过锁定机制确保原子性(atomicity)。如果属性具备<code>nonatomic</code>特质，则不使用自旋锁。请注意，尽管没有名为”atomic”的特质(如果某属性不是<code>nonatomic</code>，那他就是原子的<code>atomic</code>)。</p>
+</li>
+</ul>
+<ul>
+<li><p>读写权限 ——<code>readwrite(读写)</code>、<code>readonly(只读)</code></p>
+</li>
+<li><p>内存管理 ——<code>assign</code>、<code>strong</code>、<code>weak</code>、<code>unsafe_unretained</code>、<code>copy</code></p>
+</li>
+<li><p>方法名 ——<code>getter = &lt;name&gt;</code>、<code>setter = &lt;name&gt;</code> </p>
+<p><code>getter = &lt;name&gt;</code>的样式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">@property (nonatomic, getter = isOn) BOOL on;</div></pre></td></tr></table></figure>
+<p><code>setter = &lt;name&gt;</code>一般用在特殊环境下，比如：</p>
+<p>在数据反序列化、转模型的过程中，服务器返回的字段以<code>init</code>开头，所以你需要定义一个<code>init</code>开头的属性，但默认生成的<code>getter</code>和<code>setter</code>方法也会以<code>init</code>开头。但是编译器会把<code>init</code>开头的方法当成初始化方法，而初始化方法只能返回self，所以编译器会报错。</p>
+<p>这时候我们就要用到<code>setter = &lt;name&gt;</code>来防止编译器报错</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@property(nonatomic, strong, getter=p_initBy, setter=setP_initBy:)NSString *initBy;</div><div class="line"></div><div class="line">//对关键字特殊说明</div><div class="line">@property(nonatomic, readwrite, copy, null_resettable) NSString *initBy;</div><div class="line">- (NSString *)initBy __attribute__((objc_method_family(none)));</div></pre></td></tr></table></figure>
+</li>
+<li><p>不常用的<code>nonnull</code>、<code>null_resettable</code>、<code>nullable</code></p>
+</li>
+</ul>
 <h2 id="ivar"><a href="#ivar" class="headerlink" title="ivar"></a>ivar</h2><p>说到ivar，就要涉及到内存管理的知识了</p>
 <p>还是那个例子</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">@interface Person : NSObject</div><div class="line">&#123;</div><div class="line">    NSString *_firstName;</div><div class="line">  	NSInteger _age;</div><div class="line">&#125;</div><div class="line">@end</div><div class="line"></div><div class="line">  </div><div class="line">  </div><div class="line">  </div><div class="line">@implementation AClass</div><div class="line">- (instancetype)init&#123;</div><div class="line">    if (self = [super init])&#123;</div><div class="line">        _age = 1;</div><div class="line">    &#125;</div><div class="line">  return self;</div><div class="line">&#125;</div><div class="line">@end</div></pre></td></tr></table></figure>
@@ -1032,9 +1054,9 @@ NSLog(@&quot;iOS10 收到本地通知:{\\\\nbody:%@，\\\\ntitle:%@,\\\\nsubtitl
     </summary>
     
     
-      <category term="iBeacon" scheme="http://yoursite.com/tags/iBeacon/"/>
-    
       <category term="iOS" scheme="http://yoursite.com/tags/iOS/"/>
+    
+      <category term="iBeacon" scheme="http://yoursite.com/tags/iBeacon/"/>
     
   </entry>
   

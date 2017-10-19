@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="iOS," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="阿灿的随想录" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="前言不论是初入iOS开发还是已经是老江湖的开发者，想必@property 已经成为了我们最熟悉的一个语法。 “属性”(property)作为Objc的一项特性，主要作用就在于封装对象中的数据。Objc对象通常会把所需要的数据保存为各种实例变量。 实例变量一般通过”存取方法”(access method)访问。 获取方法(getter)用于读取变量值 设置方法(setter)用于写入变量值 在正规的">
+<meta name="keywords" content="iOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于@property">
+<meta property="og:url" content="http://yoursite.com/2017/10/18/about-property/index.html">
+<meta property="og:site_name" content="阿灿的随想录">
+<meta property="og:description" content="前言不论是初入iOS开发还是已经是老江湖的开发者，想必@property 已经成为了我们最熟悉的一个语法。 “属性”(property)作为Objc的一项特性，主要作用就在于封装对象中的数据。Objc对象通常会把所需要的数据保存为各种实例变量。 实例变量一般通过”存取方法”(access method)访问。 获取方法(getter)用于读取变量值 设置方法(setter)用于写入变量值 在正规的">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-10-19T08:36:40.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="关于@property">
+<meta name="twitter:description" content="前言不论是初入iOS开发还是已经是老江湖的开发者，想必@property 已经成为了我们最熟悉的一个语法。 “属性”(property)作为Objc的一项特性，主要作用就在于封装对象中的数据。Objc对象通常会把所需要的数据保存为各种实例变量。 实例变量一般通过”存取方法”(access method)访问。 获取方法(getter)用于读取变量值 设置方法(setter)用于写入变量值 在正规的">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/10/18/about-property/"/>
+
+
+
+
+
+  <title>关于@property | 阿灿的随想录</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">阿灿的随想录</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">物极必反，否极泰来</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于我
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/18/about-property/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rues">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="阿灿的随想录">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">关于@property</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-18T21:59:48+08:00">
+                2017-10-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>不论是初入iOS开发还是已经是老江湖的开发者，想必<code>@property</code> 已经成为了我们最熟悉的一个语法。</p>
+<p>“属性”(property)作为Objc的一项特性，主要作用就在于封装对象中的数据。Objc对象通常会把所需要的数据保存为各种实例变量。</p>
+<p>实例变量一般通过”存取方法”(access method)访问。</p>
+<p>获取方法(getter)用于读取变量值</p>
+<p>设置方法(setter)用于写入变量值</p>
+<p>在正规的Objc编码风格中，存取方法有这严格的命名规范。</p>
+<p>正是因为这样的命名规范，所以Objc这门语言才能根据名称自动创建出存取方法。</p>
+<h1 id="关于-property"><a href="#关于-property" class="headerlink" title="关于@property"></a>关于@property</h1><hr>
+<p>想必大家应该都知道或者了解，<code>@property</code>语句相当于系统自动为我们生成了<code>getter</code>和<code>setter</code>方法。</p>
+<p>想必大家还应该知道，我们常常在调用实例变量的时候，会出现一个前面带<strong>下划线</strong>的变量，这个变量我们也从未去特意声明过。辣么这个“下划线变量”到底是哪里来的？</p>
+<p>没错，就是棒棒的<code>@property</code>带来的。</p>
+<p>所以我们可以说<code>@property = ivar(实例变量) + getter + setter</code>。</p>
+<p>比如下面这个经典的例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">@interface Person : NSObject</div><div class="line">@property NSString *firstName;</div><div class="line">@property NSString *lastName;</div><div class="line">@end</div></pre></td></tr></table></figure>
+<p>上面的写法等价于：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">@interface Person : NSObject</div><div class="line">- (NSString *)firstName;</div><div class="line">- (void)setFirstName:(NSString *)firstName;</div><div class="line">- (NSString *)lastName;</div><div class="line">- (void)setLastName:(NSString *)lastName;</div><div class="line">@end</div></pre></td></tr></table></figure>
+<h2 id="property属性关键字"><a href="#property属性关键字" class="headerlink" title="@property属性关键字"></a>@property属性关键字</h2><p>属性可拥有的特质分为四类：</p>
+<ul>
+<li><p>原子性 —— <code>nonatomic</code></p>
+<p>在默认情况下，由编译器合成的方法会通过锁定机制确保原子性(atomicity)。如果属性具备<code>nonatomic</code>特质，则不使用自旋锁。请注意，尽管没有名为”atomic”的特质(如果某属性不是<code>nonatomic</code>，那他就是原子的<code>atomic</code>)。</p>
+</li>
+</ul>
+<ul>
+<li><p>读写权限 ——<code>readwrite(读写)</code>、<code>readonly(只读)</code></p>
+</li>
+<li><p>内存管理 ——<code>assign</code>、<code>strong</code>、<code>weak</code>、<code>unsafe_unretained</code>、<code>copy</code></p>
+</li>
+<li><p>方法名 ——<code>getter = &lt;name&gt;</code>、<code>setter = &lt;name&gt;</code> </p>
+<p><code>getter = &lt;name&gt;</code>的样式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">@property (nonatomic, getter = isOn) BOOL on;</div></pre></td></tr></table></figure>
+<p><code>setter = &lt;name&gt;</code>一般用在特殊环境下，比如：</p>
+<p>在数据反序列化、转模型的过程中，服务器返回的字段以<code>init</code>开头，所以你需要定义一个<code>init</code>开头的属性，但默认生成的<code>getter</code>和<code>setter</code>方法也会以<code>init</code>开头。但是编译器会把<code>init</code>开头的方法当成初始化方法，而初始化方法只能返回self，所以编译器会报错。</p>
+<p>这时候我们就要用到<code>setter = &lt;name&gt;</code>来防止编译器报错</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">@property(nonatomic, strong, getter=p_initBy, setter=setP_initBy:)NSString *initBy;</div><div class="line"></div><div class="line">//对关键字特殊说明</div><div class="line">@property(nonatomic, readwrite, copy, null_resettable) NSString *initBy;</div><div class="line">- (NSString *)initBy __attribute__((objc_method_family(none)));</div></pre></td></tr></table></figure>
+</li>
+<li><p>不常用的<code>nonnull</code>、<code>null_resettable</code>、<code>nullable</code></p>
+</li>
+</ul>
+<h2 id="ivar"><a href="#ivar" class="headerlink" title="ivar"></a>ivar</h2><p>说到ivar，就要涉及到内存管理的知识了</p>
+<p>还是那个例子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">@interface Person : NSObject</div><div class="line">&#123;</div><div class="line">    NSString *_firstName;</div><div class="line">  	NSInteger _age;</div><div class="line">&#125;</div><div class="line">@end</div><div class="line"></div><div class="line">  </div><div class="line">  </div><div class="line">  </div><div class="line">@implementation AClass</div><div class="line">- (instancetype)init&#123;</div><div class="line">    if (self = [super init])&#123;</div><div class="line">        _age = 1;</div><div class="line">    &#125;</div><div class="line">  return self;</div><div class="line">&#125;</div><div class="line">@end</div></pre></td></tr></table></figure>
+<p>这个Person类被编译之后变成一个描述(arm64)，Person占用24个字节，前8个字节是isa指针，中间八个字节是NSString指针，后八个字节是NSInteger的值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">| isa | NSString * _firstName | NSInteger _age |</div></pre></td></tr></table></figure>
+<p>调用<code>[[Person alloc]init]</code>的时候，会分配出24个字节的内存出来：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">| 0 | 0 | 0 |</div></pre></td></tr></table></figure>
+<p>然后往前8个字节放isa地址</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">//alloc完成后</div><div class="line">| isa | 0 | 0 |</div></pre></td></tr></table></figure>
+<p>然后调用alloc出来的init方法，把_age的值赋为1，因为_firstName没有初始化，所以还是0。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">//init之后</div><div class="line">| isa | 0 | 1 |</div></pre></td></tr></table></figure>
+<p><code>isa</code>指向了这个类的元类，也就是meta，meta里存储了父类/ivar结构/方法等内容，关于这个，在<a href="http://luoyangcan.top/2017/09/13/iOS%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86-ARC/" target="_blank" rel="external">另一篇文章中</a>可以看到。</p>
+<h2 id="getter与setter"><a href="#getter与setter" class="headerlink" title="getter与setter"></a>getter与setter</h2><p>前言说了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Objc对象通常会把所需要的数据保存为各种实例变量。</div><div class="line"></div><div class="line">实例变量一般通过&quot;存取方法&quot;(access method)访问。</div><div class="line"></div><div class="line">获取方法(getter)用于读取变量值</div><div class="line"></div><div class="line">设置方法(setter)用于写入变量值</div></pre></td></tr></table></figure>
+<p>这个观念，几乎都深深的刻在所有程序猿的脑海中。</p>
+<p>所以iOS开发者在使用<code>@property</code>带来的便利的同时，不能忘记这个重要的想法。</p>
+<p>我们所用到的<code>person.firstName = @&quot;Reus&quot;</code>其实是一个语法糖，等同于<code>[person setFirstName:@&quot;Reus&quot;]</code>。</p>
+<p>在过去我们需要声明对应的实例变量<code>@synthesize person = _person</code>。</p>
+<p>现在，一句<code>@property</code>已经可以做到以上所有的步骤了，并且善用<code>@property</code>对于内存管理来说，也是一件好事。</p>
+<h1 id="property的那些事"><a href="#property的那些事" class="headerlink" title="property的那些事"></a>property的那些事</h1><p>property在runtime中是<code>objc_property_t</code>，定义如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">typedef struct objc_property *objc_property_t;</div></pre></td></tr></table></figure>
+<p>而<code>objc_property</code>是一个结构体，包含了<code>name</code>和<code>attributes</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">struct property_t &#123;</div><div class="line">    const char *name;</div><div class="line">    const char *attributes;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>attributes本质是<code>objc_property_attribute_t</code>，定义了properrty的一些属性。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">typedef struct&#123;</div><div class="line">    const char *name;</div><div class="line"> 	const char *value;</div><div class="line">&#125; objc_property_attribute_t;</div></pre></td></tr></table></figure>
+<p>attributes的具体内容大概包括<code>类型</code>，<code>原子性</code>，<code>内存语义</code>，<code>对应的实例变量</code>。</p>
+<p>我们定义一个string的property<code>@property (nonatomic, copy) NSString *string;</code>，通过<code>property_getAttributes(property)</code>获取到attributes并打印，结果为<code>T@&quot;NSString&quot;,C,N,V_string</code></p>
+<p>T代表类型，C代表Copy，N代表nonatomic，V代表实例变量。</p>
+<h1 id="自动合成"><a href="#自动合成" class="headerlink" title="自动合成"></a>自动合成</h1><p>完成属性定义后，编译器会自动编写访问这些属性所需的方法，此过程叫“自动合成”(autosynthesis)。这个过程是在编译的时候由编译器执行。除了生成getter、setter之外，编译器还要向类中添加适当类型的实例变量，并且在属性名前面加下划线，以此作为实例变量的名字。</p>
+<p>可通过<code>@synthesize</code>语法来指定实例变量的名字。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">@implementation Person</div><div class="line">@synthesize firstName = _myFirstName;</div><div class="line">@synthesize lastName = _myLastName;</div><div class="line">@end</div></pre></td></tr></table></figure>
+<p><a href="http://weibo.com/luohanchenyilong/" target="_blank" rel="external">微博@iOS程序犭袁</a>曾反编译过相关代码，他大致生成了五个东西</p>
+<ul>
+<li><code>OBJC_IVAR_$类名$属性名称</code>：该属性的“偏移量”(offset)，这个偏移量是“硬编码” (hardcode)，表示该变量距离存放对象的内存区域的起始地址有多远。</li>
+<li>setter与getter方法对应的实现函数</li>
+<li><code>ivar_list</code>：成员变量列表</li>
+<li><code>method_list</code>：方法列表</li>
+<li><code>prop_list</code>：属性列表</li>
+</ul>
+<p>我们每次增加一个属性，系统都会在<code>ivar_list</code>中添加一个成员变量的描述，在<code>method_list</code>中增加setter与getter方法的描述，在<code>prop_list</code>中增加一个属性的描述，再计算偏移量，给出setter与getter方法对应的实现。在setter方法中从偏移量位置开始赋值，在getter方法中从偏移量开始取值，为了读取正确的字节数，系统偏移量的指针类型进行了强转。</p>
+<h1 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h1><p>一般情况下，我们应该多用@property，因为它可以进行某种程度的自动内存管理。但是我们在用@property这样方便的语法时，也千万不能忘记他的本质，这样才更有利于我们对于开发的理解。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://segmentfault.com/q/1010000000185056" target="_blank" rel="external">segmentfault</a></p>
+
+      
+    </div>
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------感谢您的阅读<i class="fa fa-paw"></i>本文已经结束-------------</div>
+    
+</div>
+    
+</div>
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"><i class="fa fa-tag"></i> iOS</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/24/PY语言基础/" rel="next" title="PY语言基础">
+                <i class="fa fa-chevron-left"></i> PY语言基础
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="uyan_frame"></div>
+    
+  </div>
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Rues" />
+          <p class="site-author-name" itemprop="name">Rues</p>
+           
+              <p class="site-description motion-element" itemprop="description">纸上得来终觉浅，绝知此事要躬行</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">标签</span>
+              
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/LuoYangCan/" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/1794015444/" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/Reus97" target="_blank" title="ZhiHu">
+                  
+                    <i class="fa fa-fw fa-ravelry"></i>
+                  
+                  ZhiHu
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.instagram.com/reus_97/" target="_blank" title="Instagram">
+                  
+                    <i class="fa fa-fw fa-instagram"></i>
+                  
+                  Instagram
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&email=k--m-L3q8v308PL90-X86-7y_v_98Pz_/" target="_blank" title="Mail">
+                  
+                    <i class="fa fa-fw fa-envelope-o"></i>
+                  
+                  Mail
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#关于-property"><span class="nav-number">2.</span> <span class="nav-text">关于@property</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#property属性关键字"><span class="nav-number">2.1.</span> <span class="nav-text">@property属性关键字</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ivar"><span class="nav-number">2.2.</span> <span class="nav-text">ivar</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#getter与setter"><span class="nav-number">2.3.</span> <span class="nav-text">getter与setter</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#property的那些事"><span class="nav-number">3.</span> <span class="nav-text">property的那些事</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#自动合成"><span class="nav-number">4.</span> <span class="nav-text">自动合成</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#写在最后"><span class="nav-number">5.</span> <span class="nav-text">写在最后</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">5.1.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rues</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="powered-by">
+<i class="fa fa-user-md"></i><span id="busuanzi_container_site_uv">
+  本站访客数:<span id="busuanzi_value_site_uv"></span>
+</span>
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+
+    
+      <!-- UY BEGIN -->
+      <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2140142"></script>
+      <!-- UY END -->
+    
+  
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+
+  
+
+  
+
+
+<script type="text/javascript" color="128,138,135" opacity='0.9' zIndex="-2" count="60" src="//cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>
