@@ -340,7 +340,7 @@
     <link href="http://yoursite.com/2017/09/13/iOS_ARC/"/>
     <id>http://yoursite.com/2017/09/13/iOS_ARC/</id>
     <published>2017-09-13T08:31:46.000Z</published>
-    <updated>2017-10-23T08:47:00.000Z</updated>
+    <updated>2017-10-23T08:52:51.000Z</updated>
     
     <content type="html"><![CDATA[<p>众所周知，Apple从OS X Lion和iOS 5引入了新的内存管理功能——自动引用计数(ARC)功能。这些功能对于我们开发者说也是需要去了解的一个重要知识点。</p>
 <h1 id="自动引用计数"><a href="#自动引用计数" class="headerlink" title="自动引用计数"></a>自动引用计数</h1><hr>
