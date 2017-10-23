@@ -340,7 +340,7 @@
     <link href="http://yoursite.com/2017/09/13/iOS_ARC/"/>
     <id>http://yoursite.com/2017/09/13/iOS_ARC/</id>
     <published>2017-09-13T08:31:46.000Z</published>
-    <updated>2017-10-23T08:52:51.000Z</updated>
+    <updated>2017-10-23T08:59:00.000Z</updated>
     
     <content type="html"><![CDATA[<p>众所周知，Apple从OS X Lion和iOS 5引入了新的内存管理功能——自动引用计数(ARC)功能。这些功能对于我们开发者说也是需要去了解的一个重要知识点。</p>
 <h1 id="自动引用计数"><a href="#自动引用计数" class="headerlink" title="自动引用计数"></a>自动引用计数</h1><hr>
@@ -633,7 +633,6 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">id __weak obj1 = obj0;</div><div class="line">NSLog(@&quot;class = %@&quot;,[obj class]);</div><div class="line">//等价于</div><div class="line">id __weak obj1 = obj0;</div><div class="line">id __autoreleasing tmp = obj1;</div><div class="line">NSLog(@&quot;class = %@&quot;,[tmp class]);</div></pre></td></tr></table></figure>
 <p>因为__weak修饰符支持有对象的弱引用，在访问引用对象的过程中，该对象有可能被废弃。把它注册到autoreleasepool中后，在@autoreleasepool块结束之前都能确保该对象存在。</p>
 <p>这里要特别说明的是，id的指针或者对象的指针在没有显示指定时会被附上__autoreleasing修饰符。</p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://yulingtianxia.com/blog/2015/12/06/The-Principle-of-Refenrence-Counting/" target="_blank" rel="external">玉令天下的博客</a></p>
 ]]></content>
     
     <summary type="html">
