@@ -651,10 +651,10 @@
   
   <entry>
     <title>Objc的消息发送机制与Runtime (1)</title>
-    <link href="http://yoursite.com/2017/09/02/%E5%85%B3%E4%BA%8Eruntime/"/>
-    <id>http://yoursite.com/2017/09/02/关于runtime/</id>
+    <link href="http://yoursite.com/2017/09/02/AboutRuntime/"/>
+    <id>http://yoursite.com/2017/09/02/AboutRuntime/</id>
     <published>2017-09-02T04:19:55.000Z</published>
-    <updated>2017-09-08T14:02:07.000Z</updated>
+    <updated>2017-10-25T13:48:51.000Z</updated>
     
     <content type="html"><![CDATA[<p>曾觉得iOS很好学，也想着学一段时间就可以精通这门语言，但是随着开发的越来越深入，才能意识到，iOS绝不像外表这样简单，他的内涵真是太深了，感觉自己真是一个什么也不知道的Objc小白。</p>
 <p>Runtime和消息发送机制是理解iOS运行过程避不开的一道坎，虽然平时很少用，但是却是我们Objc程序员需要了解的。</p>
@@ -720,79 +720,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">//objc-runtime-new.h</div><div class="line">struct class_data_bits_t &#123;</div><div class="line"></div><div class="line">	// Values are the FAST_ flags above.</div><div class="line">	uintptr_t bits;</div><div class="line">	class_rw_t* data() &#123;</div><div class="line">	   return (class_rw_t *)(bits &amp; FAST_DATA_MASK);</div><div class="line">	&#125;</div><div class="line">... 省略其他方法</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>联系前面的<code>Class</code>，我们可以注意到<code>objc_class</code>的<code>data</code>方法返回的是<code>class_data_bits_t</code>的<code>data</code>方法，最终返回的是<code>class_rw_t</code>，有好几层。</p>
 <p>在<code>class_data_bits_t</code>里又包含了一个<code>bits</code>，这个指针跟不同的<code>FAST_</code>前缀的掩码做按位与操作，可获得不同的数据。<code>bits</code>在内存中每个位的含义有三种排列顺序：</p>
-<p>32位：</p>
-<table>
-<thead>
-<tr>
-<th>0</th>
-<th>1</th>
-<th>2-31</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>FAST_IS_SWIFT</td>
-<td>FAST_HAS_DEFAULT_RR</td>
-<td>FAST_DATA_MASK</td>
-</tr>
-</tbody>
-</table>
-<p>64位兼容版：</p>
-<table>
-<thead>
-<tr>
-<th>0</th>
-<th>1</th>
-<th>2</th>
-<th>3-46</th>
-<th>47-63</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>FAST_IS_SWIFT</td>
-<td>FAST_HAS_DEFAULT_RR</td>
-<td>FAST_REQUIRES_RAW_ISA</td>
-<td>FAST_DATA_MASK</td>
-<td>空闲</td>
-</tr>
-</tbody>
-</table>
-<p>64位不兼容：</p>
-<table>
-<thead>
-<tr>
-<th>0</th>
-<th>1</th>
-<th>2</th>
-<th>3-46</th>
-<th>47</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>FAST_IS_WIFT</td>
-<td>FAST_REQUIRES_RAW_ISA</td>
-<td>FAST_HAS_CXXDTOR</td>
-<td>FAST_DATA_MASK</td>
-<td>FAST_HAS_CXX_CTOR</td>
-</tr>
-<tr>
-<td>48</td>
-<td>49</td>
-<td>50</td>
-<td>51</td>
-<td>52-63</td>
-</tr>
-<tr>
-<td>FAST_HAS_DEFAULT_AWZ</td>
-<td>FAST_HAS_DEFAULT_RR</td>
-<td>FAST_ALLOC</td>
-<td>FAST_SHIFTED_SIZE_SHIFT</td>
-<td>空闲</td>
-</tr>
-</tbody>
-</table>
+<p><img src="/img/class_data_bits_t.png" alt="class_data_bits_t"></p>
 <p>64位不兼容中每个宏对应含义如下:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">// class is a Swift class</div><div class="line">#define FAST_IS_SWIFT           (1UL&lt;&lt;0)</div><div class="line">// class&apos;s instances requires raw isa</div><div class="line">#define FAST_REQUIRES_RAW_ISA   (1UL&lt;&lt;1)</div><div class="line">// class or superclass has .cxx_destruct implementation</div><div class="line">//   This bit is aligned with isa_t-&gt;hasCxxDtor to save an instruction.</div><div class="line">#define FAST_HAS_CXX_DTOR       (1UL&lt;&lt;2)</div><div class="line">// data pointer</div><div class="line">#define FAST_DATA_MASK          0x00007ffffffffff8UL</div><div class="line">// class or superclass has .cxx_construct implementation</div><div class="line">#define FAST_HAS_CXX_CTOR       (1UL&lt;&lt;47)</div><div class="line">// class or superclass has default alloc/allocWithZone: implementation</div><div class="line">// Note this is is stored in the metaclass.</div><div class="line">#define FAST_HAS_DEFAULT_AWZ    (1UL&lt;&lt;48)</div><div class="line">// class or superclass has default retain/release/autorelease/retainCount/</div><div class="line">//   _tryRetain/_isDeallocating/retainWeakReference/allowsWeakReference</div><div class="line">#define FAST_HAS_DEFAULT_RR     (1UL&lt;&lt;49)</div><div class="line">// summary bit for fast alloc path: !hasCxxCtor and </div><div class="line">//   !instancesRequireRawIsa and instanceSize fits into shiftedSize</div><div class="line">#define FAST_ALLOC              (1UL&lt;&lt;50)</div><div class="line">// instance size in units of 16 bytes</div><div class="line">//   or 0 if the instance size is too big in this field</div><div class="line">//   This field must be LAST</div><div class="line">#define FAST_SHIFTED_SIZE_SHIFT 51</div></pre></td></tr></table></figure>
 <p>在这里除了<code>FAST_DATA_MASK</code>是用一段空间储存数据外，其他宏都是用1bit存bool值。</p>
