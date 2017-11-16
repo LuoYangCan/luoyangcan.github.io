@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-10-19T08:36:40.000Z</updated>
+  <updated>2017-11-16T12:09:25.015Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,53 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>探寻 iPhone X 适配</title>
+    <link href="http://yoursite.com/2017/11/16/about-iPhoneX/"/>
+    <id>http://yoursite.com/2017/11/16/about-iPhoneX/</id>
+    <published>2017-11-16T11:08:01.000Z</published>
+    <updated>2017-11-16T12:09:25.015Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>iPhone X 出来也有一段时间了，苹果官方和各位大神也对于 iPhone X 的刘海打理给出了很多方法。</p>
+<p>我因个人项目在 iPhone X 的环境下运行时界面千奇百怪 (估计是代码能力太菜 - -)</p>
+<p>所以也打算蹭一波热度，把自己对于 iPhone X 适配的一点小小的经历分享出来</p>
+<h1 id="关于iPhone-X"><a href="#关于iPhone-X" class="headerlink" title="关于iPhone X"></a>关于iPhone X</h1><h2 id="一个有刘海的屏幕"><a href="#一个有刘海的屏幕" class="headerlink" title="一个有刘海的屏幕"></a>一个有刘海的屏幕</h2><p>iPhone X 的机型的屏幕尺寸达到了 5.8英寸，而机子的宽度和 iPhone 8 一致，在垂直方向上却多出了 145pt，这意味着可以显示的界面又一次变“长”了。</p>
+<p>值得注意的是 iPhone X 的顶部是有圆角和刘海的，所以我们在设计页面的时候还需要避免内容被顶部的圆角还有刘海挡住。</p>
+<p><img src="/img/圆角遮挡.png" alt="CGRect(0,0,200,200)"></p>
+<h2 id="全新的界面理念"><a href="#全新的界面理念" class="headerlink" title="全新的界面理念"></a>全新的界面理念</h2><h3 id="Status-Bar"><a href="#Status-Bar" class="headerlink" title="Status Bar"></a>Status Bar</h3><p>iPhone X 的 Status Bar 高度比之前的 20pt 高了 22pt。也就是说现在的高度为 44pt。(还好我没把之前的项目写死在 20pt，不然估计现在心态崩了)</p>
+<h3 id="屏幕底部"><a href="#屏幕底部" class="headerlink" title="屏幕底部"></a>屏幕底部</h3><p>自从 iPhone X 没有了 Home 键，苹果在底部划了一个 34pt 高的区域( Home Indicator )来预留给底部手势操作</p>
+<p>如果我们的底部是 TabBar，那 Home Indicator 会延展你的 barTintColor，如果没有的话就会显示为透明的。</p>
+<h3 id="SafeArea"><a href="#SafeArea" class="headerlink" title="SafeArea"></a>SafeArea</h3><p>iOS 11 废弃了 iOS 7 之后出现的 topLayoutGuide/bottomLayoutGuide，而用 SafeLayoutGuide 取而代之。</p>
+<p>我们的 UI 都应该在 SafeArea 之内，以便不被各种 bar(NavigationBar、ToolBar、Tabbar、StatusBar)遮挡</p>
+<p><img src="/img/SafeArea.png" alt="SafeArea"></p>
+<p>若我们使用 AutoLayout，并开启了 safeAreaLayoutGuide，布局会自动加上 safeLayoutGuide，也就是自动将我们的布局限制在 SafeArea 之中。当然，我们也可以使用 self.additionalSafeAreaInsets 来增加 Guide 的区域。</p>
+<p>在我们用 Masonry 进行布局时，亦需要进行适配，我们可以把</p>
+<p><code>make.bottom.equalTo(self.view.mas_bottom;)</code></p>
+<p>和</p>
+<p><code>make.top.equalTo(self.view.mas_top);</code></p>
+<p>改为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">if (@available (iOS 11.0, *))&#123;</div><div class="line">  make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);</div><div class="line">  make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideTop);</div><div class="line">&#125;else &#123;</div><div class="line">  make.bottom.equalTo(self.view.mas_bottom);</div><div class="line">  make.bottom.equalTo(self.view.mas_top);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>图片的 Aspect Ratio 的表现也不同了</p>
+<p>因为刘海两侧的区域都能响应手势，所以最好不要和自己界面的手势发生冲突。</p>
+<p>如果我们使用 Images.xcassets 文件夹下的 LaunchImage 作为启动图，就必须单独制作一张 1125px × 2436px (375pt × 812pt @3x) 图片，不然沿用 iPhone 7 启动图尺寸会出现上下有黑色区域的情况。</p>
+<p>如果我们以一个界面启动，那我们也需要重新做一张图来避免图片因为屏幕大小改变而拉伸过度。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://tech.meituan.com/iPhoneX%E5%88%98%E6%B5%B7%E6%89%93%E7%90%86%E6%8C%87%E5%8C%97.html" target="_blank" rel="external">美团点评技术团队 - iPhone X 刘海打理指北</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;iPhone X 出来也有一段时间了，苹果官方和各位大神也对于 iPhone X 的刘海打理给出了很多方法。&lt;/p&gt;
+&lt;p&gt;我因个人项目在 
+    
+    </summary>
+    
+    
+      <category term="iOS" scheme="http://yoursite.com/tags/iOS/"/>
+    
+      <category term="iPhoneX" scheme="http://yoursite.com/tags/iPhoneX/"/>
+    
+  </entry>
   
   <entry>
     <title>关于@property</title>
@@ -118,8 +165,8 @@
   
   <entry>
     <title>PY语言基础</title>
-    <link href="http://yoursite.com/2017/09/24/PY%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/"/>
-    <id>http://yoursite.com/2017/09/24/PY语言基础/</id>
+    <link href="http://yoursite.com/2017/09/24/About%20Python/"/>
+    <id>http://yoursite.com/2017/09/24/About Python/</id>
     <published>2017-09-24T15:04:40.000Z</published>
     <updated>2017-09-28T13:39:48.000Z</updated>
     
@@ -275,58 +322,57 @@
   
   <entry>
     <title>奇特的autorelease</title>
-    <link href="http://yoursite.com/2017/09/17/%E5%A5%87%E7%89%B9%E7%9A%84autorelease/"/>
-    <id>http://yoursite.com/2017/09/17/奇特的autorelease/</id>
+    <link href="http://yoursite.com/2017/09/17/About%20autorelease/"/>
+    <id>http://yoursite.com/2017/09/17/About autorelease/</id>
     <published>2017-09-17T07:06:48.000Z</published>
-    <updated>2017-09-17T12:32:39.000Z</updated>
+    <updated>2017-11-16T12:29:58.696Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h1><p>一说到Objective-C的内存管理，就不得不提到Autorelease。</p>
-<p>顾名思义，autorelease就是自动释放，这看起来很ARC，但其实它更像C语言中的局部变量特性。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> a;</div><div class="line">&#125;</div><div class="line"><span class="comment">/*</span></div><div class="line"><span class="comment">	因超出变量作用域</span></div><div class="line"><span class="comment">	局部变量int a 被废弃。</span></div><div class="line"><span class="comment">*/</span></div></pre></td></tr></table></figure>
-<p>一般来说，autorelease会像C语言的局部变量那样对待对象的实例，一旦超出作用域，对象实例的release方法就被调用。还有一点就是编程人员可以设定变量的作用域。</p>
+    <content type="html"><![CDATA[<h1 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h1><p>一说到 Objective-C 的内存管理，就不得不提到 Autorelease。</p>
+<p>顾名思义，autorelease 就是自动释放，这看起来很 ARC，但其实它更像 C语言 中的局部变量特性。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> a;</div><div class="line">&#125;</div><div class="line"><span class="comment">/*</span></div><div class="line"><span class="comment">	因超出变量作用域</span></div><div class="line"><span class="comment">	局部变量 int a 被废弃。</span></div><div class="line"><span class="comment">*/</span></div></pre></td></tr></table></figure>
+<p>一般来说，autorelease 会像 C语言 的局部变量那样对待对象的实例，一旦超出作用域，对象实例的 release 方法就被调用。还有一点就是编程人员可以设定变量的作用域。</p>
 <p>使用方法大致如下：</p>
 <ul>
-<li>生成并持有NSAutoreleasePool对象</li>
-<li>调用已分配对象的autorelease实例方法</li>
-<li>废弃NSAutoreleasePool对象</li>
+<li>生成并持有 NSAutoreleasePool 对象</li>
+<li>调用已分配对象的 autorelease 实例方法</li>
+<li>废弃 NSAutoreleasePool 对象</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">//表示如下</div><div class="line">NSAutoreleasePool *pool = [[[NSAutoreleasePool alloc]init]autorealease];</div><div class="line">id obj = [[NSObject alloc] init];</div><div class="line">[pool drain];</div><div class="line">//相当于[obj release]对象被释放</div></pre></td></tr></table></figure>
-<p>但是，为什么说是一般情况下autorelease像C语言的局部变量一样呢。</p>
-<p>这就涉及到autorelease的原理机制了</p>
-<h1 id="Autorelease"><a href="#Autorelease" class="headerlink" title="Autorelease"></a>Autorelease</h1><hr>
-<p>其实在没有人工添加Autoreleasepool的情况下，Autorealease对象是在当前的<code>runloop</code>结束时释放的，而它能释放的原因也是系统在每个runloop中都加入了自动释放池push和pop。</p>
+<p>但是，为什么说是一般情况下 autorelease 像 C语言 的局部变量一样呢。</p>
+<p>这就涉及到 autorelease 的原理机制了</p>
+<h1 id="Autorelease"><a href="#Autorelease" class="headerlink" title="Autorelease"></a>Autorelease</h1><p>其实在没有人工添加 Autoreleasepool 的情况下，Autorealease 对象是在当前的<code>runloop</code>结束时释放的，而它能释放的原因也是系统在每个 runloop 中都加入了自动释放池 push 和 pop。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">__weak id reference = nil;</div><div class="line">-(void)viewdidLoad&#123;</div><div class="line">    [super viewDidLoad];</div><div class="line">  NSString *str = [NSString string WithFormat:@&quot;Reus&quot;];</div><div class="line">  //str是一个autorelease对象，设置一个weak的引用来观察它</div><div class="line">  reference = str;</div><div class="line">&#125;</div><div class="line">- (void) viewWillAppear:(BOOL)animated&#123;</div><div class="line">    [super viewWillAppear:animated];</div><div class="line">  NSLog(@&quot;%@&quot;,reference); //Console: Reus</div><div class="line">&#125;</div><div class="line">- (void)viewDidAppear:(BOOL)animated&#123;</div><div class="line">    [super viewDidAppear:animated];</div><div class="line">  NSlog(@&quot;%@&quot;,reference);//Console: (null)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>因为这个vc在loadView之后就add到了window上，所以<code>viewDidLoad</code>和<code>viewWillAppear</code>是在同一个runloop调用的，因此在<code>viewWillAppear</code>中，这个autorelease的变量依然有值。</p>
+<p>因为这个 vc 在 loadView 之后就 add 到了 window 上，所以<code>viewDidLoad</code>和<code>viewWillAppear</code>是在同一个 runloop 调用的，因此在<code>viewWillAppear</code>中，这个 autorelease 的变量依然有值。</p>
 <p>当然我们也可以手动干预</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">-(void)viewDidLoad&#123;</div><div class="line">    [super viewDidLoad];</div><div class="line">  @autoreleasepool &#123;</div><div class="line">      NSString *str = [NSString stringWithFormat:@&quot;Reus&quot;];</div><div class="line">  &#125;</div><div class="line">  NSLog(@&quot;%@&quot;,str); //Console: (null)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h2 id="AutoreleasePoolPage"><a href="#AutoreleasePoolPage" class="headerlink" title="AutoreleasePoolPage"></a>AutoreleasePoolPage</h2><p>ARC下，我们用<code>@autoreleasepool{}</code>来使用一个AutoreleasePool，随后编译器会转化为这样</p>
+<h2 id="AutoreleasePoolPage"><a href="#AutoreleasePoolPage" class="headerlink" title="AutoreleasePoolPage"></a>AutoreleasePoolPage</h2><p>ARC 下，我们用<code>@autoreleasepool{}</code>来使用一个 AutoreleasePool，随后编译器会转化为这样</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">void *context = objc_autoreleasePoolPush();</div><div class="line">//&#123;&#125;中的代码</div><div class="line">objc_autoreleasePoolPop(context);</div></pre></td></tr></table></figure>
 <p>这两个函数都是对<code>AutoreleasePoolPage</code>的简单封装，所以自动释放机制核心在于这个类.</p>
-<p><code>AutoreleasePoolPage</code>是一个C++实现的类</p>
+<p><code>AutoreleasePoolPage</code>是一个 C++ 实现的类</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//AutoreleasePoolPage</span></div><div class="line"><span class="keyword">magic_t</span> <span class="keyword">const</span> magic;</div><div class="line">id *next;</div><div class="line"><span class="keyword">pthread_t</span> <span class="keyword">const</span> thread;</div><div class="line">AutoreleasePoolPage * <span class="keyword">const</span> parent;</div><div class="line">AutoreleasePoolPage *child;</div><div class="line"><span class="keyword">uint32_t</span> <span class="keyword">const</span> depth;</div><div class="line"><span class="keyword">uint32_t</span> hiwat;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AutoreleasePoolPage</span>&#123;</span></div><div class="line">	<span class="function"><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">void</span> *<span class="title">push</span><span class="params">()</span> <span class="comment">//相当于生成或持有NSAutoreleasePool对象；</span></span></div><div class="line"><span class="function">	<span class="keyword">static</span> <span class="keyword">inline</span> <span class="keyword">void</span> *<span class="title">pop</span><span class="params">(<span class="keyword">void</span> *token)</span> <span class="comment">//相当于飞起NSAutoreleasePool类对象</span></span></div><div class="line"><span class="function">	id *<span class="title">add</span><span class="params">(id obj)</span> <span class="comment">//将对象追加到内部数组中</span></span></div><div class="line"><span class="function">    <span class="keyword">void</span> <span class="title">releaseAll</span><span class="params">()</span><span class="comment">//调用内部数组中对象的release实例方法</span></span></div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> *<span class="title">objc_autoreleasePoolPush</span><span class="params">(<span class="keyword">void</span>)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">return</span> AutoreleasePoolPage::push();</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">objc_autoreleasepoolPop</span><span class="params">(<span class="keyword">void</span> *ctxt)</span></span>&#123;</div><div class="line">    AutoreleasePoolPage::pop(ctxt);</div><div class="line">&#125;</div><div class="line"><span class="function">id *<span class="title">objc_autorelease</span><span class="params">(id obj)</span></span>&#123;</div><div class="line">    <span class="keyword">return</span> AutoreleasePoolPage::autorelease(obj);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <ul>
-<li>AutoreleasePool并没有单独的结构，是由若干个AutoreleasePoolPage以<code>双向链表</code>的形式组合而成</li>
-<li>AutoreleasePool是按线程一一对应的(thread指针指向当前线程)</li>
-<li>AutoreleasePoolPage每个对象会开辟4096字节内存(虚拟内存一页的大小)，除了上面实例变量所占空间。剩下的全是用来存储autorelease对象的地址。</li>
-<li>上面的<code>id *next</code>指针作为游标指向栈顶新Add进来的autorelease对象的下一个位置</li>
-<li>一个AutorelasepoolPage的空间被占满时，会新建一个AutoreleasePoolPage对象，连接链表，后来的autorelease对象在新的page加入</li>
+<li>AutoreleasePool 并没有单独的结构，是由若干个 AutoreleasePoolPage 以<code>双向链表</code>的形式组合而成</li>
+<li>AutoreleasePool 是按线程一一对应的(thread指针指向当前线程)</li>
+<li>AutoreleasePoolPage 每个对象会开辟4096字节内存(虚拟内存一页的大小)，除了上面实例变量所占空间。剩下的全是用来存储 autorelease 对象的地址。</li>
+<li>上面的<code>id *next</code>指针作为游标指向栈顶新Add进来的 autorelease 对象的下一个位置</li>
+<li>一个 AutorelasepoolPage 的空间被占满时，会新建一个 AutoreleasePoolPage 对象，连接链表，后来的 autorelease 对象在新的 page 加入 </li>
 </ul>
-<p>向一个对象发送<code>-autorelease</code>消息，就是将这个对象加入到当前AutoreleasePoolPage的栈顶next指针所指向的位置</p>
+<p>向一个对象发送<code>-autorelease</code>消息，就是将这个对象加入到当前 AutoreleasePoolPage 的栈顶 next 指针所指向的位置</p>
 <h2 id="释放"><a href="#释放" class="headerlink" title="释放"></a>释放</h2><p>每当进行一次<code>objc_autoreleasePoolPush</code>时，runtime向当前的AutoreleasePoolPage中add进一个<code>哨兵对象</code>，值为0，<code>objc_autoreleasePoolPush</code>的返回值正是这个哨兵对象的地址，被<code>objc_autoreleasePoolPop(哨兵对象)</code>作为入参。</p>
-<p>所以Runtime会</p>
+<p>所以 Runtime 会</p>
 <ul>
-<li>根据传入的哨兵对象地址找到哨兵对象所处的page</li>
-<li>在当前page中将晚于哨兵对象插入的所有autorelease发送一次<code>-release</code>消息，并向回移动<code>next</code>到正确位置</li>
+<li>根据传入的哨兵对象地址找到哨兵对象所处的 page</li>
+<li>在当前 page 中将晚于哨兵对象插入的所有 autorelease 发送一次<code>-release</code>消息，并向回移动<code>next</code>到正确位置</li>
 </ul>
-<h3 id="嵌套AutoreleasePool"><a href="#嵌套AutoreleasePool" class="headerlink" title="嵌套AutoreleasePool"></a>嵌套AutoreleasePool</h3><p>因为上面也讲到了，pop的时候总是会释放到上次的push位置为止，多层嵌套也就是多个哨兵对象，一层一层的释放，互不影响。</p>
+<h3 id="嵌套AutoreleasePool"><a href="#嵌套AutoreleasePool" class="headerlink" title="嵌套AutoreleasePool"></a>嵌套AutoreleasePool</h3><p>因为上面也讲到了，pop 的时候总是会释放到上次的 push 位置为止，多层嵌套也就是多个哨兵对象，一层一层的释放，互不影响。</p>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><hr>
 <p><a href="http://blog.sunnyxx.com" target="_blank" rel="external">sunnyxx的博客</a></p>
 ]]></content>
     
     <summary type="html">
     
-      &lt;h1 id=&quot;引言&quot;&gt;&lt;a href=&quot;#引言&quot; class=&quot;headerlink&quot; title=&quot;引言&quot;&gt;&lt;/a&gt;引言&lt;/h1&gt;&lt;p&gt;一说到Objective-C的内存管理，就不得不提到Autorelease。&lt;/p&gt;
-&lt;p&gt;顾名思义，autorelease就是自动释放，这
+      &lt;h1 id=&quot;引言&quot;&gt;&lt;a href=&quot;#引言&quot; class=&quot;headerlink&quot; title=&quot;引言&quot;&gt;&lt;/a&gt;引言&lt;/h1&gt;&lt;p&gt;一说到 Objective-C 的内存管理，就不得不提到 Autorelease。&lt;/p&gt;
+&lt;p&gt;顾名思义，autorelease 就是自动
     
     </summary>
     
@@ -340,7 +386,7 @@
     <link href="http://yoursite.com/2017/09/13/iOS_ARC/"/>
     <id>http://yoursite.com/2017/09/13/iOS_ARC/</id>
     <published>2017-09-13T08:31:46.000Z</published>
-    <updated>2017-10-23T08:59:00.000Z</updated>
+    <updated>2017-11-06T06:40:59.000Z</updated>
     
     <content type="html"><![CDATA[<p>众所周知，Apple从OS X Lion和iOS 5引入了新的内存管理功能——自动引用计数(ARC)功能。这些功能对于我们开发者说也是需要去了解的一个重要知识点。</p>
 <h1 id="自动引用计数"><a href="#自动引用计数" class="headerlink" title="自动引用计数"></a>自动引用计数</h1><hr>
@@ -760,8 +806,8 @@
   
   <entry>
     <title>关于读书</title>
-    <link href="http://yoursite.com/2017/08/24/%E5%85%B3%E4%BA%8E%E8%AF%BB%E4%B9%A6/"/>
-    <id>http://yoursite.com/2017/08/24/关于读书/</id>
+    <link href="http://yoursite.com/2017/08/24/Reading/"/>
+    <id>http://yoursite.com/2017/08/24/Reading/</id>
     <published>2017-08-23T16:39:37.000Z</published>
     <updated>2017-08-25T09:53:53.000Z</updated>
     
@@ -958,22 +1004,22 @@ NSLog(@&quot;iOS10 收到本地通知:{\\\\nbody:%@，\\\\ntitle:%@,\\\\nsubtitl
   </entry>
   
   <entry>
-    <title>关于iBeacon</title>
-    <link href="http://yoursite.com/2017/08/06/%E5%85%B3%E4%BA%8EiBeacon/"/>
-    <id>http://yoursite.com/2017/08/06/关于iBeacon/</id>
+    <title>关于 iBeacon</title>
+    <link href="http://yoursite.com/2017/08/06/About%20iBeacon/"/>
+    <id>http://yoursite.com/2017/08/06/About iBeacon/</id>
     <published>2017-08-06T10:54:02.000Z</published>
-    <updated>2017-08-11T06:35:29.000Z</updated>
+    <updated>2017-11-16T12:33:04.443Z</updated>
     
-    <content type="html"><![CDATA[<p>因为最近在做的项目是关于蓝牙连接的项目，前辈在做这个项目的时候，除了用ReactiveCocoa以外，还使用了iBeacon技术。</p>
+    <content type="html"><![CDATA[<p>因为最近在做的项目是关于蓝牙连接的项目，前辈在做这个项目的时候，除了用 ReactiveCocoa 以外，还使用了 iBeacon 技术。</p>
 <p>对于从未接触蓝牙这块的我，感觉打开了新世界大门。</p>
-<h2 id="iBeacon"><a href="#iBeacon" class="headerlink" title="iBeacon"></a>iBeacon</h2><p>iBeacon是基于地理位置的微定位技术，使用的是Apple提供的CoreLocation（BLE使用的是CoreBluetooth）。根据名字，应该很清楚，使用iBeacon是需要开启定位的，而使用BLE只需要开启蓝牙。  </p>
+<h2 id="iBeacon"><a href="#iBeacon" class="headerlink" title="iBeacon"></a>iBeacon</h2><p>iBeacon 是基于地理位置的微定位技术，使用的是 Apple 提供的 CoreLocation（BLE 使用的是 CoreBluetooth）。根据名字，应该很清楚，使用 iBeacon 是需要开启定位的，而使用 BLE 只需要开启蓝牙。  </p>
 <h2 id="相关术语"><a href="#相关术语" class="headerlink" title="相关术语"></a>相关术语</h2><ul>
-<li>UUID：UUID是Universally UniqueIdentifier（通用唯一标识符）的缩写，实际上是一个随机字符串。在iBeacon中，UUID通常用于表示顶层标识，如果生成一个UUID给iBeacon设备，那么一个设备检测到你的iBeacon时，它就知道它是在和哪个iBeacon通信了。</li>
-<li>major：用于将相关的beacon标识为一组。</li>
-<li>minor：用于标识特定的beacon设备，每个设备都有唯一的minor编号。</li>
+<li>UUID：UUID是 Universally UniqueIdentifier（通用唯一标识符）的缩写，实际上是一个随机字符串。在iBeacon 中，UUID 通常用于表示顶层标识，如果生成一个 UUID 给 iBeacon 设备，那么一个设备检测到你的 iBeacon 时，它就知道它是在和哪个 iBeacon 通信了。</li>
+<li>major：用于将相关的 beacon 标识为一组。</li>
+<li>minor：用于标识特定的 beacon 设备，每个设备都有唯一的 minor 编号。</li>
 </ul>
 <p>下面用一个商场的例子来解释这三个术语</p>
-<p>你用有特定UUID的设备与商场里的UUID设备进行通信，一个商店中的所有设备都会被分配到相同的major编号，应用程序根据major编号，就可以知道你大概在哪个商店。而每个商店的每个beacon设备都有唯一的minor编号，那程序通过这个minor编号，就知道你位于商店的某一个位置</p>
+<p>你用有特定 UUID 的设备与商场里的 UUID 设备进行通信，一个商店中的所有设备都会被分配到相同的 major 编号，应用程序根据 major 编号，就可以知道你大概在哪个商店。而每个商店的每个 beacon 设备都有唯一的 minor 编号，那程序通过这个 minor 编号，就知道你位于商店的某一个位置</p>
 <h2 id="iBeacon属性"><a href="#iBeacon属性" class="headerlink" title="iBeacon属性"></a>iBeacon属性</h2><p>iOS中的ibeacon通信数据有</p>
 <ul>
 <li>（NSUUID）ProximityUUID</li>
@@ -985,53 +1031,53 @@ NSLog(@&quot;iOS10 收到本地通知:{\\\\nbody:%@，\\\\ntitle:%@,\\\\nsubtitl
 </ul>
 <p>分别含义是：</p>
 <ul>
-<li>proximityUUID、major、minor表示ibeacon的uuid、major、minor</li>
-<li>proximity是Apple提供的几个表示距离的属性<ul>
+<li>proximityUUID、major、minor 表示 ibeacon 的 uuid、major、minor</li>
+<li>proximity 是 Apple 提供的几个表示距离的属性<ul>
 <li>CLProximityUnknown-没有数据</li>
 <li>CLProximityImmediate-十厘米以内</li>
 <li>CLProximityNear-一米以内</li>
 <li>CLProximityFar-一米以外</li>
 </ul>
 </li>
-<li>accuracy表示大约距离</li>
-<li>RSSI表示信号强度</li>
+<li>accuracy 表示大约距离</li>
+<li>RSSI 表示信号强度</li>
 </ul>
-<p>根据属性我们可以看到，Apple的判断方式很有趣，它并不去仔细推断距离，而是使用贴近（Immediate）、一米以内（Near）、一米以外（Far）三种状态。距离在1m以内时，RSSI值基本上成比例减少，而在1米以上时，由于各种因素，RSSI是上下波动状态，所以无法推断距离，判定为Far</p>
+<p>根据属性我们可以看到，Apple 的判断方式很有趣，它并不去仔细推断距离，而是使用贴近（Immediate）、一米以内（Near）、一米以外（Far）三种状态。距离在 1m 以内时，RSSI 值基本上成比例减少，而在1米以上时，由于各种因素，RSSI 是上下波动状态，所以无法推断距离，判定为 Far</p>
 <h2 id="iBeacon方法"><a href="#iBeacon方法" class="headerlink" title="iBeacon方法"></a>iBeacon方法</h2><p>Apple在iOS4中增加了地理围栏API，可以用来在设备进出某个区域时获得通知，包括了：</p>
 <ul>
 <li>-startMonitoringForRegion:</li>
 <li>-locationManager:didEnterRegion:</li>
 <li>-locationManager:didExitRegion:</li>
 </ul>
-<p>这种检测iBeacon的方式叫做<strong>monitoring</strong>。</p>
-<p>用这几种方法可以使程序在后台运行时检测iBeacon，但是只能同时检测20个Region，且不能推测设备与Beacon的距离。</p>
-<p>除了使用地理围栏API，Apple还在iOS7中新增加了iBeacon的专用检测方式，也就是<strong>ranging</strong></p>
-<p>通过<strong>CLLocationManager</strong>的方法</p>
+<p>这种检测 iBeacon 的方式叫做 <strong>monitoring</strong>。</p>
+<p>用这几种方法可以使程序在后台运行时检测 iBeacon ，但是只能同时检测 20 个 Region，且不能推测设备与 Beacon 的距离。</p>
+<p>除了使用地理围栏 API，Apple 还在 iOS7 中新增加了 iBeacon 的专用检测方式，也就是 <strong>ranging</strong></p>
+<p>通过 <strong>CLLocationManager</strong> 的方法</p>
 <ul>
-<li><code>-startRangingBeaconsInRegion:</code> 检测特定iBeacon。</li>
+<li><code>-startRangingBeaconsInRegion:</code> 检测特定 iBeacon。</li>
 </ul>
-<p>当检测到beacon的时候，<strong>CLLocationManager</strong>的delegate </p>
+<p>当检测到 beacon 的时候，<strong>CLLocationManager</strong> 的 delegate </p>
 <ul>
-<li><code>-locationManager：didRangeBeacons:inRegion:</code>会被调用，通知调用者被检测到的beacons。这个方法会返回一个<strong>CLbeacon</strong>数组，根据里面的<strong>proximity</strong>(上文所提到的属性)就可以判断设备与beacon之间的距离。</li>
+<li><code>-locationManager：didRangeBeacons:inRegion:</code>会被调用，通知调用者被检测到的 beacons。这个方法会返回一个 <strong>CLbeacon</strong> 数组，根据里面的 <strong>proximity</strong> (上文所提到的属性)就可以判断设备与 beacon 之间的距离。</li>
 </ul>
 <h2 id="iBeacon行为"><a href="#iBeacon行为" class="headerlink" title="iBeacon行为"></a>iBeacon行为</h2><p>根据<a href="https://tech.meituan.com/" target="_blank" rel="external">美团点评技术团队</a>的文章，暂时有以下结论</p>
 <ul>
-<li>检测到beacon的时间跟设备进行蓝牙扫描的时间间隔有关，每当设备扫描时，就能发现iBeacon region的变化。</li>
-<li>在rangging打开的情况下，设备会每秒钟做一次扫描，也就是说状态更新最多延迟一秒。</li>
-<li>程序在后台运行，并且monitoring打开的时候，设备可能每隔数分钟做一次扫描。iOS7响应较慢，iOS7.1后有较大改善。</li>
-<li>如果存在设置<code>notifyEnterStateOnDisplay=yes</code>的beacon，iOS会在屏幕从黑屏点亮的时候进行一次扫描。</li>
-<li>设备重启并不影响iBeacon后台检测的执行</li>
-<li>iOS7中，在多任务界面中杀掉程序会终止iBeacon检测的执行，iOS7.1改变了这一行为，被杀掉的app还可以继续进行iBeacon的检测。</li>
+<li>检测到 beacon 的时间跟设备进行蓝牙扫描的时间间隔有关，每当设备扫描时，就能发现 iBeacon region的变化。</li>
+<li>在 rangging 打开的情况下，设备会每秒钟做一次扫描，也就是说状态更新最多延迟一秒。</li>
+<li>程序在后台运行，并且 monitoring 打开的时候，设备可能每隔数分钟做一次扫描。iOS7 响应较慢， iOS7.1 后有较大改善。</li>
+<li>如果存在设置<code>notifyEnterStateOnDisplay=yes</code>的 beacon ，iOS 会在屏幕从黑屏点亮的时候进行一次扫描。</li>
+<li>设备重启并不影响 iBeacon 后台检测的执行</li>
+<li>iOS7 中，在多任务界面中杀掉程序会终止 iBeacon 检测的执行，iOS7.1 改变了这一行为，被杀掉的 app 还可以继续进行 iBeacon 的检测。</li>
 </ul>
-<p>在才接触这个项目的初期，好奇于项目与我事先准备的BLE协议实现有些区别，后来了解到用到了iBeacon技术，起初好奇为什么锁屏点亮和锁屏黑屏有什么区别，以为只是因为亮屏可能会激活后台。后来在了解了iBeacon之后，才知道，还有这种操作。所以啊，我们永远都不能放弃学习~。</p>
+<p>在才接触这个项目的初期，好奇于项目与我事先准备的 BLE 协议实现有些区别，后来了解到用到了 iBeacon 技术，起初好奇为什么锁屏点亮和锁屏黑屏有什么区别，以为只是因为亮屏可能会激活后台。后来在了解了iBeacon 之后，才知道，还有这种操作。所以啊，我们永远都不能放弃学习~。</p>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p>美团点评技术团队：<a href="https://tech.meituan.com/iBeacaon-first-glance.html" target="_blank" rel="external">iBeacon初探</a></p>
 ]]></content>
     
     <summary type="html">
     
-      &lt;p&gt;因为最近在做的项目是关于蓝牙连接的项目，前辈在做这个项目的时候，除了用ReactiveCocoa以外，还使用了iBeacon技术。&lt;/p&gt;
+      &lt;p&gt;因为最近在做的项目是关于蓝牙连接的项目，前辈在做这个项目的时候，除了用 ReactiveCocoa 以外，还使用了 iBeacon 技术。&lt;/p&gt;
 &lt;p&gt;对于从未接触蓝牙这块的我，感觉打开了新世界大门。&lt;/p&gt;
-&lt;h2 id=&quot;iBeacon&quot;&gt;&lt;a href=&quot;#iBeacon&quot;
+&lt;h2 id=&quot;iBeacon&quot;&gt;&lt;a href=&quot;#iBea
     
     </summary>
     
