@@ -95,21 +95,21 @@
 
 
 
-<meta name="description" content="曾觉得iOS很好学，也想着学一段时间就可以精通这门语言，但是随着开发的越来越深入，才能意识到，iOS绝不像外表这样简单，他的内涵真是太深了，感觉自己真是一个什么也不知道的Objc小白。 Runtime和消息发送机制是理解iOS运行过程避不开的一道坎，虽然平时很少用，但是却是我们Objc程序员需要了解的。 Runtime 因为Objc是一门动态语言，所以它总会在运行时（而不是编译时）进行工作。所以光">
+<meta name="description" content="曾觉得 iOS 很好学，也想着学一段时间就可以精通这门语言，但是随着开发的越来越深入，才能意识到，iOS 绝不像外表这样简单，他的内涵真是太深了，感觉自己真是一个什么也不知道的 Objc 小白。 Runtime 和消息发送机制是理解 iOS 运行过程避不开的一道坎，虽然平时很少用，但是却是我们 Objc 程序员需要了解的。 Runtime 因为Objc是一门动态语言，所以它总会在运行时（而不是编译">
 <meta name="keywords" content="iOS,runtime">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Objc的消息发送机制与Runtime (1)">
+<meta property="og:title" content="Objc 的消息发送机制与 Runtime">
 <meta property="og:url" content="http://yoursite.com/2017/09/02/AboutRuntime/index.html">
 <meta property="og:site_name" content="阿灿的随想录">
-<meta property="og:description" content="曾觉得iOS很好学，也想着学一段时间就可以精通这门语言，但是随着开发的越来越深入，才能意识到，iOS绝不像外表这样简单，他的内涵真是太深了，感觉自己真是一个什么也不知道的Objc小白。 Runtime和消息发送机制是理解iOS运行过程避不开的一道坎，虽然平时很少用，但是却是我们Objc程序员需要了解的。 Runtime 因为Objc是一门动态语言，所以它总会在运行时（而不是编译时）进行工作。所以光">
+<meta property="og:description" content="曾觉得 iOS 很好学，也想着学一段时间就可以精通这门语言，但是随着开发的越来越深入，才能意识到，iOS 绝不像外表这样简单，他的内涵真是太深了，感觉自己真是一个什么也不知道的 Objc 小白。 Runtime 和消息发送机制是理解 iOS 运行过程避不开的一道坎，虽然平时很少用，但是却是我们 Objc 程序员需要了解的。 Runtime 因为Objc是一门动态语言，所以它总会在运行时（而不是编译">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/img/objc_msgsend.jpg">
 <meta property="og:image" content="http://yoursite.com/img/超类关系图.png">
 <meta property="og:image" content="http://yoursite.com/img/class_data_bits_t.png">
-<meta property="og:updated_time" content="2017-10-25T13:48:51.000Z">
+<meta property="og:updated_time" content="2017-12-13T05:54:14.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Objc的消息发送机制与Runtime (1)">
-<meta name="twitter:description" content="曾觉得iOS很好学，也想着学一段时间就可以精通这门语言，但是随着开发的越来越深入，才能意识到，iOS绝不像外表这样简单，他的内涵真是太深了，感觉自己真是一个什么也不知道的Objc小白。 Runtime和消息发送机制是理解iOS运行过程避不开的一道坎，虽然平时很少用，但是却是我们Objc程序员需要了解的。 Runtime 因为Objc是一门动态语言，所以它总会在运行时（而不是编译时）进行工作。所以光">
+<meta name="twitter:title" content="Objc 的消息发送机制与 Runtime">
+<meta name="twitter:description" content="曾觉得 iOS 很好学，也想着学一段时间就可以精通这门语言，但是随着开发的越来越深入，才能意识到，iOS 绝不像外表这样简单，他的内涵真是太深了，感觉自己真是一个什么也不知道的 Objc 小白。 Runtime 和消息发送机制是理解 iOS 运行过程避不开的一道坎，虽然平时很少用，但是却是我们 Objc 程序员需要了解的。 Runtime 因为Objc是一门动态语言，所以它总会在运行时（而不是编译">
 <meta name="twitter:image" content="http://yoursite.com/img/objc_msgsend.jpg">
 
 
@@ -144,7 +144,7 @@
 
 
 
-  <title>Objc的消息发送机制与Runtime (1) | 阿灿的随想录</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>Objc 的消息发送机制与 Runtime | 阿灿的随想录</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -300,7 +300,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Objc的消息发送机制与Runtime (1)</h1>
+          <h1 class="post-title" itemprop="name headline">Objc 的消息发送机制与 Runtime</h1>
         
 
         <div class="post-meta">
@@ -347,8 +347,8 @@
       
 
       
-        <p>曾觉得iOS很好学，也想着学一段时间就可以精通这门语言，但是随着开发的越来越深入，才能意识到，iOS绝不像外表这样简单，他的内涵真是太深了，感觉自己真是一个什么也不知道的Objc小白。</p>
-<p>Runtime和消息发送机制是理解iOS运行过程避不开的一道坎，虽然平时很少用，但是却是我们Objc程序员需要了解的。</p>
+        <p>曾觉得 iOS 很好学，也想着学一段时间就可以精通这门语言，但是随着开发的越来越深入，才能意识到，iOS 绝不像外表这样简单，他的内涵真是太深了，感觉自己真是一个什么也不知道的 Objc 小白。</p>
+<p>Runtime 和消息发送机制是理解 iOS 运行过程避不开的一道坎，虽然平时很少用，但是却是我们 Objc 程序员需要了解的。</p>
 <h1 id="Runtime"><a href="#Runtime" class="headerlink" title="Runtime"></a>Runtime</h1><hr>
 <p>因为Objc是一门动态语言，所以它总会在运行时（而不是编译时）进行工作。所以光有一个编译器是不够的，还需要一个运行时系统（runtime system）执行编译后代码。这便是Runtime系统，它是整个Objc运行框架的基石。</p>
 <h2 id="Objc与Runtime的交互"><a href="#Objc与Runtime的交互" class="headerlink" title="Objc与Runtime的交互"></a>Objc与Runtime的交互</h2><hr>
@@ -573,7 +573,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-count">13</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -699,7 +699,7 @@
 <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-11-16T12:09:25.015Z</updated>
+  <updated>2018-01-31T02:58:15.615Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -16,11 +16,42 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>关于人生</title>
+    <link href="http://yoursite.com/2018/01/31/%E5%85%B3%E4%BA%8E%E4%BA%BA%E7%94%9F/"/>
+    <id>http://yoursite.com/2018/01/31/关于人生/</id>
+    <published>2018-01-31T02:23:48.000Z</published>
+    <updated>2018-01-31T02:58:15.615Z</updated>
+    
+    <content type="html"><![CDATA[<p>​    最近，还是挺难受的。本来觉得能在代码能力、学业和球队上找到平衡点。最后却发现自己三个方面都没有做好。</p>
+<p>​    大三开学后，对于代码的钻研就好像停滞了，我迷失在OC这本就比较小众的语言里，不知道该从哪里学起，但是要学的东西却又太多了，于是我开始逃避，开始偷懒，看过许多博客，却没有动手敲过，导致我的原理记得不牢，这也在后面我的面试中体现了的淋漓尽致。</p>
+<p>​    信息安全这个专业听起来挺帅的，但是学起来好像并不是这么一回事，没想到这样一个专业的专业课拥有这么多概念性的东西，我向来是讨厌记概念的，太多太杂，没有直接计算来的舒服，不过这其实也就是找的借口，能力差和懒惰而已，明明对自己看的这么清楚，却没想过改变，还是和身边的很多人一样，行尸走肉，虚度人生。</p>
+<p>​    大三能当上队长其实挺开心的，毕竟也算努力得到了认可，但我好像太重视这个责任给我带来的东西，太想带好这支队伍，也太想得到队友的认可，于是时常焦虑，时常在该决断时犹豫不决，这可能间接导致了球队的失利，虽然队友们对我还算满意，但是自己还是满难受的，毕竟成绩也没能带出来，还是有点辜负大家的期望的意思。</p>
+<p>​    看着面试没过、球队没有晋级、成绩不尽人意，想起了去年算命先生说我的2018 将会是人生中最困难的一年。虽然我从不相信算命这一套，但我还是没有理由不相信 2018 开年这记重锤只是一个开始，回想我这一年，其实每天几乎都在焦虑之中度过，害怕找不到工作，害怕带不出成绩，每天睡觉都能从1点闭眼挣扎到3点还睡不着，闭上眼睛全是求职失败，院队失利的画面。</p>
+<p>​    然后突然就发现其实大学都过了三年了，这三年我的心态也在逐渐变化，从大一的认真学习到大二的认真磨炼技术，但一到了大三，焦虑却打败了我，我发现我并没有自己想象的这么了厉害，我没有能力去兼顾这么多东西，但却仍然想逞强尝试。这可能就是我失败的最大原因吧，我也渐渐开始理解老队长们的难处，渐渐懂得了一些为人处世道理，明白有些东西如果不站在那个高度去看的话，确实是难以理解的，但就是没有明白理解孤独，恐惧独自前行，这让我与很多在某些和我相同方面相比较差的人一样，停滞不前。</p>
+<p>​    到最后我还是没能成为自己大一时候期望的自己，没有能当那个屠龙的勇士，但这才20岁，人生的路漫漫，还得好好过下去才行。2018 已经来临，不知这些事是噩梦的开端，还是暴风雨的结束，但不论怎样，希望我能不忘初心，熬过这场战役。</p>
+<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>不管你是谁，谢谢你能听我在这里胡言乱语。</p>
+<p>原谅我，不是我有意传递负能量，而是我找不到地方可以倾诉了。</p>
+<p>我从不是喜欢在社交网站上表达情感的人，这篇文章也算是给自己的一个警醒。（虽然一般到最后都会删掉）。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;​    最近，还是挺难受的。本来觉得能在代码能力、学业和球队上找到平衡点。最后却发现自己三个方面都没有做好。&lt;/p&gt;
+&lt;p&gt;​    大三开学后，对于代码的钻研就好像停滞了，我迷失在OC这本就比较小众的语言里，不知道该从哪里学起，但是要学的东西却又太多了，于是我开始逃避，
+    
+    </summary>
+    
+    
+      <category term="随想" scheme="http://yoursite.com/tags/%E9%9A%8F%E6%83%B3/"/>
+    
+  </entry>
+  
+  <entry>
     <title>探寻 iPhone X 适配</title>
     <link href="http://yoursite.com/2017/11/16/about-iPhoneX/"/>
     <id>http://yoursite.com/2017/11/16/about-iPhoneX/</id>
     <published>2017-11-16T11:08:01.000Z</published>
-    <updated>2017-11-16T12:09:25.015Z</updated>
+    <updated>2017-11-16T12:09:25.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>iPhone X 出来也有一段时间了，苹果官方和各位大神也对于 iPhone X 的刘海打理给出了很多方法。</p>
 <p>我因个人项目在 iPhone X 的环境下运行时界面千奇百怪 (估计是代码能力太菜 - -)</p>
@@ -325,7 +356,7 @@
     <link href="http://yoursite.com/2017/09/17/About%20autorelease/"/>
     <id>http://yoursite.com/2017/09/17/About autorelease/</id>
     <published>2017-09-17T07:06:48.000Z</published>
-    <updated>2017-11-16T12:29:58.696Z</updated>
+    <updated>2017-11-16T12:29:58.000Z</updated>
     
     <content type="html"><![CDATA[<h1 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h1><p>一说到 Objective-C 的内存管理，就不得不提到 Autorelease。</p>
 <p>顾名思义，autorelease 就是自动释放，这看起来很 ARC，但其实它更像 C语言 中的局部变量特性。</p>
@@ -386,7 +417,7 @@
     <link href="http://yoursite.com/2017/09/13/iOS_ARC/"/>
     <id>http://yoursite.com/2017/09/13/iOS_ARC/</id>
     <published>2017-09-13T08:31:46.000Z</published>
-    <updated>2017-11-29T05:46:23.796Z</updated>
+    <updated>2017-11-29T05:46:23.000Z</updated>
     
     <content type="html"><![CDATA[<p>众所周知，Apple从OS X Lion和iOS 5引入了新的内存管理功能——自动引用计数(ARC)功能。这些功能对于我们开发者说也是需要去了解的一个重要知识点。</p>
 <h1 id="自动引用计数"><a href="#自动引用计数" class="headerlink" title="自动引用计数"></a>自动引用计数</h1><hr>
@@ -696,14 +727,14 @@
   </entry>
   
   <entry>
-    <title>Objc的消息发送机制与Runtime (1)</title>
+    <title>Objc 的消息发送机制与 Runtime</title>
     <link href="http://yoursite.com/2017/09/02/AboutRuntime/"/>
     <id>http://yoursite.com/2017/09/02/AboutRuntime/</id>
     <published>2017-09-02T04:19:55.000Z</published>
-    <updated>2017-10-25T13:48:51.000Z</updated>
+    <updated>2017-12-13T05:54:14.000Z</updated>
     
-    <content type="html"><![CDATA[<p>曾觉得iOS很好学，也想着学一段时间就可以精通这门语言，但是随着开发的越来越深入，才能意识到，iOS绝不像外表这样简单，他的内涵真是太深了，感觉自己真是一个什么也不知道的Objc小白。</p>
-<p>Runtime和消息发送机制是理解iOS运行过程避不开的一道坎，虽然平时很少用，但是却是我们Objc程序员需要了解的。</p>
+    <content type="html"><![CDATA[<p>曾觉得 iOS 很好学，也想着学一段时间就可以精通这门语言，但是随着开发的越来越深入，才能意识到，iOS 绝不像外表这样简单，他的内涵真是太深了，感觉自己真是一个什么也不知道的 Objc 小白。</p>
+<p>Runtime 和消息发送机制是理解 iOS 运行过程避不开的一道坎，虽然平时很少用，但是却是我们 Objc 程序员需要了解的。</p>
 <h1 id="Runtime"><a href="#Runtime" class="headerlink" title="Runtime"></a>Runtime</h1><hr>
 <p>因为Objc是一门动态语言，所以它总会在运行时（而不是编译时）进行工作。所以光有一个编译器是不够的，还需要一个运行时系统（runtime system）执行编译后代码。这便是Runtime系统，它是整个Objc运行框架的基石。</p>
 <h2 id="Objc与Runtime的交互"><a href="#Objc与Runtime的交互" class="headerlink" title="Objc与Runtime的交互"></a>Objc与Runtime的交互</h2><hr>
@@ -792,8 +823,8 @@
     
     <summary type="html">
     
-      &lt;p&gt;曾觉得iOS很好学，也想着学一段时间就可以精通这门语言，但是随着开发的越来越深入，才能意识到，iOS绝不像外表这样简单，他的内涵真是太深了，感觉自己真是一个什么也不知道的Objc小白。&lt;/p&gt;
-&lt;p&gt;Runtime和消息发送机制是理解iOS运行过程避不开的一道坎，虽然平时很
+      &lt;p&gt;曾觉得 iOS 很好学，也想着学一段时间就可以精通这门语言，但是随着开发的越来越深入，才能意识到，iOS 绝不像外表这样简单，他的内涵真是太深了，感觉自己真是一个什么也不知道的 Objc 小白。&lt;/p&gt;
+&lt;p&gt;Runtime 和消息发送机制是理解 iOS 运行过程避不开的一
     
     </summary>
     
@@ -1008,7 +1039,7 @@ NSLog(@&quot;iOS10 收到本地通知:{\\\\nbody:%@，\\\\ntitle:%@,\\\\nsubtitl
     <link href="http://yoursite.com/2017/08/06/About%20iBeacon/"/>
     <id>http://yoursite.com/2017/08/06/About iBeacon/</id>
     <published>2017-08-06T10:54:02.000Z</published>
-    <updated>2017-11-16T12:33:04.443Z</updated>
+    <updated>2017-11-16T12:33:04.000Z</updated>
     
     <content type="html"><![CDATA[<p>因为最近在做的项目是关于蓝牙连接的项目，前辈在做这个项目的时候，除了用 ReactiveCocoa 以外，还使用了 iBeacon 技术。</p>
 <p>对于从未接触蓝牙这块的我，感觉打开了新世界大门。</p>
