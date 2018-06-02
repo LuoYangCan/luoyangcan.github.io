@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-06-02T17:47:47.716Z</updated>
+  <updated>2018-06-02T18:22:35.840Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,10 +20,9 @@
     <link href="http://yoursite.com/2018/03/21/About%20Love/"/>
     <id>http://yoursite.com/2018/03/21/About Love/</id>
     <published>2018-03-21T12:59:35.000Z</published>
-    <updated>2018-06-02T17:47:47.716Z</updated>
+    <updated>2018-06-02T18:22:35.840Z</updated>
     
-    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>​    </p>
-<blockquote>
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><blockquote>
 <p>原来那些大名鼎鼎的情话都不是说给大名鼎鼎的直子小姐的。</p>
 </blockquote>
 <p>　　从17岁生日那年同学送的那三本《1Q84》开始接触村上，渐渐被他的文笔吸引，于是买了许许多多他的书。但是却一直没有触及《挪威的森林》，倒也不是因为我不想读，简单来说，以前读书就是为了装逼。入坑之后才明白，文学真是个奇妙的东西。</p>
@@ -41,7 +40,26 @@
 <p>　　其实选择了一个人，不顾一切珍惜眼前就已经好了，何苦想那么多呢，纵令听其自然罢。</p>
 <p>　　自然，也不能被伪善之人表面的深情所欺骗。</p>
 
-    <div id="aplayer-bgTeGCgn" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="471385043" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86"></div>
+        <div id="aplayer-SUbKJwBx" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+            <pre class="aplayer-lrc-content"></pre>
+        </div>
+        <script>
+          var ap = new APlayer({
+            element: document.getElementById("aplayer-SUbKJwBx"),
+            narrow: false,
+            autoplay: false,
+            showlrc: false,
+            music: {
+              title: "奇妙能力歌",
+              author: "陈粒",
+              url: "http://m10.music.126.net/20180603023810/b4e16053c903a52dafb72442d125b8b2/ymusic/0ea0/5592/3202/734cae47a55c493184e1e8bdd756392b.mp3",
+              pic: "http://p1.music.126.net/VuJFMbXzpAProbJPoXLv7g==/7721870161993398.jpg?param=130y130",
+              lrc: ""
+            }
+          });
+          window.aplayers || (window.aplayers = []);
+          window.aplayers.push(ap);
+        </script>
 <h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>　　算是浑浑噩噩的过去了自己的半个大三，以至于寒假无事可做，一个人无聊到思考人生。看着自己慢慢变成了当初不情愿变成的模样，于是在大三下的这个别人喻为最重要的时刻，我开始慢慢恢复读书，不再整日忙碌于准备要来临的面试。(大概已经是佛系青年吧)</p>
 <p>　　去年春节的时候，心血来潮，购得了许多书，最后也就读了一两本。重回校园后，深知自己不该再惶惶不可终日。遂重新拿起了这本书。</p>
 <p>　　最后想来，还是学生时代青涩的恋爱最过于难忘，毕竟那是不顾一切的爱。</p>
