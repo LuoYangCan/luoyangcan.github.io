@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-06-02T16:33:15.916Z</updated>
+  <updated>2018-06-02T17:47:47.716Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,9 +20,9 @@
     <link href="http://yoursite.com/2018/03/21/About%20Love/"/>
     <id>http://yoursite.com/2018/03/21/About Love/</id>
     <published>2018-03-21T12:59:35.000Z</published>
-    <updated>2018-06-02T16:33:15.916Z</updated>
+    <updated>2018-06-02T17:47:47.716Z</updated>
     
-    <content type="html"><![CDATA[<p>​    </p>
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>​    </p>
 <blockquote>
 <p>原来那些大名鼎鼎的情话都不是说给大名鼎鼎的直子小姐的。</p>
 </blockquote>
@@ -40,18 +40,16 @@
 <p>　　渡边那时同时爱着两个人，想来也是非常纠结的事情，现在看来就是所谓的渣男把。但是其实爱一个人是无私的，当你毫无保留的爱一个人的时候，会像渡边一样处处想着直子，像绿子一样静静等着渡边，像初美那样一直忠于永泽，也许我们现在的人太过于急躁，都不曾去追寻真正的爱情，太快就因为一个小小的错误而否定对方。被营销号和大V们洗脑，被快节奏的生活击溃，整日抱怨找不到真爱。</p>
 <p>　　其实选择了一个人，不顾一切珍惜眼前就已经好了，何苦想那么多呢，纵令听其自然罢。</p>
 <p>　　自然，也不能被伪善之人表面的深情所欺骗。</p>
-<h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>　　算是浑浑噩噩的过去了自己的半个大三，以至于寒假无事可做，一个人无聊到思考人生。看着自己慢慢变成了当初不情愿变成的模样，于是在大三下的这个别人喻为最重要的时刻，我开始慢慢恢复读书，不再整日忙碌于准备要来临的面试。(大概已经是佛系青年吧)</p>
+
+    <div id="aplayer-bgTeGCgn" class="aplayer aplayer-tag-marker meting-tag-marker" data-id="471385043" data-server="netease" data-type="playlist" data-mode="circulation" data-autoplay="false" data-mutex="true" data-listmaxheight="340px" data-preload="auto" data-theme="#ad7a86"></div>
+<h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>　　算是浑浑噩噩的过去了自己的半个大三，以至于寒假无事可做，一个人无聊到思考人生。看着自己慢慢变成了当初不情愿变成的模样，于是在大三下的这个别人喻为最重要的时刻，我开始慢慢恢复读书，不再整日忙碌于准备要来临的面试。(大概已经是佛系青年吧)</p>
 <p>　　去年春节的时候，心血来潮，购得了许多书，最后也就读了一两本。重回校园后，深知自己不该再惶惶不可终日。遂重新拿起了这本书。</p>
-<p>​　　最后想来，还是学生时代青涩的恋爱最过于难忘，毕竟那是不顾一切的爱。</p>
+<p>　　最后想来，还是学生时代青涩的恋爱最过于难忘，毕竟那是不顾一切的爱。</p>
 ]]></content>
     
     <summary type="html">
     
-      &lt;p&gt;​    &lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;原来那些大名鼎鼎的情话都不是说给大名鼎鼎的直子小姐的。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;　　从17岁生日那年同学送的那三本《1Q84》开始接触村上，渐渐被他的文笔吸引，于是买了许许多多他的书。但是却一直没有触及《
+      &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot; cla
     
     </summary>
     
@@ -67,7 +65,7 @@
     <published>2017-11-16T11:08:01.000Z</published>
     <updated>2017-11-16T12:09:25.000Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>iPhone X 出来也有一段时间了，苹果官方和各位大神也对于 iPhone X 的刘海打理给出了很多方法。</p>
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>iPhone X 出来也有一段时间了，苹果官方和各位大神也对于 iPhone X 的刘海打理给出了很多方法。</p>
 <p>我因个人项目在 iPhone X 的环境下运行时界面千奇百怪 (估计是代码能力太菜 - -)</p>
 <p>所以也打算蹭一波热度，把自己对于 iPhone X 适配的一点小小的经历分享出来</p>
 <h1 id="关于iPhone-X"><a href="#关于iPhone-X" class="headerlink" title="关于iPhone X"></a>关于iPhone X</h1><h2 id="一个有刘海的屏幕"><a href="#一个有刘海的屏幕" class="headerlink" title="一个有刘海的屏幕"></a>一个有刘海的屏幕</h2><p>iPhone X 的机型的屏幕尺寸达到了 5.8英寸，而机子的宽度和 iPhone 8 一致，在垂直方向上却多出了 145pt，这意味着可以显示的界面又一次变“长”了。</p>
@@ -95,8 +93,7 @@
     
     <summary type="html">
     
-      &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;iPhone X 出来也有一段时间了，苹果官方和各位大神也对于 iPhone X 的刘海打理给出了很多方法。&lt;/p&gt;
-&lt;p&gt;我因个人项目在 
+      &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot; cla
     
     </summary>
     
@@ -114,7 +111,7 @@
     <published>2017-10-18T13:59:48.000Z</published>
     <updated>2017-10-19T08:36:40.000Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>不论是初入iOS开发还是已经是老江湖的开发者，想必<code>@property</code> 已经成为了我们最熟悉的一个语法。</p>
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>不论是初入iOS开发还是已经是老江湖的开发者，想必<code>@property</code> 已经成为了我们最熟悉的一个语法。</p>
 <p>“属性”(property)作为Objc的一项特性，主要作用就在于封装对象中的数据。Objc对象通常会把所需要的数据保存为各种实例变量。</p>
 <p>实例变量一般通过”存取方法”(access method)访问。</p>
 <p>获取方法(getter)用于读取变量值</p>
@@ -198,8 +195,7 @@
     
     <summary type="html">
     
-      &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;p&gt;不论是初入iOS开发还是已经是老江湖的开发者，想必&lt;code&gt;@property&lt;/code&gt; 已经成为了我们最熟悉的一个语法。&lt;/p&gt;
-&lt;
+      &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot; cla
     
     </summary>
     
@@ -215,7 +211,7 @@
     <published>2017-09-24T15:04:40.000Z</published>
     <updated>2017-09-28T13:39:48.000Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><hr>
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><hr>
 <p>因为最近没事干想学下爬虫玩一下，顺便因为自己是信息安全专业，学一下py应该还蛮有趣的。</p>
 <p>安装Python这些就不扯了</p>
 <p>直接进入基础吧</p>
@@ -354,9 +350,7 @@
     
     <summary type="html">
     
-      &lt;h1 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h1&gt;&lt;hr&gt;
-&lt;p&gt;因为最近没事干想学下爬虫玩一下，顺便因为自己是信息安全专业，学一下py应该还蛮有趣的。&lt;/p&gt;
-&lt;p&gt;安装Python这些就不扯了
+      &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot; cla
     
     </summary>
     
@@ -372,7 +366,7 @@
     <published>2017-09-17T07:06:48.000Z</published>
     <updated>2018-05-16T02:53:48.367Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h1><p>一说到 Objective-C 的内存管理，就不得不提到 Autorelease。</p>
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h1><p>一说到 Objective-C 的内存管理，就不得不提到 Autorelease。</p>
 <p>顾名思义，autorelease 就是自动释放，这看起来很 ARC，但其实它更像 C语言 中的局部变量特性。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    <span class="keyword">int</span> a;</div><div class="line">&#125;</div><div class="line"><span class="comment">/*</span></div><div class="line"><span class="comment">	因超出变量作用域</span></div><div class="line"><span class="comment">	局部变量 int a 被废弃。</span></div><div class="line"><span class="comment">*/</span></div></pre></td></tr></table></figure>
 <p>一般来说，autorelease 会像 C语言 的局部变量那样对待对象的实例，一旦超出作用域，对象实例的 release 方法就被调用。还有一点就是编程人员可以设定变量的作用域。</p>
@@ -416,8 +410,7 @@
     
     <summary type="html">
     
-      &lt;h1 id=&quot;引言&quot;&gt;&lt;a href=&quot;#引言&quot; class=&quot;headerlink&quot; title=&quot;引言&quot;&gt;&lt;/a&gt;引言&lt;/h1&gt;&lt;p&gt;一说到 Objective-C 的内存管理，就不得不提到 Autorelease。&lt;/p&gt;
-&lt;p&gt;顾名思义，autorelease 就是自动
+      &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot; cla
     
     </summary>
     
@@ -433,7 +426,7 @@
     <published>2017-09-13T08:31:46.000Z</published>
     <updated>2018-05-16T02:50:09.020Z</updated>
     
-    <content type="html"><![CDATA[<p>众所周知，Apple从OS X Lion和iOS 5引入了新的内存管理功能——自动引用计数(ARC)功能。这些功能对于我们开发者说也是需要去了解的一个重要知识点。</p>
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>众所周知，Apple从OS X Lion和iOS 5引入了新的内存管理功能——自动引用计数(ARC)功能。这些功能对于我们开发者说也是需要去了解的一个重要知识点。</p>
 <h1 id="自动引用计数"><a href="#自动引用计数" class="headerlink" title="自动引用计数"></a>自动引用计数</h1><hr>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">在Objective-C中采用Automatic Reference Counting机制，让编译器来进行内存管理。</div><div class="line">在新一代Apple LLVM编译器中设置ARC为有效状态，就无需在此键入retain和release代码，</div><div class="line">这在降低程序崩溃、内存泄漏等风险的同时，很大程度上减少了开发程序的工作量。</div><div class="line">编译器完全清楚目标对象，并能立刻释放那些不再被使用的对象。</div><div class="line">如此一来，应用程序将具有可预测性，且能流畅运行，速度也将大幅提升。</div><div class="line">								--------- Apple</div></pre></td></tr></table></figure>
 <p>ARC的机制可以用开关房间里的灯的事例来说明：</p>
@@ -728,8 +721,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;众所周知，Apple从OS X Lion和iOS 5引入了新的内存管理功能——自动引用计数(ARC)功能。这些功能对于我们开发者说也是需要去了解的一个重要知识点。&lt;/p&gt;
-&lt;h1 id=&quot;自动引用计数&quot;&gt;&lt;a href=&quot;#自动引用计数&quot; class=&quot;headerlink
+      &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot; cla
     
     </summary>
     
@@ -747,7 +739,7 @@
     <published>2017-09-02T04:19:55.000Z</published>
     <updated>2017-12-13T05:54:14.000Z</updated>
     
-    <content type="html"><![CDATA[<p>曾觉得 iOS 很好学，也想着学一段时间就可以精通这门语言，但是随着开发的越来越深入，才能意识到，iOS 绝不像外表这样简单，他的内涵真是太深了，感觉自己真是一个什么也不知道的 Objc 小白。</p>
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>曾觉得 iOS 很好学，也想着学一段时间就可以精通这门语言，但是随着开发的越来越深入，才能意识到，iOS 绝不像外表这样简单，他的内涵真是太深了，感觉自己真是一个什么也不知道的 Objc 小白。</p>
 <p>Runtime 和消息发送机制是理解 iOS 运行过程避不开的一道坎，虽然平时很少用，但是却是我们 Objc 程序员需要了解的。</p>
 <h1 id="Runtime"><a href="#Runtime" class="headerlink" title="Runtime"></a>Runtime</h1><hr>
 <p>因为Objc是一门动态语言，所以它总会在运行时（而不是编译时）进行工作。所以光有一个编译器是不够的，还需要一个运行时系统（runtime system）执行编译后代码。这便是Runtime系统，它是整个Objc运行框架的基石。</p>
@@ -837,8 +829,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;曾觉得 iOS 很好学，也想着学一段时间就可以精通这门语言，但是随着开发的越来越深入，才能意识到，iOS 绝不像外表这样简单，他的内涵真是太深了，感觉自己真是一个什么也不知道的 Objc 小白。&lt;/p&gt;
-&lt;p&gt;Runtime 和消息发送机制是理解 iOS 运行过程避不开的一
+      &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot; cla
     
     </summary>
     
@@ -856,7 +847,7 @@
     <published>2017-08-23T16:39:37.000Z</published>
     <updated>2018-03-21T13:08:06.732Z</updated>
     
-    <content type="html"><![CDATA[<p>好久没看书了，一到放假，看书的效率就从一个月两三本，变成了一个月一本。有点惭愧。</p>
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>好久没看书了，一到放假，看书的效率就从一个月两三本，变成了一个月一本。有点惭愧。</p>
 <p>作为韩寒的书迷，自从在我看那本从哥哥那儿借来看的新概念作文大赛开始，稚嫩的自己就喜欢上他成熟的笔风，反复读了他的很多短篇小文随笔，却一直没有看过他的第一本书《三重门》</p>
 <p>于是乎就特意去书店买来一本，打算暑假慢慢品味。</p>
 <p>读完后其实感觉韩寒《三重门》的文笔还是比我想象的生涩，在我看来甚至还不如他当年的《杯中窥人》，虽有对很多事情的批判，但感觉又什么都没有，如今我们看到的韩寒式幽默在当时还是没有完全展现，尤其是那个仓促的结尾和后记的那句<code>我是金子，我要闪光的</code>无不显示出他的年少轻狂。</p>
@@ -868,9 +859,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;好久没看书了，一到放假，看书的效率就从一个月两三本，变成了一个月一本。有点惭愧。&lt;/p&gt;
-&lt;p&gt;作为韩寒的书迷，自从在我看那本从哥哥那儿借来看的新概念作文大赛开始，稚嫩的自己就喜欢上他成熟的笔风，反复读了他的很多短篇小文随笔，却一直没有看过他的第一本书《三重门》&lt;/p&gt;
-&lt;
+      &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot; cla
     
     </summary>
     
@@ -886,7 +875,7 @@
     <published>2017-08-23T08:24:37.000Z</published>
     <updated>2017-09-02T07:32:30.000Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="RunLoop"><a href="#RunLoop" class="headerlink" title="RunLoop"></a>RunLoop</h2><p>​    RunLoop是每一个iOS程序员应该都听过的一个名字，翻译过来大概是叫运行循环，在iOS攻城狮们的开发初期，几乎见不到RunLoop的身影。但它其实无处不在，最简单的例子就是Objective-C中的main函数。</p>
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h2 id="RunLoop"><a href="#RunLoop" class="headerlink" title="RunLoop"></a>RunLoop</h2><p>​    RunLoop是每一个iOS程序员应该都听过的一个名字，翻译过来大概是叫运行循环，在iOS攻城狮们的开发初期，几乎见不到RunLoop的身影。但它其实无处不在，最简单的例子就是Objective-C中的main函数。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">int main(int argc, char * argv[]) &#123;</div><div class="line">    @autoreleasepool &#123;</div><div class="line">        return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>在UIApplicationMain中，就含有一个Runloop，是系统启动时创建的Runloop。</p>
 <p>它有这么几个作用：</p>
@@ -953,7 +942,7 @@
     
     <summary type="html">
     
-      &lt;h2 id=&quot;RunLoop&quot;&gt;&lt;a href=&quot;#RunLoop&quot; class=&quot;headerlink&quot; title=&quot;RunLoop&quot;&gt;&lt;/a&gt;RunLoop&lt;/h2&gt;&lt;p&gt;​    RunLoop是每一个iOS程序员应该都听过的一个名字，翻译过来大概是叫运行循环，在iOS
+      &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot; cla
     
     </summary>
     
@@ -971,7 +960,7 @@
     <published>2017-08-11T09:27:09.000Z</published>
     <updated>2017-08-13T15:23:22.000Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>iOS的推送有本地推送和远程推送两种，由于项目只需要个提示类型的，所以用本地推送就够了，所以在这里，介绍的都是iOS的本地推送。</p>
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>iOS的推送有本地推送和远程推送两种，由于项目只需要个提示类型的，所以用本地推送就够了，所以在这里，介绍的都是iOS的本地推送。</p>
 <h2 id="推送准备"><a href="#推送准备" class="headerlink" title="推送准备"></a>推送准备</h2><p>要进行iOS推送之前，需要几个准备步骤，才能进行推送行为。</p>
 <ul>
 <li>首先，我们需要打开Push Notification开关</li>
@@ -1036,8 +1025,7 @@ NSLog(@&quot;iOS10 收到本地通知:{\\\\nbody:%@，\\\\ntitle:%@,\\\\nsubtitl
     
     <summary type="html">
     
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;iOS的推送有本地推送和远程推送两种，由于项目只需要个提示类型的，所以用本地推送就够了，所以在这里，介绍的都是iOS的本地推送。&lt;/p&gt;
-&lt;
+      &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot; cla
     
     </summary>
     
@@ -1055,7 +1043,7 @@ NSLog(@&quot;iOS10 收到本地通知:{\\\\nbody:%@，\\\\ntitle:%@,\\\\nsubtitl
     <published>2017-08-06T10:54:02.000Z</published>
     <updated>2017-11-16T12:33:04.000Z</updated>
     
-    <content type="html"><![CDATA[<p>因为最近在做的项目是关于蓝牙连接的项目，前辈在做这个项目的时候，除了用 ReactiveCocoa 以外，还使用了 iBeacon 技术。</p>
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>因为最近在做的项目是关于蓝牙连接的项目，前辈在做这个项目的时候，除了用 ReactiveCocoa 以外，还使用了 iBeacon 技术。</p>
 <p>对于从未接触蓝牙这块的我，感觉打开了新世界大门。</p>
 <h2 id="iBeacon"><a href="#iBeacon" class="headerlink" title="iBeacon"></a>iBeacon</h2><p>iBeacon 是基于地理位置的微定位技术，使用的是 Apple 提供的 CoreLocation（BLE 使用的是 CoreBluetooth）。根据名字，应该很清楚，使用 iBeacon 是需要开启定位的，而使用 BLE 只需要开启蓝牙。  </p>
 <h2 id="相关术语"><a href="#相关术语" class="headerlink" title="相关术语"></a>相关术语</h2><ul>
@@ -1120,9 +1108,7 @@ NSLog(@&quot;iOS10 收到本地通知:{\\\\nbody:%@，\\\\ntitle:%@,\\\\nsubtitl
     
     <summary type="html">
     
-      &lt;p&gt;因为最近在做的项目是关于蓝牙连接的项目，前辈在做这个项目的时候，除了用 ReactiveCocoa 以外，还使用了 iBeacon 技术。&lt;/p&gt;
-&lt;p&gt;对于从未接触蓝牙这块的我，感觉打开了新世界大门。&lt;/p&gt;
-&lt;h2 id=&quot;iBeacon&quot;&gt;&lt;a href=&quot;#iBea
+      &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot; cla
     
     </summary>
     
@@ -1140,7 +1126,7 @@ NSLog(@&quot;iOS10 收到本地通知:{\\\\nbody:%@，\\\\ntitle:%@,\\\\nsubtitl
     <published>2017-07-28T10:59:44.000Z</published>
     <updated>2017-08-11T10:02:23.000Z</updated>
     
-    <content type="html"><![CDATA[<p>​    最近做了一个蓝牙相关的项目，项目的前辈当时是用的ReactiveCocoa（RAC）做的，才开始接手的时候，看的一头雾水。经过一段时间自学，现在对RAC略知一二。</p>
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>​    最近做了一个蓝牙相关的项目，项目的前辈当时是用的ReactiveCocoa（RAC）做的，才开始接手的时候，看的一头雾水。经过一段时间自学，现在对RAC略知一二。</p>
 <h2 id="FunctionalReactiveProgramming"><a href="#FunctionalReactiveProgramming" class="headerlink" title="FunctionalReactiveProgramming"></a>FunctionalReactiveProgramming</h2><p>FRP是一种响应变化的编程范式。<img src="/img/FRP.png" alt="FRP"></p>
 <p>就像上面的登录界面，在用户输入用户名和密码之前，登陆按钮是处于无法点击状态的，只有当用户名和密码都被填入一定值的时候，才可以点击登陆按钮。这种一个按钮会由于另外几个控件的改变而改变的联动就是FRP。</p>
 <h2 id="ReactiveCocoa"><a href="#ReactiveCocoa" class="headerlink" title="ReactiveCocoa"></a>ReactiveCocoa</h2><p>RAC是github上的一个开源项目，可以说是将响应式编程做到了极致。RAC中，通过<strong>RACsignal</strong>来发送信号以执行各种操作</p>
@@ -1169,8 +1155,7 @@ NSLog(@&quot;iOS10 收到本地通知:{\\\\nbody:%@，\\\\ntitle:%@,\\\\nsubtitl
     
     <summary type="html">
     
-      &lt;p&gt;​    最近做了一个蓝牙相关的项目，项目的前辈当时是用的ReactiveCocoa（RAC）做的，才开始接手的时候，看的一头雾水。经过一段时间自学，现在对RAC略知一二。&lt;/p&gt;
-&lt;h2 id=&quot;FunctionalReactiveProgramming&quot;&gt;&lt;a href
+      &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot; cla
     
     </summary>
     
@@ -1188,7 +1173,7 @@ NSLog(@&quot;iOS10 收到本地通知:{\\\\nbody:%@，\\\\ntitle:%@,\\\\nsubtitl
     <published>2017-07-24T05:54:47.000Z</published>
     <updated>2017-08-27T16:23:23.000Z</updated>
     
-    <content type="html"><![CDATA[<pre><code>本来按理说像我这样的肚子里没有诗歌文学，脑子里没有代码技术的人，是不需要开博客的。
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><pre><code>本来按理说像我这样的肚子里没有诗歌文学，脑子里没有代码技术的人，是不需要开博客的。
 </code></pre><p>​<br>​<br>​    </p>
 <pre><code>后来想了一想，有些东西还是写出来好一点，索性就花了点时间创建了这个博客来监督自己。
 </code></pre><p>​<br>​    </p>
@@ -1197,9 +1182,7 @@ NSLog(@&quot;iOS10 收到本地通知:{\\\\nbody:%@，\\\\ntitle:%@,\\\\nsubtitl
     
     <summary type="html">
     
-      &lt;pre&gt;&lt;code&gt;本来按理说像我这样的肚子里没有诗歌文学，脑子里没有代码技术的人，是不需要开博客的。
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;​&lt;br&gt;​&lt;br&gt;​    &lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;后来想了一想，有些东西还是写出来好一点，索性就花了点时间创建了这个博客来监督自己
+      &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot; cla
     
     </summary>
     
