@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-06-03T09:07:40.788Z</updated>
+  <updated>2018-06-03T15:13:37.341Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,9 +20,9 @@
     <link href="http://yoursite.com/2018/03/21/About%20Love/"/>
     <id>http://yoursite.com/2018/03/21/About Love/</id>
     <published>2018-03-21T12:59:35.000Z</published>
-    <updated>2018-06-03T09:07:40.788Z</updated>
+    <updated>2018-06-03T15:13:37.341Z</updated>
     
-    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><blockquote>
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><blockquote>
 <p>原来那些大名鼎鼎的情话都不是说给大名鼎鼎的直子小姐的。</p>
 </blockquote>
 <p>　　从17岁生日那年同学送的那三本《1Q84》开始接触村上，渐渐被他的文笔吸引，于是买了许许多多他的书。但是却一直没有触及《挪威的森林》，倒也不是因为我不想读，简单来说，以前读书就是为了装逼。入坑之后才明白，文学真是个奇妙的东西。</p>
@@ -40,20 +40,20 @@
 <p>　　其实选择了一个人，不顾一切珍惜眼前就已经好了，何苦想那么多呢，纵令听其自然罢。</p>
 <p>　　自然，也不能被伪善之人表面的深情所欺骗。</p>
 
-        <div id="aplayer-YtDAodVm" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+        <div id="aplayer-haouQVJf" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
             <pre class="aplayer-lrc-content"></pre>
         </div>
         <script>
           var ap = new APlayer({
-            element: document.getElementById("aplayer-YtDAodVm"),
+            element: document.getElementById("aplayer-haouQVJf"),
             narrow: false,
             autoplay: true,
             showlrc: false,
             music: {
-              title: "奇妙能力歌",
-              author: "陈粒",
-              url: "http://m10.music.126.net/20180603173218/b60f5e8f4fc6160c10d7019673535408/ymusic/63e6/c919/3a38/0921acd6c5db882c7157c442235de51e.mp3",
-              pic: "http://p1.music.126.net/VuJFMbXzpAProbJPoXLv7g==/7721870161993398.jpg?param=130y130",
+              title: "红玫瑰",
+              author: "陈奕迅",
+              url: "http://m10.music.126.net/20180603233735/a2a8fba1af3e91819e428f809a9fdc0f/ymusic/6cf9/3003/9e72/d9dab50f0aa723753c5652dd73a04daf.mp3",
+              pic: "http://p1.music.126.net/o_OjL_NZNoeog9fIjBXAyw==/18782957139233959.jpg",
               lrc: ""
             }
           });
