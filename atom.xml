@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-06-06T16:02:55.377Z</updated>
+  <updated>2018-06-09T15:28:03.128Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,61 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>消息转发机制</title>
+    <link href="http://yoursite.com/2018/06/07/About_Msg/"/>
+    <id>http://yoursite.com/2018/06/07/About_Msg/</id>
+    <published>2018-06-07T15:49:55.000Z</published>
+    <updated>2018-06-09T15:28:03.128Z</updated>
+    
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>​    消息转发机制是运行时里的一个重要组成部分，它完美的体现了 Objc 动态语言的特性，它可能没有消息发送机制那么有名，但它是我们掌握 Runtime 黑魔法之路上不可或缺的一部分。</p>
+<a id="more"></a>
+<h1 id="在这之前"><a href="#在这之前" class="headerlink" title="在这之前"></a>在这之前</h1><h2 id="消息发送"><a href="#消息发送" class="headerlink" title="消息发送"></a>消息发送</h2><p>​    我<a href="http://luoyangcan.github.io/2017/09/02/AboutRuntime/" target="_blank" rel="external">之前的关于消息发送的文章</a>里说过，iOS 在对象上调用方法其实是在给某个对象发送一条消息，消息有<code>名称(id)</code>和<code>选择子(selector)</code>。</p>
+<p>​    在 objc 中的一个简单的语法，例如</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//main.m</span></div><div class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[])&#123;</div><div class="line">    <span class="keyword">@autoreleasepool</span>&#123;</div><div class="line">        Person * p = [[Person alloc] init];</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在底层都会变成</p>
+<p><img src="/img/objc_msgsend.jpg" alt="底层"></p>
+<p>没错，这个上镜率最高的<code>objc_msgSend()</code>函数就是我们消息发送界的带明星了！它就是我们消息发送机制的核心！</p>
+<h2 id="消息传递"><a href="#消息传递" class="headerlink" title="消息传递"></a>消息传递</h2><p><code>objc_msgSend()</code> 会依据接受者（调用方法的对象）的类型和选择子（方法名）来调用适当的方法。</p>
+<p>接收者会根据 isa 指针找到自己所属的类，然后在所属类的”方法列表“（method list）中从上向下遍历。如果能找到与选择子名称相符的方法， IMP 指针会跳转到方法的实现代码。。</p>
+<p>如果找不到与选择子名称相符的方法，接收者会根据所属类的 superClass 指针，沿着类的继承体系继续向上查找（向父类查找），如果能找到与名称相符的方法，  IMP 指针就跳转到方法的实现代码，并调用这个方法。</p>
+<p>如果在继承体系中还是找不到与选择子相符的方法，此时就会执行”消息转发（message forwarding）“操作。</p>
+<h1 id="消息转发"><a href="#消息转发" class="headerlink" title="消息转发"></a>消息转发</h1><p>​    我们可以发现，有时候在编译期，向对象或者类对象发送了无法解读的消息，并不会有报错的情况发生，这是因为我们之前也说过， objc是一门动态语言，它可以在类或者元类中添加新的方法，所以编译器在编译期还无法确定是否真的没有这个方法。</p>
+<p>​    所以当我们写出了一个无法解读的方法的时候，我们可以在消息转发的过程中挽救一下。</p>
+<p>消息转发基本有下面几个流程：</p>
+<ul>
+<li>动态方法解析：先找接受者属于的类，看能不能动态添加这个方法来处理，如果能，消息转发结束。</li>
+<li>重定向：找接受者问问有没有其他对象能处理，如果有，把消息转给那个对象，消息转发结束。</li>
+<li>消息签名：找开发者要一个消息签名，如果给nil，消息转发结束。</li>
+<li>完整的消息转发：以上流程都不管用的时候，只能把该消息相关的所有细节封装到一个 NSInvocation 对象。再问接受者一次，如果还是不能处理，那消息转发也无能为力了</li>
+</ul>
+<h2 id="动态方法解析"><a href="#动态方法解析" class="headerlink" title="动态方法解析"></a>动态方法解析</h2><p>对象在收到无法解读的消息后，首先调用其所属类的这个类方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">+ (BOOL)resolveInstanceMethod:(SEL)selector</div><div class="line">    //selector : 消息转发里的未知选择子</div><div class="line">    //返回YES结束消息转发</div><div class="line">    //返回NO找后备接受者</div></pre></td></tr></table></figure>
+<p>如果未知消息是一个了类方法而非实例方法，则会调用<code>resolveClassMethod</code>方法</p>
+<h2 id="重定向"><a href="#重定向" class="headerlink" title="重定向"></a>重定向</h2><p>动态解析失败，则调用这个方法</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">id</span>)forwardingTargetForSelector:(SEL)selector</div><div class="line">    <span class="comment">//返回一个能响应该选择子的 “备胎”对象</span></div></pre></td></tr></table></figure>
+<p>##消息签名</p>
+<p>“备胎”搞不定，这个方法就要被包装成一个<code>NSInvocation</code>对象，在这里要先返回一个消息签名</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">- (<span class="built_in">NSMethodSignature</span> *)methodSignatureForSelector:(SEL)aSelector</div><div class="line">    <span class="comment">//NSMethodSignature : 该sleector对应的方法签名</span></div></pre></td></tr></table></figure>
+<h2 id="完整的消息转发"><a href="#完整的消息转发" class="headerlink" title="完整的消息转发"></a>完整的消息转发</h2><p>给最后一次机会处理这个方法，如果不行就没了</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)forwardInvocation:(<span class="built_in">NSInvocation</span> *)invocation</div><div class="line">    <span class="comment">//invocation : 封装了与那条尚未处理消息相关的所有细节对象</span></div></pre></td></tr></table></figure>
+<p>这里可以在消息触发前，先改变消息内容，比如追加一个参数或者将一个消息翻译成另一个消息等，<code>forwardInvocation:</code>方法还可以对不同的消息提供同样的响应，这一切都取决于方法的具体实现。</p>
+<p>总的来说，消息转发可以简单的用以下的流程图展现：</p>
+<p><img src="/img/消息转发.png" alt="消息转发"></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>​    当我们掌握了 Runtime 的消息发送和消息转发之后，我们就可以运用黑魔法做很多事情啦！至于黑魔法的实际运用，我可能会在以后的博文中再写。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;​    消息转发机制是运行时里的一个重要组成部分，它完美的体现了 Objc 动态语言的特性，它可能没有消息发送机制那么有名，但它是我们掌握 Runtime 黑魔法之路上不可或缺的一部分。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="iOS" scheme="http://yoursite.com/tags/iOS/"/>
+    
+  </entry>
   
   <entry>
     <title>挪威的森林</title>

@@ -94,7 +94,7 @@
 
 
 
-  <meta name="keywords" content="iOS,iPhoneX," />
+  <meta name="keywords" content="iOS," />
 
 
 
@@ -107,21 +107,21 @@
 
 
 
-<meta name="description" content="前言iPhone X 出来也有一段时间了，苹果官方和各位大神也对于 iPhone X 的刘海打理给出了很多方法。 我因个人项目在 iPhone X 的环境下运行时界面千奇百怪 (估计是代码能力太菜 - -) 所以也打算蹭一波热度，把自己对于 iPhone X 适配的一点小小的经历分享出来 ​">
-<meta name="keywords" content="iOS,iPhoneX">
+<meta name="description" content="​    消息转发机制是运行时里的一个重要组成部分，它完美的体现了 Objc 动态语言的特性，它可能没有消息发送机制那么有名，但它是我们掌握 Runtime 黑魔法之路上不可或缺的一部分。">
+<meta name="keywords" content="iOS">
 <meta property="og:type" content="article">
-<meta property="og:title" content="探寻 iPhone X 适配">
-<meta property="og:url" content="http://yoursite.com/2017/11/16/about-iPhoneX/index.html">
+<meta property="og:title" content="消息转发机制">
+<meta property="og:url" content="http://yoursite.com/2018/06/07/About_Msg/index.html">
 <meta property="og:site_name" content="阿灿的大树洞">
-<meta property="og:description" content="前言iPhone X 出来也有一段时间了，苹果官方和各位大神也对于 iPhone X 的刘海打理给出了很多方法。 我因个人项目在 iPhone X 的环境下运行时界面千奇百怪 (估计是代码能力太菜 - -) 所以也打算蹭一波热度，把自己对于 iPhone X 适配的一点小小的经历分享出来 ​">
+<meta property="og:description" content="​    消息转发机制是运行时里的一个重要组成部分，它完美的体现了 Objc 动态语言的特性，它可能没有消息发送机制那么有名，但它是我们掌握 Runtime 黑魔法之路上不可或缺的一部分。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/img/圆角遮挡.png">
-<meta property="og:image" content="http://yoursite.com/img/SafeArea.png">
-<meta property="og:updated_time" content="2018-06-05T16:51:12.192Z">
+<meta property="og:image" content="http://yoursite.com/img/objc_msgsend.jpg">
+<meta property="og:image" content="http://yoursite.com/img/消息转发.png">
+<meta property="og:updated_time" content="2018-06-09T15:28:03.128Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="探寻 iPhone X 适配">
-<meta name="twitter:description" content="前言iPhone X 出来也有一段时间了，苹果官方和各位大神也对于 iPhone X 的刘海打理给出了很多方法。 我因个人项目在 iPhone X 的环境下运行时界面千奇百怪 (估计是代码能力太菜 - -) 所以也打算蹭一波热度，把自己对于 iPhone X 适配的一点小小的经历分享出来 ​">
-<meta name="twitter:image" content="http://yoursite.com/img/圆角遮挡.png">
+<meta name="twitter:title" content="消息转发机制">
+<meta name="twitter:description" content="​    消息转发机制是运行时里的一个重要组成部分，它完美的体现了 Objc 动态语言的特性，它可能没有消息发送机制那么有名，但它是我们掌握 Runtime 黑魔法之路上不可或缺的一部分。">
+<meta name="twitter:image" content="http://yoursite.com/img/objc_msgsend.jpg">
 
 
 
@@ -151,13 +151,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/11/16/about-iPhoneX/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/06/07/About_Msg/"/>
 
 
 
 
 
-  <title>探寻 iPhone X 适配 | 阿灿的大树洞</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>消息转发机制 | 阿灿的大树洞</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -284,7 +284,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/16/about-iPhoneX/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/07/About_Msg/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Rues">
@@ -301,7 +301,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">探寻 iPhone X 适配</h1>
+          <h1 class="post-title" itemprop="name headline">消息转发机制</h1>
         
 
         <div class="post-meta">
@@ -313,8 +313,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-16T19:08:01+08:00">
-                2017-11-16
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-07T23:49:55+08:00">
+                2018-06-07
               </time>
             
 
@@ -351,31 +351,41 @@
       
 
       
-        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>iPhone X 出来也有一段时间了，苹果官方和各位大神也对于 iPhone X 的刘海打理给出了很多方法。</p>
-<p>我因个人项目在 iPhone X 的环境下运行时界面千奇百怪 (估计是代码能力太菜 - -)</p>
-<p>所以也打算蹭一波热度，把自己对于 iPhone X 适配的一点小小的经历分享出来</p>
-<p>​    <a id="more"></a></p>
-<h1 id="关于iPhone-X"><a href="#关于iPhone-X" class="headerlink" title="关于iPhone X"></a>关于iPhone X</h1><h2 id="一个有刘海的屏幕"><a href="#一个有刘海的屏幕" class="headerlink" title="一个有刘海的屏幕"></a>一个有刘海的屏幕</h2><p>iPhone X 的机型的屏幕尺寸达到了 5.8英寸，而机子的宽度和 iPhone 8 一致，在垂直方向上却多出了 145pt，这意味着可以显示的界面又一次变“长”了。</p>
-<p>值得注意的是 iPhone X 的顶部是有圆角和刘海的，所以我们在设计页面的时候还需要避免内容被顶部的圆角还有刘海挡住。</p>
-<p><img src="/img/圆角遮挡.png" alt="CGRect(0,0,200,200)"></p>
-<h2 id="全新的界面理念"><a href="#全新的界面理念" class="headerlink" title="全新的界面理念"></a>全新的界面理念</h2><h3 id="Status-Bar"><a href="#Status-Bar" class="headerlink" title="Status Bar"></a>Status Bar</h3><p>iPhone X 的 Status Bar 高度比之前的 20pt 高了 22pt。也就是说现在的高度为 44pt。(还好我没把之前的项目写死在 20pt，不然估计现在心态崩了)</p>
-<h3 id="屏幕底部"><a href="#屏幕底部" class="headerlink" title="屏幕底部"></a>屏幕底部</h3><p>自从 iPhone X 没有了 Home 键，苹果在底部划了一个 34pt 高的区域( Home Indicator )来预留给底部手势操作</p>
-<p>如果我们的底部是 TabBar，那 Home Indicator 会延展你的 barTintColor，如果没有的话就会显示为透明的。</p>
-<h3 id="SafeArea"><a href="#SafeArea" class="headerlink" title="SafeArea"></a>SafeArea</h3><p>iOS 11 废弃了 iOS 7 之后出现的 topLayoutGuide/bottomLayoutGuide，而用 SafeLayoutGuide 取而代之。</p>
-<p>我们的 UI 都应该在 SafeArea 之内，以便不被各种 bar(NavigationBar、ToolBar、Tabbar、StatusBar)遮挡</p>
-<p><img src="/img/SafeArea.png" alt="SafeArea"></p>
-<p>若我们使用 AutoLayout，并开启了 safeAreaLayoutGuide，布局会自动加上 safeLayoutGuide，也就是自动将我们的布局限制在 SafeArea 之中。当然，我们也可以使用 self.additionalSafeAreaInsets 来增加 Guide 的区域。</p>
-<p>在我们用 Masonry 进行布局时，亦需要进行适配，我们可以把</p>
-<p><code>make.bottom.equalTo(self.view.mas_bottom;)</code></p>
-<p>和</p>
-<p><code>make.top.equalTo(self.view.mas_top);</code></p>
-<p>改为</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">if (@available (iOS 11.0, *))&#123;</div><div class="line">  make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);</div><div class="line">  make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideTop);</div><div class="line">&#125;else &#123;</div><div class="line">  make.bottom.equalTo(self.view.mas_bottom);</div><div class="line">  make.bottom.equalTo(self.view.mas_top);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>图片的 Aspect Ratio 的表现也不同了</p>
-<p>因为刘海两侧的区域都能响应手势，所以最好不要和自己界面的手势发生冲突。</p>
-<p>如果我们使用 Images.xcassets 文件夹下的 LaunchImage 作为启动图，就必须单独制作一张 1125px × 2436px (375pt × 812pt @3x) 图片，不然沿用 iPhone 7 启动图尺寸会出现上下有黑色区域的情况。</p>
-<p>如果我们以一个界面启动，那我们也需要重新做一张图来避免图片因为屏幕大小改变而拉伸过度。</p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://tech.meituan.com/iPhoneX%E5%88%98%E6%B5%B7%E6%89%93%E7%90%86%E6%8C%87%E5%8C%97.html" target="_blank" rel="external">美团点评技术团队 - iPhone X 刘海打理指北</a></p>
+        <p>​    消息转发机制是运行时里的一个重要组成部分，它完美的体现了 Objc 动态语言的特性，它可能没有消息发送机制那么有名，但它是我们掌握 Runtime 黑魔法之路上不可或缺的一部分。</p>
+<a id="more"></a>
+<h1 id="在这之前"><a href="#在这之前" class="headerlink" title="在这之前"></a>在这之前</h1><h2 id="消息发送"><a href="#消息发送" class="headerlink" title="消息发送"></a>消息发送</h2><p>​    我<a href="http://luoyangcan.github.io/2017/09/02/AboutRuntime/" target="_blank" rel="external">之前的关于消息发送的文章</a>里说过，iOS 在对象上调用方法其实是在给某个对象发送一条消息，消息有<code>名称(id)</code>和<code>选择子(selector)</code>。</p>
+<p>​    在 objc 中的一个简单的语法，例如</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//main.m</span></div><div class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[])&#123;</div><div class="line">    <span class="keyword">@autoreleasepool</span>&#123;</div><div class="line">        Person * p = [[Person alloc] init];</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在底层都会变成</p>
+<p><img src="/img/objc_msgsend.jpg" alt="底层"></p>
+<p>没错，这个上镜率最高的<code>objc_msgSend()</code>函数就是我们消息发送界的带明星了！它就是我们消息发送机制的核心！</p>
+<h2 id="消息传递"><a href="#消息传递" class="headerlink" title="消息传递"></a>消息传递</h2><p><code>objc_msgSend()</code> 会依据接受者（调用方法的对象）的类型和选择子（方法名）来调用适当的方法。</p>
+<p>接收者会根据 isa 指针找到自己所属的类，然后在所属类的”方法列表“（method list）中从上向下遍历。如果能找到与选择子名称相符的方法， IMP 指针会跳转到方法的实现代码。。</p>
+<p>如果找不到与选择子名称相符的方法，接收者会根据所属类的 superClass 指针，沿着类的继承体系继续向上查找（向父类查找），如果能找到与名称相符的方法，  IMP 指针就跳转到方法的实现代码，并调用这个方法。</p>
+<p>如果在继承体系中还是找不到与选择子相符的方法，此时就会执行”消息转发（message forwarding）“操作。</p>
+<h1 id="消息转发"><a href="#消息转发" class="headerlink" title="消息转发"></a>消息转发</h1><p>​    我们可以发现，有时候在编译期，向对象或者类对象发送了无法解读的消息，并不会有报错的情况发生，这是因为我们之前也说过， objc是一门动态语言，它可以在类或者元类中添加新的方法，所以编译器在编译期还无法确定是否真的没有这个方法。</p>
+<p>​    所以当我们写出了一个无法解读的方法的时候，我们可以在消息转发的过程中挽救一下。</p>
+<p>消息转发基本有下面几个流程：</p>
+<ul>
+<li>动态方法解析：先找接受者属于的类，看能不能动态添加这个方法来处理，如果能，消息转发结束。</li>
+<li>重定向：找接受者问问有没有其他对象能处理，如果有，把消息转给那个对象，消息转发结束。</li>
+<li>消息签名：找开发者要一个消息签名，如果给nil，消息转发结束。</li>
+<li>完整的消息转发：以上流程都不管用的时候，只能把该消息相关的所有细节封装到一个 NSInvocation 对象。再问接受者一次，如果还是不能处理，那消息转发也无能为力了</li>
+</ul>
+<h2 id="动态方法解析"><a href="#动态方法解析" class="headerlink" title="动态方法解析"></a>动态方法解析</h2><p>对象在收到无法解读的消息后，首先调用其所属类的这个类方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">+ (BOOL)resolveInstanceMethod:(SEL)selector</div><div class="line">    //selector : 消息转发里的未知选择子</div><div class="line">    //返回YES结束消息转发</div><div class="line">    //返回NO找后备接受者</div></pre></td></tr></table></figure>
+<p>如果未知消息是一个了类方法而非实例方法，则会调用<code>resolveClassMethod</code>方法</p>
+<h2 id="重定向"><a href="#重定向" class="headerlink" title="重定向"></a>重定向</h2><p>动态解析失败，则调用这个方法</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">id</span>)forwardingTargetForSelector:(SEL)selector</div><div class="line">    <span class="comment">//返回一个能响应该选择子的 “备胎”对象</span></div></pre></td></tr></table></figure>
+<p>##消息签名</p>
+<p>“备胎”搞不定，这个方法就要被包装成一个<code>NSInvocation</code>对象，在这里要先返回一个消息签名</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">- (<span class="built_in">NSMethodSignature</span> *)methodSignatureForSelector:(SEL)aSelector</div><div class="line">    <span class="comment">//NSMethodSignature : 该sleector对应的方法签名</span></div></pre></td></tr></table></figure>
+<h2 id="完整的消息转发"><a href="#完整的消息转发" class="headerlink" title="完整的消息转发"></a>完整的消息转发</h2><p>给最后一次机会处理这个方法，如果不行就没了</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)forwardInvocation:(<span class="built_in">NSInvocation</span> *)invocation</div><div class="line">    <span class="comment">//invocation : 封装了与那条尚未处理消息相关的所有细节对象</span></div></pre></td></tr></table></figure>
+<p>这里可以在消息触发前，先改变消息内容，比如追加一个参数或者将一个消息翻译成另一个消息等，<code>forwardInvocation:</code>方法还可以对不同的消息提供同样的响应，这一切都取决于方法的具体实现。</p>
+<p>总的来说，消息转发可以简单的用以下的流程图展现：</p>
+<p><img src="/img/消息转发.png" alt="消息转发"></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>​    当我们掌握了 Runtime 的消息发送和消息转发之后，我们就可以运用黑魔法做很多事情啦！至于黑魔法的实际运用，我可能会在以后的博文中再写。</p>
 
       
     </div>
@@ -395,8 +405,6 @@
           
             <a href="/tags/iOS/" rel="tag"># iOS</a>
           
-            <a href="/tags/iPhoneX/" rel="tag"># iPhoneX</a>
-          
         </div>
       
 
@@ -408,8 +416,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/10/18/about-property/" rel="next" title="关于@property">
-                <i class="fa fa-chevron-left"></i> 关于@property
+              <a href="/2018/03/21/About Love/" rel="next" title="挪威的森林">
+                <i class="fa fa-chevron-left"></i> 挪威的森林
               </a>
             
           </div>
@@ -417,10 +425,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/03/21/About Love/" rel="prev" title="挪威的森林">
-                挪威的森林 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -588,7 +592,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#关于iPhone-X"><span class="nav-number">2.</span> <span class="nav-text">关于iPhone X</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一个有刘海的屏幕"><span class="nav-number">2.1.</span> <span class="nav-text">一个有刘海的屏幕</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#全新的界面理念"><span class="nav-number">2.2.</span> <span class="nav-text">全新的界面理念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Status-Bar"><span class="nav-number">2.2.1.</span> <span class="nav-text">Status Bar</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#屏幕底部"><span class="nav-number">2.2.2.</span> <span class="nav-text">屏幕底部</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SafeArea"><span class="nav-number">2.2.3.</span> <span class="nav-text">SafeArea</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他"><span class="nav-number">2.2.4.</span> <span class="nav-text">其他</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#在这之前"><span class="nav-number">1.</span> <span class="nav-text">在这之前</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#消息发送"><span class="nav-number">1.1.</span> <span class="nav-text">消息发送</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息传递"><span class="nav-number">1.2.</span> <span class="nav-text">消息传递</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#消息转发"><span class="nav-number">2.</span> <span class="nav-text">消息转发</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#动态方法解析"><span class="nav-number">2.1.</span> <span class="nav-text">动态方法解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重定向"><span class="nav-number">2.2.</span> <span class="nav-text">重定向</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#完整的消息转发"><span class="nav-number">2.3.</span> <span class="nav-text">完整的消息转发</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
