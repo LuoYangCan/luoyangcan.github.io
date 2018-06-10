@@ -117,7 +117,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/img/objc_msgsend.jpg">
 <meta property="og:image" content="http://yoursite.com/img/消息转发.png">
-<meta property="og:updated_time" content="2018-06-09T15:28:03.128Z">
+<meta property="og:updated_time" content="2018-06-10T07:57:52.043Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="消息转发机制">
 <meta name="twitter:description" content="​    消息转发机制是运行时里的一个重要组成部分，它完美的体现了 Objc 动态语言的特性，它可能没有消息发送机制那么有名，但它是我们掌握 Runtime 黑魔法之路上不可或缺的一部分。">
@@ -377,8 +377,8 @@
 <p>如果未知消息是一个了类方法而非实例方法，则会调用<code>resolveClassMethod</code>方法</p>
 <h2 id="重定向"><a href="#重定向" class="headerlink" title="重定向"></a>重定向</h2><p>动态解析失败，则调用这个方法</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">id</span>)forwardingTargetForSelector:(SEL)selector</div><div class="line">    <span class="comment">//返回一个能响应该选择子的 “备胎”对象</span></div></pre></td></tr></table></figure>
-<p>##消息签名</p>
-<p>“备胎”搞不定，这个方法就要被包装成一个<code>NSInvocation</code>对象，在这里要先返回一个消息签名</p>
+<p>在这个方法我们可以实现偷天换日，把这个消息发到其他类去实现。</p>
+<h2 id="消息签名"><a href="#消息签名" class="headerlink" title="消息签名"></a>消息签名</h2><p>“备胎”搞不定，这个方法就要被包装成一个<code>NSInvocation</code>对象，在这里要先返回一个消息签名</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">- (<span class="built_in">NSMethodSignature</span> *)methodSignatureForSelector:(SEL)aSelector</div><div class="line">    <span class="comment">//NSMethodSignature : 该sleector对应的方法签名</span></div></pre></td></tr></table></figure>
 <h2 id="完整的消息转发"><a href="#完整的消息转发" class="headerlink" title="完整的消息转发"></a>完整的消息转发</h2><p>给最后一次机会处理这个方法，如果不行就没了</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)forwardInvocation:(<span class="built_in">NSInvocation</span> *)invocation</div><div class="line">    <span class="comment">//invocation : 封装了与那条尚未处理消息相关的所有细节对象</span></div></pre></td></tr></table></figure>
@@ -592,7 +592,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#在这之前"><span class="nav-number">1.</span> <span class="nav-text">在这之前</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#消息发送"><span class="nav-number">1.1.</span> <span class="nav-text">消息发送</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息传递"><span class="nav-number">1.2.</span> <span class="nav-text">消息传递</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#消息转发"><span class="nav-number">2.</span> <span class="nav-text">消息转发</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#动态方法解析"><span class="nav-number">2.1.</span> <span class="nav-text">动态方法解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重定向"><span class="nav-number">2.2.</span> <span class="nav-text">重定向</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#完整的消息转发"><span class="nav-number">2.3.</span> <span class="nav-text">完整的消息转发</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#在这之前"><span class="nav-number">1.</span> <span class="nav-text">在这之前</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#消息发送"><span class="nav-number">1.1.</span> <span class="nav-text">消息发送</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息传递"><span class="nav-number">1.2.</span> <span class="nav-text">消息传递</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#消息转发"><span class="nav-number">2.</span> <span class="nav-text">消息转发</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#动态方法解析"><span class="nav-number">2.1.</span> <span class="nav-text">动态方法解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重定向"><span class="nav-number">2.2.</span> <span class="nav-text">重定向</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息签名"><span class="nav-number">2.3.</span> <span class="nav-text">消息签名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#完整的消息转发"><span class="nav-number">2.4.</span> <span class="nav-text">完整的消息转发</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>

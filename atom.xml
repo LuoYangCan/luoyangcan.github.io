@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-06-09T15:28:03.128Z</updated>
+  <updated>2018-06-10T07:57:52.043Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2018/06/07/About_Msg/"/>
     <id>http://yoursite.com/2018/06/07/About_Msg/</id>
     <published>2018-06-07T15:49:55.000Z</published>
-    <updated>2018-06-09T15:28:03.128Z</updated>
+    <updated>2018-06-10T07:57:52.043Z</updated>
     
     <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>​    消息转发机制是运行时里的一个重要组成部分，它完美的体现了 Objc 动态语言的特性，它可能没有消息发送机制那么有名，但它是我们掌握 Runtime 黑魔法之路上不可或缺的一部分。</p>
 <a id="more"></a>
@@ -48,8 +48,8 @@
 <p>如果未知消息是一个了类方法而非实例方法，则会调用<code>resolveClassMethod</code>方法</p>
 <h2 id="重定向"><a href="#重定向" class="headerlink" title="重定向"></a>重定向</h2><p>动态解析失败，则调用这个方法</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">id</span>)forwardingTargetForSelector:(SEL)selector</div><div class="line">    <span class="comment">//返回一个能响应该选择子的 “备胎”对象</span></div></pre></td></tr></table></figure>
-<p>##消息签名</p>
-<p>“备胎”搞不定，这个方法就要被包装成一个<code>NSInvocation</code>对象，在这里要先返回一个消息签名</p>
+<p>在这个方法我们可以实现偷天换日，把这个消息发到其他类去实现。</p>
+<h2 id="消息签名"><a href="#消息签名" class="headerlink" title="消息签名"></a>消息签名</h2><p>“备胎”搞不定，这个方法就要被包装成一个<code>NSInvocation</code>对象，在这里要先返回一个消息签名</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">- (<span class="built_in">NSMethodSignature</span> *)methodSignatureForSelector:(SEL)aSelector</div><div class="line">    <span class="comment">//NSMethodSignature : 该sleector对应的方法签名</span></div></pre></td></tr></table></figure>
 <h2 id="完整的消息转发"><a href="#完整的消息转发" class="headerlink" title="完整的消息转发"></a>完整的消息转发</h2><p>给最后一次机会处理这个方法，如果不行就没了</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)forwardInvocation:(<span class="built_in">NSInvocation</span> *)invocation</div><div class="line">    <span class="comment">//invocation : 封装了与那条尚未处理消息相关的所有细节对象</span></div></pre></td></tr></table></figure>
