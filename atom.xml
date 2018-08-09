@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-07-15T07:50:36.721Z</updated>
+  <updated>2018-06-10T07:57:52.043Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,29 +14,6 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>football</title>
-    <link href="http://yoursite.com/2018/07/15/football/"/>
-    <id>http://yoursite.com/2018/07/15/football/</id>
-    <published>2018-07-15T07:49:42.000Z</published>
-    <updated>2018-07-15T07:50:36.721Z</updated>
-    
-    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><blockquote>
-<p>赌博从没有什么输赢，当你开始的时候，就已经输了。</p>
-</blockquote>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot; cla
-    
-    </summary>
-    
-    
-      <category term="&lt;随想, 世界杯&gt;" scheme="http://yoursite.com/tags/%E9%9A%8F%E6%83%B3-%E4%B8%96%E7%95%8C%E6%9D%AF/"/>
-    
-  </entry>
   
   <entry>
     <title>消息转发机制</title>
@@ -98,7 +75,7 @@
     <link href="http://yoursite.com/2018/03/21/About%20Love/"/>
     <id>http://yoursite.com/2018/03/21/About Love/</id>
     <published>2018-03-21T12:59:35.000Z</published>
-    <updated>2018-06-09T15:44:45.295Z</updated>
+    <updated>2018-08-09T16:30:54.407Z</updated>
     
     <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><blockquote>
 <p>原来那些大名鼎鼎的情话都不是说给大名鼎鼎的直子小姐的。</p>
@@ -117,21 +94,20 @@
 </blockquote>
 <p>　　渡边那时同时爱着两个人，想来也是非常纠结的事情，现在看来就是所谓的渣男把。但是其实爱一个人是无私的，当你毫无保留的爱一个人的时候，会像渡边一样处处想着直子，像绿子一样静静等着渡边，像初美那样一直忠于永泽，也许我们现在的人太过于急躁，都不曾去追寻真正的爱情，太快就因为一个小小的错误而否定对方。被营销号和大V们洗脑，被快节奏的生活击溃，整日抱怨找不到真爱。</p>
 <p>　　其实选择了一个人，不顾一切珍惜眼前就已经好了，何苦想那么多呢，纵令听其自然罢。</p>
-<p>　　自然，也不能被伪善之人表面的深情所欺骗。</p>
 
-        <div id="aplayer-TabxDlfI" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+        <div id="aplayer-wOggMwDK" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
             <pre class="aplayer-lrc-content"></pre>
         </div>
         <script>
           var ap = new APlayer({
-            element: document.getElementById("aplayer-TabxDlfI"),
+            element: document.getElementById("aplayer-wOggMwDK"),
             narrow: false,
             autoplay: true,
             showlrc: false,
             music: {
               title: "奇妙能力歌",
               author: "陈粒",
-              url: "http://m10.music.126.net/20180610000902/44918fc23fff46f6aedaede7466b7348/ymusic/63e6/c919/3a38/0921acd6c5db882c7157c442235de51e.mp3",
+              url: "http://www.ytmp3.cn/down/47208.mp3",
               pic: "http://p1.music.126.net/VuJFMbXzpAProbJPoXLv7g==/7721870161993398.jpg",
               lrc: ""
             }
