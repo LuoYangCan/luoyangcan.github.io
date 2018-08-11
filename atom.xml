@@ -80,22 +80,22 @@
     <link href="http://yoursite.com/2018/06/07/About_Msg/"/>
     <id>http://yoursite.com/2018/06/07/About_Msg/</id>
     <published>2018-06-07T15:49:55.000Z</published>
-    <updated>2018-06-10T07:57:52.043Z</updated>
+    <updated>2018-08-11T18:52:56.075Z</updated>
     
-    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>​    消息转发机制是运行时里的一个重要组成部分，它完美的体现了 Objc 动态语言的特性，它可能没有消息发送机制那么有名，但它是我们掌握 Runtime 黑魔法之路上不可或缺的一部分。</p>
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>　　消息转发机制是运行时里的一个重要组成部分，它完美的体现了 Objc 动态语言的特性，它可能没有消息发送机制那么有名，但它是我们掌握 Runtime 黑魔法之路上不可或缺的一部分。</p>
 <a id="more"></a>
-<h1 id="在这之前"><a href="#在这之前" class="headerlink" title="在这之前"></a>在这之前</h1><h2 id="消息发送"><a href="#消息发送" class="headerlink" title="消息发送"></a>消息发送</h2><p>​    我<a href="http://luoyangcan.github.io/2017/09/02/AboutRuntime/" target="_blank" rel="external">之前的关于消息发送的文章</a>里说过，iOS 在对象上调用方法其实是在给某个对象发送一条消息，消息有<code>名称(id)</code>和<code>选择子(selector)</code>。</p>
-<p>​    在 objc 中的一个简单的语法，例如</p>
+<h1 id="在这之前"><a href="#在这之前" class="headerlink" title="在这之前"></a>在这之前</h1><h2 id="消息发送"><a href="#消息发送" class="headerlink" title="消息发送"></a>消息发送</h2><p>　　我<a href="http://luoyangcan.github.io/2017/09/02/AboutRuntime/" target="_blank" rel="external">之前的关于消息发送的文章</a>里说过，iOS 在对象上调用方法其实是在给某个对象发送一条消息，消息有<code>名称(id)</code>和<code>选择子(selector)</code>。</p>
+<p>　　在 objc 中的一个简单的语法，例如</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//main.m</span></div><div class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[])&#123;</div><div class="line">    <span class="keyword">@autoreleasepool</span>&#123;</div><div class="line">        Person * p = [[Person alloc] init];</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>在底层都会变成</p>
 <p><img src="/img/objc_msgsend.jpg" alt="底层"></p>
-<p>没错，这个上镜率最高的<code>objc_msgSend()</code>函数就是我们消息发送界的带明星了！它就是我们消息发送机制的核心！</p>
-<h2 id="消息传递"><a href="#消息传递" class="headerlink" title="消息传递"></a>消息传递</h2><p><code>objc_msgSend()</code> 会依据接受者（调用方法的对象）的类型和选择子（方法名）来调用适当的方法。</p>
-<p>接收者会根据 isa 指针找到自己所属的类，然后在所属类的”方法列表“（method list）中从上向下遍历。如果能找到与选择子名称相符的方法， IMP 指针会跳转到方法的实现代码。。</p>
-<p>如果找不到与选择子名称相符的方法，接收者会根据所属类的 superClass 指针，沿着类的继承体系继续向上查找（向父类查找），如果能找到与名称相符的方法，  IMP 指针就跳转到方法的实现代码，并调用这个方法。</p>
-<p>如果在继承体系中还是找不到与选择子相符的方法，此时就会执行”消息转发（message forwarding）“操作。</p>
-<h1 id="消息转发"><a href="#消息转发" class="headerlink" title="消息转发"></a>消息转发</h1><p>​    我们可以发现，有时候在编译期，向对象或者类对象发送了无法解读的消息，并不会有报错的情况发生，这是因为我们之前也说过， objc是一门动态语言，它可以在类或者元类中添加新的方法，所以编译器在编译期还无法确定是否真的没有这个方法。</p>
-<p>​    所以当我们写出了一个无法解读的方法的时候，我们可以在消息转发的过程中挽救一下。</p>
+<p>　　没错，这个上镜率最高的<code>objc_msgSend()</code>函数就是我们消息发送界的带明星了！它就是我们消息发送机制的核心！</p>
+<h2 id="消息传递"><a href="#消息传递" class="headerlink" title="消息传递"></a>消息传递</h2><p>　　<code>objc_msgSend()</code> 会依据接受者（调用方法的对象）的类型和选择子（方法名）来调用适当的方法。</p>
+<p>　　接收者会根据 isa 指针找到自己所属的类，然后在所属类的”方法列表“（method list）中从上向下遍历。如果能找到与选择子名称相符的方法， IMP 指针会跳转到方法的实现代码。。</p>
+<p>　　如果找不到与选择子名称相符的方法，接收者会根据所属类的 superClass 指针，沿着类的继承体系继续向上查找（向父类查找），如果能找到与名称相符的方法，  IMP 指针就跳转到方法的实现代码，并调用这个方法。</p>
+<p>　　如果在继承体系中还是找不到与选择子相符的方法，此时就会执行”消息转发（message forwarding）“操作。</p>
+<h1 id="消息转发"><a href="#消息转发" class="headerlink" title="消息转发"></a>消息转发</h1><p>　　我们可以发现，有时候在编译期，向对象或者类对象发送了无法解读的消息，并不会有报错的情况发生，这是因为我们之前也说过， objc是一门动态语言，它可以在类或者元类中添加新的方法，所以编译器在编译期还无法确定是否真的没有这个方法。</p>
+<p>　　所以当我们写出了一个无法解读的方法的时候，我们可以在消息转发的过程中挽救一下。</p>
 <p>消息转发基本有下面几个流程：</p>
 <ul>
 <li>动态方法解析：先找接受者属于的类，看能不能动态添加这个方法来处理，如果能，消息转发结束。</li>
@@ -116,12 +116,12 @@
 <p>这里可以在消息触发前，先改变消息内容，比如追加一个参数或者将一个消息翻译成另一个消息等，<code>forwardInvocation:</code>方法还可以对不同的消息提供同样的响应，这一切都取决于方法的具体实现。</p>
 <p>总的来说，消息转发可以简单的用以下的流程图展现：</p>
 <p><img src="/img/消息转发.png" alt="消息转发"></p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>​    当我们掌握了 Runtime 的消息发送和消息转发之后，我们就可以运用黑魔法做很多事情啦！至于黑魔法的实际运用，我可能会在以后的博文中再写。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>　　当我们掌握了 Runtime 的消息发送和消息转发之后，我们就可以运用黑魔法做很多事情啦！至于黑魔法的实际运用，我可能会在以后的博文中再写。</p>
 ]]></content>
     
     <summary type="html">
     
-      &lt;p&gt;​    消息转发机制是运行时里的一个重要组成部分，它完美的体现了 Objc 动态语言的特性，它可能没有消息发送机制那么有名，但它是我们掌握 Runtime 黑魔法之路上不可或缺的一部分。&lt;/p&gt;
+      &lt;p&gt;　　消息转发机制是运行时里的一个重要组成部分，它完美的体现了 Objc 动态语言的特性，它可能没有消息发送机制那么有名，但它是我们掌握 Runtime 黑魔法之路上不可或缺的一部分。&lt;/p&gt;
     
     </summary>
     
@@ -1315,9 +1315,9 @@ NSLog(@&quot;iOS10 收到本地通知:{\\\\nbody:%@，\\\\ntitle:%@,\\\\nsubtitl
     <link href="http://yoursite.com/2017/07/28/%E9%A1%B9%E7%9B%AE%E9%87%8C%E7%9A%84ReactiveCocoa/"/>
     <id>http://yoursite.com/2017/07/28/项目里的ReactiveCocoa/</id>
     <published>2017-07-28T10:59:44.000Z</published>
-    <updated>2018-06-05T16:50:39.132Z</updated>
+    <updated>2018-08-11T18:53:31.472Z</updated>
     
-    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>​    最近做了一个蓝牙相关的项目，项目的前辈当时是用的ReactiveCocoa（RAC）做的，才开始接手的时候，看的一头雾水。经过一段时间自学，现在对RAC略知一二。</p>
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>​　　最近做了一个蓝牙相关的项目，项目的前辈当时是用的ReactiveCocoa（RAC）做的，才开始接手的时候，看的一头雾水。经过一段时间自学，现在对RAC略知一二。</p>
 <p>​    <a id="more"></a></p>
 <h2 id="FunctionalReactiveProgramming"><a href="#FunctionalReactiveProgramming" class="headerlink" title="FunctionalReactiveProgramming"></a>FunctionalReactiveProgramming</h2><p>FRP是一种响应变化的编程范式。<img src="/img/FRP.png" alt="FRP"></p>
 <p>就像上面的登录界面，在用户输入用户名和密码之前，登陆按钮是处于无法点击状态的，只有当用户名和密码都被填入一定值的时候，才可以点击登陆按钮。这种一个按钮会由于另外几个控件的改变而改变的联动就是FRP。</p>
@@ -1347,7 +1347,7 @@ NSLog(@&quot;iOS10 收到本地通知:{\\\\nbody:%@，\\\\ntitle:%@,\\\\nsubtitl
     
     <summary type="html">
     
-      &lt;p&gt;​    最近做了一个蓝牙相关的项目，项目的前辈当时是用的ReactiveCocoa（RAC）做的，才开始接手的时候，看的一头雾水。经过一段时间自学，现在对RAC略知一二。&lt;/p&gt;
+      &lt;p&gt;​　　最近做了一个蓝牙相关的项目，项目的前辈当时是用的ReactiveCocoa（RAC）做的，才开始接手的时候，看的一头雾水。经过一段时间自学，现在对RAC略知一二。&lt;/p&gt;
 &lt;p&gt;​
     
     </summary>
@@ -1356,31 +1356,6 @@ NSLog(@&quot;iOS10 收到本地通知:{\\\\nbody:%@，\\\\ntitle:%@,\\\\nsubtitl
       <category term="iOS" scheme="http://yoursite.com/tags/iOS/"/>
     
       <category term="RAC" scheme="http://yoursite.com/tags/RAC/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>随想</title>
-    <link href="http://yoursite.com/2017/07/24/%E9%9A%8F%E6%83%B3/"/>
-    <id>http://yoursite.com/2017/07/24/随想/</id>
-    <published>2017-07-24T05:54:47.000Z</published>
-    <updated>2017-08-27T16:23:23.000Z</updated>
-    
-    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><pre><code>本来按理说像我这样的肚子里没有诗歌文学，脑子里没有代码技术的人，是不需要开博客的。
-</code></pre><p>​<br>​<br>​    </p>
-<pre><code>后来想了一想，有些东西还是写出来好一点，索性就花了点时间创建了这个博客来监督自己。
-</code></pre><p>​<br>​    </p>
-<pre><code>如果能帮到你，乃是我的荣幸。
-</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot; cla
-    
-    </summary>
-    
-    
-      <category term="随想" scheme="http://yoursite.com/tags/%E9%9A%8F%E6%83%B3/"/>
     
   </entry>
   
