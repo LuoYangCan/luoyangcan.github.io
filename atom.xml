@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-08-11T18:49:18.788Z</updated>
+  <updated>2018-08-15T11:39:41.068Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,96 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>iOS 触摸事件的传递和响应链</title>
+    <link href="http://yoursite.com/2018/08/15/ResponseChain/"/>
+    <id>http://yoursite.com/2018/08/15/ResponseChain/</id>
+    <published>2018-08-15T08:45:17.000Z</published>
+    <updated>2018-08-15T11:39:41.068Z</updated>
+    
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h1><p>　　事件在我们日常的 iOS 开发中可以说是非常的常见了，我们的 App 与用户进行交互就是靠的这一系列事件传递和响应，MVC 中的 View 层也常通过用户的一些事件来进行响应从而通过 Controller 更新 Modal。</p>
+<a id="more"></a>
+<h1 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h1><p>iOS 中的事件可以分为：</p>
+<ul>
+<li>触摸事件</li>
+<li>加速计事件</li>
+<li>远程控制事件</li>
+</ul>
+<p>我们从触摸事件入手，对 iOS 的响应链机制进行一定的认识了解</p>
+<h2 id="响应者对象-UIResponder"><a href="#响应者对象-UIResponder" class="headerlink" title="响应者对象 UIResponder"></a>响应者对象 UIResponder</h2><p>　　首先我们要知道，不是每一个对象都可以进行事件的响应和处理的。只有继承了 UIResponder 的对象才能接受并处理事件。</p>
+<p>　　我们所熟知的 <code>UIViewController</code>和<code>UIView</code>都是继承自 UIResponder 的。</p>
+<p>　　还有一个我们不那么熟悉的<code>UIApplication</code> —— 它是应用程序的象征，是 App 启动后创建的第一个对象 ——也是继承自 UIResponder 的。</p>
+<p>UIResponder 里有特殊的方法来处理各个事件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">//触摸事件</div><div class="line">//手指开始触摸 view 时，调用以该方法</div><div class="line">- (void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches </div><div class="line">           withEvent:(UIEvent *)event;</div><div class="line">//手指在 view 上移动时，调用该方法</div><div class="line">- (void)touchesMoved:(NSSet&lt;UITouch *&gt; *)touches </div><div class="line">           withEvent:(UIEvent *)event;</div><div class="line">//手指离开 view 时，调用方法</div><div class="line">- (void)touchesEnded:(NSSet&lt;UITouch *&gt; *)touches </div><div class="line">           withEvent:(UIEvent *)event;</div><div class="line">//离开前，被某个事件打断(如有电话打入)时，调用该方法</div><div class="line">- (void)touchesCancelled:(NSSet&lt;UITouch *&gt; *)touches </div><div class="line">               withEvent:(UIEvent *)event;</div><div class="line"></div><div class="line">//加速计事件</div><div class="line">- (void)motionBegan:(UIEventSubtype)motion </div><div class="line">          withEvent:(UIEvent *)event;</div><div class="line"></div><div class="line">- (void)motionEnded:(UIEventSubtype)motion </div><div class="line">          withEvent:(UIEvent *)event;</div><div class="line"></div><div class="line">- (void)motionCancelled:(UIEventSubtype)motion </div><div class="line">              withEvent:(UIEvent *)event;</div><div class="line">//远程控制事件</div><div class="line">- (void)remoteControlReceivedWithEvent:(UIEvent *)event;</div></pre></td></tr></table></figure>
+<p>从泛型可以看到，<code>touches</code> 里面存的是 UITouch 对象，那这个 UITouch 对象又是什么呢？</p>
+<h3 id="UITouch"><a href="#UITouch" class="headerlink" title="UITouch"></a>UITouch</h3><p>UITouch 对象保存着跟手指相关的信息（位置、时间等等），一根手指对应一个 UITouch 对象，手指移动的时会更新此对象，手指离开时，会销毁 UITouch 对象。</p>
+<p>UITouch 对象有以下属性和方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line">//有关获取触摸位置</div><div class="line">/** 触摸时的 view 或 window */</div><div class="line">@property(nonatomic, readonly, strong) UIView *view;</div><div class="line">@property(nonatomic, readonly, strong) UIWindow *window;</div><div class="line">/** 确定触摸大小的近似值 */</div><div class="line">@property(nonatomic, readonly) CGFloat majorRadius;</div><div class="line">/** 确定 majorRadius 的准确性           *</div><div class="line">**  Radius 加上这个值获得最大的触摸半径    *</div><div class="line">**  Radius 减去这个值获得最小的触摸半径    */</div><div class="line">@property(nonatomic, readonly) CGFloat majorRadiusTolerance;</div><div class="line"></div><div class="line">//相对 view 的坐标位置</div><div class="line">//view 为nil 时，返回相对 UIWindow 的位置</div><div class="line">- (CGPoint)locationInView:(UIView *)view;</div><div class="line">//前一个 Touch 的位置</div><div class="line">- (CGPoint)previousLocationInView:(UIView *)view;</div><div class="line"></div><div class="line">//触摸的一些属性</div><div class="line"></div><div class="line">//点按屏幕的次数，判断是单双击或者更多的点击</div><div class="line">@property(nonatomic, readonly) NSUInteger tapCount;</div><div class="line">//触摸发生时的时间或最后一次突变的时间</div><div class="line">@property(nonatomic, readonly) NSTimeInterval timestamp;</div><div class="line">//触摸的状态</div><div class="line">@property(nonatomic, readonly) UITouchPhase phase;</div><div class="line">//触摸类型 (支持3D Touch)</div><div class="line">@property(nonatomic, readonly) UITouchType type;</div><div class="line">//点按力量，1.0 表示平均触摸的力量</div><div class="line">@property(nonatomic, readonly) CGFloat force;</div><div class="line">//触摸时可能的最大力量</div><div class="line">@property(nonatomic, readonly) CGFloat maximumPossibleForce;</div><div class="line">//用来支持 Apple Pencil 为 0 时表示笔与表面平行，当笔垂直于表面时，值为 Pi/2</div><div class="line">@property(nonatomic, readonly) CGFloat altitudeAngle;</div><div class="line"></div><div class="line">//返回方位角</div><div class="line">//以笔尖为原点，在屏幕上做 x/y 轴，笔帽(尾部)指向屏幕正 x 轴时，值为 0</div><div class="line">//围绕笔尖顺时针摆动时，方位角增大</div><div class="line">- (CGFloat)azimuthAngleInView:(UIView *)view;</div><div class="line">//返回单位矢量</div><div class="line">- (CGVector)azimuthUnitVectorInView:(UIView *)view;</div></pre></td></tr></table></figure>
+<h3 id="UIEvent"><a href="#UIEvent" class="headerlink" title="UIEvent"></a>UIEvent</h3><p>UIEvent 记录着时间产生的时刻和类型，一个事件对应一个 UIEvent</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">//事件产生时间</div><div class="line">@property(nonatomic, readonly) NSTimeInterval timestamp;</div><div class="line">//类型</div><div class="line">@property(nonatomic, readonly) UIEventType type;</div><div class="line">@property(nonatomic, readonly) UIEventSubtype subtype;</div></pre></td></tr></table></figure>
+<p>　　当用两根手指同时触摸一个 view 的时候，那 view 只会调用一次<code>touchesBegan:withEvent:</code>方法，touches 参数中装着两个 UITouch 对象。如果手指一前一后触摸同一个 view，那就会调用两次<code>touchesBegan:withEvent:</code>方法。由此可以看出，根据 UITouch 个数就可以判断是单点还是多点触摸。</p>
+<h1 id="事件产生和传递"><a href="#事件产生和传递" class="headerlink" title="事件产生和传递"></a>事件产生和传递</h1><h2 id="事件产生"><a href="#事件产生" class="headerlink" title="事件产生"></a>事件产生</h2><p>　　发生触摸事件之后，该事件会被加入到一个由 UIApplication 管理的事件队列中。</p>
+<p>　　UIApplication 会从队列中取出最前面的时间，并分发下去。一般来说它会把事件给keyWindow </p>
+<p>　　keyWindow 会找一个最合适的 view 来处理这个事件</p>
+<p>　　找到这个 view 之后会调用该 view 的 touches 方法做事件处理。</p>
+<h2 id="事件传递"><a href="#事件传递" class="headerlink" title="事件传递"></a>事件传递</h2><p>　　触摸事件的传递是从父控件到子控件的，大概就是 UIApplication -&gt; window -&gt; superview -&gt; view</p>
+<p>　　当事件传递找上门的时候，view 会进行如下步骤来配合</p>
+<ol>
+<li>判断自己是否能接收触摸事件，能的话就继续，不能的话终止</li>
+<li>判断触摸点是不是在自己身上，是的话就继续，不是的话终止</li>
+<li>从后往前遍历子控件，再重复前两个步骤</li>
+<li>如果没有子控件，那就返回自己，自己就是最佳人选！</li>
+</ol>
+<p>UIView 不接受触摸事件的话一般是一下三种情况</p>
+<ul>
+<li>userInteractionEnabled = NO</li>
+<li>hidden = YEs</li>
+<li>alpha &lt; 0.01</li>
+</ul>
+<p>UIView 提供了两个方法来寻找最合适的 view</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">// 用来寻找最合适的View处理事件，只要一个事件传递给一个控件就会调用控件的hitTest方法，参数point 表示方法调用者坐标系上的点</div><div class="line">- (UIView *)hitTest:(CGPoint)point </div><div class="line">          withEvent:(UIEvent *)event;</div><div class="line"></div><div class="line">// 用来判断当前这个点在不在方法调用者上，点必须在方法调用者的坐标系中，判断才会准确</div><div class="line">- (BOOL)pointInside:(CGPoint)point </div><div class="line">          withEvent:(UIEvent *)event;</div></pre></td></tr></table></figure>
+<h3 id="hitTest-withEvent"><a href="#hitTest-withEvent" class="headerlink" title="hitTest: withEvent"></a>hitTest: withEvent</h3><p>　　只要事件传给一个控件，这个控件就会调用他的<code>hitTest: withEvent:</code>方法。这个方法通过调用每个 view 的<code>pointInside:withEvent:</code>判断哪个子视图应该接受触摸事件。返回 nil 的时候代表该控件不是最适合的 view，于是系统会去遍历前一个子控件或者直接返回父控件。</p>
+<p>　　所以我们可以通过重写<code>hitTest: withEvent:</code>返回指定 view，从而达到拦截事件的效果。</p>
+<p>接下来，我们图解一下传递过程</p>
+<p><img src="/img/消息传递.png" alt="找到最合适控件"></p>
+<p>当我们点击了蓝色的 view</p>
+<p>过程会是：UIApplication -&gt; UIWindow -&gt; 白色 view -&gt; 橙色 view -&gt; 红色 view(返回nil) -&gt;蓝色 view</p>
+<p>点击黄色 view 的时候</p>
+<p>过程会变成：UIApplication -&gt; UIWindow -&gt; 白色 view -&gt; 橙色 view -&gt; 红色 view (返回 nil) -&gt; 蓝色 view -&gt; 黄色 view</p>
+<h1 id="事件响应"><a href="#事件响应" class="headerlink" title="事件响应"></a>事件响应</h1><p>　　事件的响应是在事件从 UIApplication 传递到 UIView 之后对事件进行处理的响应。默认的做法就是将事件顺着<strong>响应者链条</strong>往上传（甩）递（锅）。</p>
+<h2 id="响应者链条"><a href="#响应者链条" class="headerlink" title="响应者链条"></a>响应者链条</h2><p>　　响应者链条相对于事件传递链的话，可以说是完全相反的，他是由最上面的 View 开始，一直到 UIApplication 的，传递过程中的对象必须是继承自 UIResponder 的响应者对象。</p>
+<p>　　响应者链传递过程：</p>
+<ol>
+<li>如果当前 view 是 ViewController 的 View，那么控制器就是上一个响应者，事件就传递给 ViewController 。如果不是，那么父视图就是上一个响应者，事件传给父视图</li>
+<li>最顶层的视图都不能处理，那就扔给 window</li>
+<li>如果 window 也不处理，就丢给 UIApplication</li>
+<li>UIApplication 也不管的话，就把该事件丢弃。</li>
+</ol>
+<p>大致关系可以用下图表示：</p>
+<p><img src="/img/响应者链条.png" alt="响应者链"></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>　　事件处理的流程可以归纳为：</p>
+<ol>
+<li>触摸屏幕产生时间后，触摸事件会被添加到 UIApplication 的事件队列中</li>
+<li>UIApplication 取出最前面的事件，传给 keyWindow</li>
+<li>keyWindow 找一个最合适的视图来处理事件</li>
+<li>最合适的视图调用 touches 方法处理事件</li>
+<li>touches 默认把事件顺着响应者链往上甩锅</li>
+<li>如果 UIApplication 都不能处理这个事件，就丢弃。</li>
+</ol>
+<p>所以我们可以通过重写 touches 方法来达到一个事件让多个对象处理的效果。 </p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;写在前面&quot;&gt;&lt;a href=&quot;#写在前面&quot; class=&quot;headerlink&quot; title=&quot;写在前面&quot;&gt;&lt;/a&gt;写在前面&lt;/h1&gt;&lt;p&gt;　　事件在我们日常的 iOS 开发中可以说是非常的常见了，我们的 App 与用户进行交互就是靠的这一系列事件传递和响应，MVC 中的 View 层也常通过用户的一些事件来进行响应从而通过 Controller 更新 Modal。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="iOS" scheme="http://yoursite.com/tags/iOS/"/>
+    
+  </entry>
   
   <entry>
     <title>一些想法</title>
@@ -27,12 +117,12 @@
 </blockquote>
 <p>　　<a id="more"></a></p>
 
-        <div id="aplayer-MLBCVcBK" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+        <div id="aplayer-sbUzhfuF" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
             <pre class="aplayer-lrc-content"></pre>
         </div>
         <script>
           var ap = new APlayer({
-            element: document.getElementById("aplayer-MLBCVcBK"),
+            element: document.getElementById("aplayer-sbUzhfuF"),
             narrow: false,
             autoplay: true,
             showlrc: false,
@@ -142,12 +232,12 @@
 </blockquote>
 <p>　    <a id="more"></a></p>
 
-        <div id="aplayer-fHhswDch" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+        <div id="aplayer-ZCXEansv" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
             <pre class="aplayer-lrc-content"></pre>
         </div>
         <script>
           var ap = new APlayer({
-            element: document.getElementById("aplayer-fHhswDch"),
+            element: document.getElementById("aplayer-ZCXEansv"),
             narrow: false,
             autoplay: true,
             showlrc: false,
@@ -1010,12 +1100,12 @@
     <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>　　好久没看书了，一到放假，看书的效率就从一个月两三本，变成了一个月一本。有点惭愧。</p>
 <p>​    <a id="more"></a></p>
 
-        <div id="aplayer-ZltBHSiv" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+        <div id="aplayer-TDdwBcYC" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
             <pre class="aplayer-lrc-content"></pre>
         </div>
         <script>
           var ap = new APlayer({
-            element: document.getElementById("aplayer-ZltBHSiv"),
+            element: document.getElementById("aplayer-TDdwBcYC"),
             narrow: false,
             autoplay: true,
             showlrc: false,
