@@ -119,13 +119,14 @@
 <meta property="og:site_name" content="阿灿的大树洞">
 <meta property="og:description" content="写在前面　　事件在我们日常的 iOS 开发中可以说是非常的常见了，我们的 App 与用户进行交互就是靠的这一系列事件传递和响应，MVC 中的 View 层也常通过用户的一些事件来进行响应从而通过 Controller 更新 Modal。">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/img/hitTest.jpg">
 <meta property="og:image" content="http://yoursite.com/img/消息传递.png">
 <meta property="og:image" content="http://yoursite.com/img/响应者链条.png">
-<meta property="og:updated_time" content="2018-08-15T11:39:41.068Z">
+<meta property="og:updated_time" content="2018-11-13T12:28:35.876Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS 触摸事件的传递和响应链">
 <meta name="twitter:description" content="写在前面　　事件在我们日常的 iOS 开发中可以说是非常的常见了，我们的 App 与用户进行交互就是靠的这一系列事件传递和响应，MVC 中的 View 层也常通过用户的一些事件来进行响应从而通过 Controller 更新 Modal。">
-<meta name="twitter:image" content="http://yoursite.com/img/消息传递.png">
+<meta name="twitter:image" content="http://yoursite.com/img/hitTest.jpg">
 
 
 
@@ -401,13 +402,15 @@
 <p>UIView 不接受触摸事件的话一般是一下三种情况</p>
 <ul>
 <li>userInteractionEnabled = NO</li>
-<li>hidden = YEs</li>
+<li>hidden = YES</li>
 <li>alpha &lt; 0.01</li>
 </ul>
 <p>UIView 提供了两个方法来寻找最合适的 view</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">// 用来寻找最合适的View处理事件，只要一个事件传递给一个控件就会调用控件的hitTest方法，参数point 表示方法调用者坐标系上的点</div><div class="line">- (UIView *)hitTest:(CGPoint)point </div><div class="line">          withEvent:(UIEvent *)event;</div><div class="line"></div><div class="line">// 用来判断当前这个点在不在方法调用者上，点必须在方法调用者的坐标系中，判断才会准确</div><div class="line">- (BOOL)pointInside:(CGPoint)point </div><div class="line">          withEvent:(UIEvent *)event;</div></pre></td></tr></table></figure>
 <h3 id="hitTest-withEvent"><a href="#hitTest-withEvent" class="headerlink" title="hitTest: withEvent"></a>hitTest: withEvent</h3><p>　　只要事件传给一个控件，这个控件就会调用他的<code>hitTest: withEvent:</code>方法。这个方法通过调用每个 view 的<code>pointInside:withEvent:</code>判断哪个子视图应该接受触摸事件。返回 nil 的时候代表该控件不是最适合的 view，于是系统会去遍历前一个子控件或者直接返回父控件。</p>
 <p>　　所以我们可以通过重写<code>hitTest: withEvent:</code>返回指定 view，从而达到拦截事件的效果。</p>
+<p>Like This</p>
+<p><img src="/img/hitTest.jpg" alt="重写HitTest"></p>
 <p>接下来，我们图解一下传递过程</p>
 <p><img src="/img/消息传递.png" alt="找到最合适控件"></p>
 <p>当我们点击了蓝色的 view</p>
