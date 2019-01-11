@@ -208,12 +208,12 @@
 </blockquote>
 <p>　　<a id="more"></a></p>
 
-        <div id="aplayer-ZBOFsoLi" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+        <div id="aplayer-leztCDpf" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
             <pre class="aplayer-lrc-content"></pre>
         </div>
         <script>
           var ap = new APlayer({
-            element: document.getElementById("aplayer-ZBOFsoLi"),
+            element: document.getElementById("aplayer-leztCDpf"),
             narrow: false,
             autoplay: true,
             showlrc: false,
@@ -324,12 +324,12 @@
 </blockquote>
 <p>　    <a id="more"></a></p>
 
-        <div id="aplayer-qHYJieFP" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+        <div id="aplayer-SHcJmAsR" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
             <pre class="aplayer-lrc-content"></pre>
         </div>
         <script>
           var ap = new APlayer({
-            element: document.getElementById("aplayer-qHYJieFP"),
+            element: document.getElementById("aplayer-SHcJmAsR"),
             narrow: false,
             autoplay: true,
             showlrc: false,
@@ -1192,12 +1192,12 @@
     <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>　　好久没看书了，一到放假，看书的效率就从一个月两三本，变成了一个月一本。有点惭愧。</p>
 <p>​    <a id="more"></a></p>
 
-        <div id="aplayer-kWWNiaRi" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+        <div id="aplayer-SzapzpTK" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
             <pre class="aplayer-lrc-content"></pre>
         </div>
         <script>
           var ap = new APlayer({
-            element: document.getElementById("aplayer-kWWNiaRi"),
+            element: document.getElementById("aplayer-SzapzpTK"),
             narrow: false,
             autoplay: true,
             showlrc: false,
