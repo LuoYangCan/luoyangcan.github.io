@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-11-24T16:30:25.642Z</updated>
+  <updated>2019-01-11T10:48:00.777Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -16,11 +16,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>IP Address</title>
+    <title>关于 IP地址 的那些事</title>
     <link href="http://yoursite.com/2018/11/24/IP-Address/"/>
     <id>http://yoursite.com/2018/11/24/IP-Address/</id>
     <published>2018-11-24T15:29:42.000Z</published>
-    <updated>2018-11-24T16:30:25.642Z</updated>
+    <updated>2019-01-11T10:48:00.777Z</updated>
     
     <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>　　连接到 Internet 的每个设备至少有一个 IP 地址，但 IP 地址通常被 DNS 挡在我们的视线之外，DNS 让我们习惯使用名称而不是数字地址，有时候我们会自己建立网站（比如这个 blog 的搭建）或者 DNS 莫名失效的时候，我们需要直接处理 IP 地址，那么对于 IP 地址的学习就显得尤为重要了。</p>
 <a id="more"></a>
