@@ -126,21 +126,22 @@
 
 
 
-  <meta name="description" content="消息转发机制是运行时里的一个重要组成部分，它完美的体现了 Objc 动态语言的特性，它可能没有消息发送机制那么有名，但它是我们掌握 Runtime 黑魔法之路上不可或缺的一部分。">
+  <meta name="description" content="前言　　大学四年好快就过去了，毕业之前去公司实习，发现了自己对代理的一些概念还不理解，遂写了这篇文章。 关于 protocol &amp;amp; delegate　　iOS 的 protocol 和 Android 的有一些不一样，因为 iOS 没有多继承，所以很多时候都是用 protocol 来实现。 　　而 delegate 是一种代理的模式，他相当于一个人把一些事情代理给其他人做。比如 A 控制器">
 <meta name="keywords" content="iOS">
 <meta property="og:type" content="article">
-<meta property="og:title" content="消息转发机制">
-<meta property="og:url" content="http://yoursite.com/2018/06/07/About_Msg/index.html">
+<meta property="og:title" content="protocol &amp; delegate">
+<meta property="og:url" content="http://yoursite.com/2019/02/24/protocol-delegate/index.html">
 <meta property="og:site_name" content="阿灿的大树洞">
-<meta property="og:description" content="消息转发机制是运行时里的一个重要组成部分，它完美的体现了 Objc 动态语言的特性，它可能没有消息发送机制那么有名，但它是我们掌握 Runtime 黑魔法之路上不可或缺的一部分。">
+<meta property="og:description" content="前言　　大学四年好快就过去了，毕业之前去公司实习，发现了自己对代理的一些概念还不理解，遂写了这篇文章。 关于 protocol &amp;amp; delegate　　iOS 的 protocol 和 Android 的有一些不一样，因为 iOS 没有多继承，所以很多时候都是用 protocol 来实现。 　　而 delegate 是一种代理的模式，他相当于一个人把一些事情代理给其他人做。比如 A 控制器">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://yoursite.com/img/objc_msgsend.jpg">
-<meta property="og:image" content="http://yoursite.com/img/消息转发.png">
-<meta property="og:updated_time" content="2018-08-11T18:52:56.075Z">
+<meta property="og:image" content="http://yoursite.com/img/tableViewDataSource.png">
+<meta property="og:image" content="http://yoursite.com/img/tableView_nothing.png">
+<meta property="og:image" content="http://yoursite.com/img/delegate_swdt.png">
+<meta property="og:updated_time" content="2019-02-24T11:30:16.698Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="消息转发机制">
-<meta name="twitter:description" content="消息转发机制是运行时里的一个重要组成部分，它完美的体现了 Objc 动态语言的特性，它可能没有消息发送机制那么有名，但它是我们掌握 Runtime 黑魔法之路上不可或缺的一部分。">
-<meta name="twitter:image" content="http://yoursite.com/img/objc_msgsend.jpg">
+<meta name="twitter:title" content="protocol &amp; delegate">
+<meta name="twitter:description" content="前言　　大学四年好快就过去了，毕业之前去公司实习，发现了自己对代理的一些概念还不理解，遂写了这篇文章。 关于 protocol &amp;amp; delegate　　iOS 的 protocol 和 Android 的有一些不一样，因为 iOS 没有多继承，所以很多时候都是用 protocol 来实现。 　　而 delegate 是一种代理的模式，他相当于一个人把一些事情代理给其他人做。比如 A 控制器">
+<meta name="twitter:image" content="http://yoursite.com/img/tableViewDataSource.png">
 
 
 
@@ -149,7 +150,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/06/07/About_Msg/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/02/24/protocol-delegate/"/>
 
 
 
@@ -159,7 +160,7 @@
   };
 </script>
 
-  <title>消息转发机制 | 阿灿的大树洞</title>
+  <title>protocol & delegate | 阿灿的大树洞</title>
   
 
 
@@ -364,7 +365,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/07/About_Msg/"/>
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/02/24/protocol-delegate/"/>
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Reus"/>
@@ -381,7 +382,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">消息转发机制
+          <h1 class="post-title" itemprop="name headline">protocol & delegate
 
               
             
@@ -407,24 +408,12 @@
                 
               
 
-              <time title="创建时间：2018-06-07 23:49:55" itemprop="dateCreated datePublished" datetime="2018-06-07T23:49:55+08:00">2018-06-07</time>
+              <time title="创建时间：2019-02-24 15:49:44 / 修改时间：19:30:16" itemprop="dateCreated datePublished" datetime="2019-02-24T15:49:44+08:00">2019-02-24</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-08-12 02:52:56" itemprop="dateModified" datetime="2018-08-12T02:52:56+08:00">2018-08-12</time>
               
             
           </span>
@@ -438,8 +427,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2018/06/07/About_Msg/#comments" itemprop="discussionUrl">
-                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/06/07/About_Msg/" itemprop="commentCount"></span>
+                <a href="/2019/02/24/protocol-delegate/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2019/02/24/protocol-delegate/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -447,7 +436,7 @@
 
           
           
-            <span id="/2018/06/07/About_Msg/" class="leancloud_visitors" data-flag-title="消息转发机制">
+            <span id="/2019/02/24/protocol-delegate/" class="leancloud_visitors" data-flag-title="protocol & delegate">
               <span class="post-meta-divider">|</span>
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
@@ -478,42 +467,54 @@
       
 
       
-        <p>　　消息转发机制是运行时里的一个重要组成部分，它完美的体现了 Objc 动态语言的特性，它可能没有消息发送机制那么有名，但它是我们掌握 Runtime 黑魔法之路上不可或缺的一部分。</p>
-<a id="more"></a>
-<h1 id="在这之前"><a href="#在这之前" class="headerlink" title="在这之前"></a>在这之前</h1><h2 id="消息发送"><a href="#消息发送" class="headerlink" title="消息发送"></a>消息发送</h2><p>　　我<a href="http://luoyangcan.github.io/2017/09/02/AboutRuntime/" target="_blank" rel="external">之前的关于消息发送的文章</a>里说过，iOS 在对象上调用方法其实是在给某个对象发送一条消息，消息有<code>名称(id)</code>和<code>选择子(selector)</code>。</p>
-<p>　　在 objc 中的一个简单的语法，例如</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//main.m</span></div><div class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[])&#123;</div><div class="line">    <span class="keyword">@autoreleasepool</span>&#123;</div><div class="line">        Person * p = [[Person alloc] init];</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>在底层都会变成</p>
-<p><img src="/img/objc_msgsend.jpg" alt="底层"></p>
-<p>　　没错，这个上镜率最高的<code>objc_msgSend()</code>函数就是我们消息发送界的带明星了！它就是我们消息发送机制的核心！</p>
-<h2 id="消息传递"><a href="#消息传递" class="headerlink" title="消息传递"></a>消息传递</h2><p>　　<code>objc_msgSend()</code> 会依据接受者（调用方法的对象）的类型和选择子（方法名）来调用适当的方法。</p>
-<p>　　接收者会根据 isa 指针找到自己所属的类，然后在所属类的”方法列表“（method list）中从上向下遍历。如果能找到与选择子名称相符的方法， IMP 指针会跳转到方法的实现代码。。</p>
-<p>　　如果找不到与选择子名称相符的方法，接收者会根据所属类的 superClass 指针，沿着类的继承体系继续向上查找（向父类查找），如果能找到与名称相符的方法，  IMP 指针就跳转到方法的实现代码，并调用这个方法。</p>
-<p>　　如果在继承体系中还是找不到与选择子相符的方法，此时就会执行”消息转发（message forwarding）“操作。</p>
-<h1 id="消息转发"><a href="#消息转发" class="headerlink" title="消息转发"></a>消息转发</h1><p>　　我们可以发现，有时候在编译期，向对象或者类对象发送了无法解读的消息，并不会有报错的情况发生，这是因为我们之前也说过， objc是一门动态语言，它可以在类或者元类中添加新的方法，所以编译器在编译期还无法确定是否真的没有这个方法。</p>
-<p>　　所以当我们写出了一个无法解读的方法的时候，我们可以在消息转发的过程中挽救一下。</p>
-<p>消息转发基本有下面几个流程：</p>
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>　　大学四年好快就过去了，毕业之前去公司实习，发现了自己对代理的一些概念还不理解，遂写了这篇文章。</p>
+<h1 id="关于-protocol-amp-delegate"><a href="#关于-protocol-amp-delegate" class="headerlink" title="关于 protocol &amp; delegate"></a>关于 protocol &amp; delegate</h1><p>　　iOS 的 protocol 和 Android 的有一些不一样，因为 iOS 没有多继承，所以很多时候都是用 protocol 来实现。</p>
+<p>　　而 delegate 是一种代理的模式，他相当于一个人把一些事情代理给其他人做。比如 A 控制器中有一个值是基于<strong>代理</strong>方法而改变的，当我们从 A 切到 B 控制器时，B 使用了 A 的 <code>delegate</code> 将值进行了更改，那当我们回到 A 时，会发现那个值已经改变。</p>
+<p>##iOS 中的 protocol</p>
+<p>　　一个 protocol 会定义一套接口，接口有两种：</p>
 <ul>
-<li>动态方法解析：先找接受者属于的类，看能不能动态添加这个方法来处理，如果能，消息转发结束。</li>
-<li>重定向：找接受者问问有没有其他对象能处理，如果有，把消息转给那个对象，消息转发结束。</li>
-<li>消息签名：找开发者要一个消息签名，如果给nil，消息转发结束。</li>
-<li>完整的消息转发：以上流程都不管用的时候，只能把该消息相关的所有细节封装到一个 NSInvocation 对象。再问接受者一次，如果还是不能处理，那消息转发也无能为力了</li>
+<li>@required: 必须实现的方法</li>
+<li>@optional: 可选的实现方法</li>
 </ul>
-<h2 id="动态方法解析"><a href="#动态方法解析" class="headerlink" title="动态方法解析"></a>动态方法解析</h2><p>对象在收到无法解读的消息后，首先调用其所属类的这个类方法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">+ (BOOL)resolveInstanceMethod:(SEL)selector</div><div class="line">    //selector : 消息转发里的未知选择子</div><div class="line">    //返回YES结束消息转发</div><div class="line">    //返回NO找后备接受者</div></pre></td></tr></table></figure>
-<p>如果未知消息是一个了类方法而非实例方法，则会调用<code>resolveClassMethod</code>方法</p>
-<h2 id="重定向"><a href="#重定向" class="headerlink" title="重定向"></a>重定向</h2><p>动态解析失败，则调用这个方法</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">id</span>)forwardingTargetForSelector:(SEL)selector</div><div class="line">    <span class="comment">//返回一个能响应该选择子的 “备胎”对象</span></div></pre></td></tr></table></figure>
-<p>在这个方法我们可以实现偷天换日，把这个消息发到其他类去实现。</p>
-<h2 id="消息签名"><a href="#消息签名" class="headerlink" title="消息签名"></a>消息签名</h2><p>“备胎”搞不定，这个方法就要被包装成一个<code>NSInvocation</code>对象，在这里要先返回一个消息签名</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">- (<span class="built_in">NSMethodSignature</span> *)methodSignatureForSelector:(SEL)aSelector</div><div class="line">    <span class="comment">//NSMethodSignature : 该sleector对应的方法签名</span></div></pre></td></tr></table></figure>
-<h2 id="完整的消息转发"><a href="#完整的消息转发" class="headerlink" title="完整的消息转发"></a>完整的消息转发</h2><p>给最后一次机会处理这个方法，如果不行就没了</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">void</span>)forwardInvocation:(<span class="built_in">NSInvocation</span> *)invocation</div><div class="line">    <span class="comment">//invocation : 封装了与那条尚未处理消息相关的所有细节对象</span></div></pre></td></tr></table></figure>
-<p>这里可以在消息触发前，先改变消息内容，比如追加一个参数或者将一个消息翻译成另一个消息等，<code>forwardInvocation:</code>方法还可以对不同的消息提供同样的响应，这一切都取决于方法的具体实现。</p>
-<p>总的来说，消息转发可以简单的用以下的流程图展现：</p>
-<p><img src="/img/消息转发.png" alt="消息转发"></p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>　　当我们掌握了 Runtime 的消息发送和消息转发之后，我们就可以运用黑魔法做很多事情啦！至于黑魔法的实际运用，我可能会在以后的博文中再写。</p>
+<p>　　我们常常会接触到的 tableViewDataSource 里就有 protocol ，他在里面定义了一些方法让你去实现。</p>
+<p><img src="/img/tableViewDataSource.png" alt="DataSource"></p>
+<p>我们可以看到我们用 tableView 的时候必须实现的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">//每个 cell 的创建</div><div class="line">- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;</div><div class="line"></div><div class="line">//每个 section 的行数</div><div class="line">- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;</div></pre></td></tr></table></figure>
+<p>都是在<code>@required</code> 里的，如果我们不实现他，那 tableView 就会空无一值。</p>
+<p>而</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// section 个数</span></div><div class="line">- (<span class="built_in">NSInteger</span>)numberOfSectionsInTableView:(<span class="built_in">UITableView</span> *)tableView;   </div><div class="line"></div><div class="line"><span class="comment">//header 名字</span></div><div class="line">- (<span class="keyword">nullable</span> <span class="built_in">NSString</span> *)tableView:(<span class="built_in">UITableView</span> *)tableView titleForHeaderInSection:(<span class="built_in">NSInteger</span>)section;  </div><div class="line"></div><div class="line"><span class="comment">//footer 名字</span></div><div class="line">- (<span class="keyword">nullable</span> <span class="built_in">NSString</span> *)tableView:(<span class="built_in">UITableView</span> *)tableView titleForFooterInSection:(<span class="built_in">NSInteger</span>)section;</div><div class="line"></div><div class="line">……</div></pre></td></tr></table></figure>
+<p>等等是在<code>@optional</code>里的，我们是可以选择不去实现他们的。</p>
+<h2 id="delegate"><a href="#delegate" class="headerlink" title="delegate"></a>delegate</h2><p>　　我们继续用<code>tableView</code>举例，我们使用<code>tableView</code>的时候，相当于调用了<code>UITableView</code>这个类，让他来帮助我们生成一个 View。</p>
+<p>　　但是这个 tableView 并不知道我们需要多高多宽，什么样子的 View，于是他需要我们进行传值。我们用来把值传给它的类就是一个 delegate 。</p>
+<p>　　当然，我们经常用 self 来在本控制器下控制 tableView 。</p>
+<p><img src="/img/tableView_nothing.png" width="375" hegiht="650"></p>
+<h1 id="自定义-delegate"><a href="#自定义-delegate" class="headerlink" title="自定义 delegate"></a>自定义 delegate</h1><p>　　看过了系统的一些<code>delegate</code>，其实我们也是可以实现代理的，而且使用代理会有许许多多的好处。</p>
+<p>　　我们以一个实例来说明，这个例子的逻辑关系基本如下：</p>
+<p><img src="/img/delegate_swdt.png" alt="大概思路"></p>
+<p>　　现在让我们来实现他吧</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">//DelegateController.h</div><div class="line"></div><div class="line">@class DelegateController;</div><div class="line">@protocol TestDelegate &lt;NSObject&gt;</div><div class="line"></div><div class="line">//必须实现</div><div class="line">@required</div><div class="line"></div><div class="line">//可选</div><div class="line">@optional</div><div class="line"></div><div class="line">-(void)DelegateTest:(DelegateController *)vc;</div><div class="line"></div><div class="line">@end</div></pre></td></tr></table></figure>
+<p>我们先在<code>.h</code>文件中创造<code>delegate</code>，并声明他的<code>@required</code>和<code>@optional</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">//DelegateController.h</div><div class="line"></div><div class="line">@interface DelegateController : UIViewController</div><div class="line"></div><div class="line">@property (nonatomic, weak) id&lt;TestDelegate&gt; delegate;        /**&lt; delegate  */</div><div class="line"></div><div class="line">@end</div></pre></td></tr></table></figure>
+<p>然后我们再声明一个<code>delegate</code>，之后我们就可以在<code>DelegateController</code>里使用<code>delegate</code>的方法了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">//DelegateController.m</div><div class="line"></div><div class="line">- (void)viewDidLoad &#123;</div><div class="line">    [super viewDidLoad];</div><div class="line">    // Do any additional setup after loading the view.</div><div class="line">    self.view.backgroundColor = [UIColor blueColor];</div><div class="line">&#125;</div><div class="line"></div><div class="line">//点击改变背景颜色</div><div class="line">- (void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event&#123;</div><div class="line">    if ([self.delegate respondsToSelector:@selector(DelegateTest:)]) &#123;</div><div class="line">        [self.delegate DelegateTest:self];</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>当然，如果我们现在 run 的话，不会有任何的反应，因为<code>delegate</code>里的方法还没有进行实现。</p>
+<p>我们还得这样</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">//mainController.h</div><div class="line">- (void)viewDidLoad &#123;</div><div class="line">    [super viewDidLoad];</div><div class="line">    self.view.backgroundColor = [UIColor whiteColor];</div><div class="line">    [self setupDelegateView]; //delegate</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line">//delegate实现</div><div class="line">-(void)DelegateTest:(DelegatetestVC *)vc&#123;</div><div class="line">    vc.view.backgroundColor = [UIColor orangeColor];</div><div class="line">    NSLog(@&quot;\n delegate Test Success!&quot;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">//切到 DelegateController 页面</div><div class="line">-(void)setupDelegateView&#123;</div><div class="line">    DelegateController *vc = [[DelegatetestVC alloc]init];</div><div class="line">    //将 delegate 指定为自己</div><div class="line">    vc.delegate = self;</div><div class="line">    //延时一秒切换</div><div class="line">    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^&#123;</div><div class="line">        [self presentViewController:vc animated:YES completion:nil];</div><div class="line">    &#125;);</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p> 效果大概就是这样啦</p>
+<iframe height="640" width="360" src="/img/delegate_demo.gif">
 
+
+
+<h2 id="delegate-的循环引用"><a href="#delegate-的循环引用" class="headerlink" title="delegate 的循环引用"></a>delegate 的循环引用</h2><p>　　细心的朋友应该发现了，我们声明 <code>delegate</code>的时候用的是<code>weak</code>属性</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">//weak 属性</div><div class="line">@property (nonatomic, weak) id&lt;TestDelegate&gt; delegate;</div></pre></td></tr></table></figure>
+<p>这是因为我们使用<code>delegate</code>的时候常常会这样</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">//将 delegate 指定为自己</div><div class="line">self.vc.delegate = self;</div></pre></td></tr></table></figure>
+<p>这就让引用变成了<code>self -&gt;  vc -&gt; self</code> ，所以如果这时候用<code>strong</code>就导致循环引用。</p>
+<p>说到循环引用就涉及到 ARC 和内存管理了，可以看我<a href="https://luoyangcan.top/2017/09/13/iOS_ARC/" target="_blank" rel="external">这篇文章</a></p>
+<p>当然，我们也可以将代理指定为其他类，那么我们就需要使用<code>strong</code>来修饰<code>delegate</code>了</p>
+<h1 id="delegate-的一些应用"><a href="#delegate-的一些应用" class="headerlink" title="delegate 的一些应用"></a>delegate 的一些应用</h1><p>　　当我们需要实现<strong>工厂模式</strong>的时候，我们可以使用<code>delegate</code>，先抽象出一个类声明<code>delegate</code>，再在具体的工厂类中实现他，最后我们调用的时候可以将<code>delegate</code>设置成我们需要的具体工厂，这样就可以实现工厂模式啦。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="developer.apple.com">Apple</a></p>
+</iframe>
       
     </div>
 
@@ -549,8 +550,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/03/21/About Love/" rel="next" title="挪威的森林">
-                <i class="fa fa-chevron-left"></i> 挪威的森林
+              <a href="/2018/11/24/IP-Address/" rel="next" title="关于 IP地址 的那些事">
+                <i class="fa fa-chevron-left"></i> 关于 IP地址 的那些事
               </a>
             
           </div>
@@ -558,10 +559,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/08/12/internet violence/" rel="prev" title="一些想法">
-                一些想法 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -780,7 +777,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#在这之前"><span class="nav-number">1.</span> <span class="nav-text">在这之前</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#消息发送"><span class="nav-number">1.1.</span> <span class="nav-text">消息发送</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息传递"><span class="nav-number">1.2.</span> <span class="nav-text">消息传递</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#消息转发"><span class="nav-number">2.</span> <span class="nav-text">消息转发</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#动态方法解析"><span class="nav-number">2.1.</span> <span class="nav-text">动态方法解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重定向"><span class="nav-number">2.2.</span> <span class="nav-text">重定向</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息签名"><span class="nav-number">2.3.</span> <span class="nav-text">消息签名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#完整的消息转发"><span class="nav-number">2.4.</span> <span class="nav-text">完整的消息转发</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#关于-protocol-amp-delegate"><span class="nav-number">2.</span> <span class="nav-text">关于 protocol & delegate</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#delegate"><span class="nav-number">2.1.</span> <span class="nav-text">delegate</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#自定义-delegate"><span class="nav-number">3.</span> <span class="nav-text">自定义 delegate</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#delegate-的循环引用"><span class="nav-number">3.1.</span> <span class="nav-text">delegate 的循环引用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#delegate-的一些应用"><span class="nav-number">4.</span> <span class="nav-text">delegate 的一些应用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>

@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-01-11T10:48:00.777Z</updated>
+  <updated>2019-02-24T11:30:16.698Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -16,11 +16,78 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>protocol &amp; delegate</title>
+    <link href="http://yoursite.com/2019/02/24/protocol-delegate/"/>
+    <id>http://yoursite.com/2019/02/24/protocol-delegate/</id>
+    <published>2019-02-24T07:49:44.000Z</published>
+    <updated>2019-02-24T11:30:16.698Z</updated>
+    
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>　　大学四年好快就过去了，毕业之前去公司实习，发现了自己对代理的一些概念还不理解，遂写了这篇文章。</p>
+<h1 id="关于-protocol-amp-delegate"><a href="#关于-protocol-amp-delegate" class="headerlink" title="关于 protocol &amp; delegate"></a>关于 protocol &amp; delegate</h1><p>　　iOS 的 protocol 和 Android 的有一些不一样，因为 iOS 没有多继承，所以很多时候都是用 protocol 来实现。</p>
+<p>　　而 delegate 是一种代理的模式，他相当于一个人把一些事情代理给其他人做。比如 A 控制器中有一个值是基于<strong>代理</strong>方法而改变的，当我们从 A 切到 B 控制器时，B 使用了 A 的 <code>delegate</code> 将值进行了更改，那当我们回到 A 时，会发现那个值已经改变。</p>
+<p>##iOS 中的 protocol</p>
+<p>　　一个 protocol 会定义一套接口，接口有两种：</p>
+<ul>
+<li>@required: 必须实现的方法</li>
+<li>@optional: 可选的实现方法</li>
+</ul>
+<p>　　我们常常会接触到的 tableViewDataSource 里就有 protocol ，他在里面定义了一些方法让你去实现。</p>
+<p><img src="/img/tableViewDataSource.png" alt="DataSource"></p>
+<p>我们可以看到我们用 tableView 的时候必须实现的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">//每个 cell 的创建</div><div class="line">- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;</div><div class="line"></div><div class="line">//每个 section 的行数</div><div class="line">- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;</div></pre></td></tr></table></figure>
+<p>都是在<code>@required</code> 里的，如果我们不实现他，那 tableView 就会空无一值。</p>
+<p>而</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// section 个数</span></div><div class="line">- (<span class="built_in">NSInteger</span>)numberOfSectionsInTableView:(<span class="built_in">UITableView</span> *)tableView;   </div><div class="line"></div><div class="line"><span class="comment">//header 名字</span></div><div class="line">- (<span class="keyword">nullable</span> <span class="built_in">NSString</span> *)tableView:(<span class="built_in">UITableView</span> *)tableView titleForHeaderInSection:(<span class="built_in">NSInteger</span>)section;  </div><div class="line"></div><div class="line"><span class="comment">//footer 名字</span></div><div class="line">- (<span class="keyword">nullable</span> <span class="built_in">NSString</span> *)tableView:(<span class="built_in">UITableView</span> *)tableView titleForFooterInSection:(<span class="built_in">NSInteger</span>)section;</div><div class="line"></div><div class="line">……</div></pre></td></tr></table></figure>
+<p>等等是在<code>@optional</code>里的，我们是可以选择不去实现他们的。</p>
+<h2 id="delegate"><a href="#delegate" class="headerlink" title="delegate"></a>delegate</h2><p>　　我们继续用<code>tableView</code>举例，我们使用<code>tableView</code>的时候，相当于调用了<code>UITableView</code>这个类，让他来帮助我们生成一个 View。</p>
+<p>　　但是这个 tableView 并不知道我们需要多高多宽，什么样子的 View，于是他需要我们进行传值。我们用来把值传给它的类就是一个 delegate 。</p>
+<p>　　当然，我们经常用 self 来在本控制器下控制 tableView 。</p>
+<p><img src="/img/tableView_nothing.png" width="375" hegiht="650"></p>
+<h1 id="自定义-delegate"><a href="#自定义-delegate" class="headerlink" title="自定义 delegate"></a>自定义 delegate</h1><p>　　看过了系统的一些<code>delegate</code>，其实我们也是可以实现代理的，而且使用代理会有许许多多的好处。</p>
+<p>　　我们以一个实例来说明，这个例子的逻辑关系基本如下：</p>
+<p><img src="/img/delegate_swdt.png" alt="大概思路"></p>
+<p>　　现在让我们来实现他吧</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">//DelegateController.h</div><div class="line"></div><div class="line">@class DelegateController;</div><div class="line">@protocol TestDelegate &lt;NSObject&gt;</div><div class="line"></div><div class="line">//必须实现</div><div class="line">@required</div><div class="line"></div><div class="line">//可选</div><div class="line">@optional</div><div class="line"></div><div class="line">-(void)DelegateTest:(DelegateController *)vc;</div><div class="line"></div><div class="line">@end</div></pre></td></tr></table></figure>
+<p>我们先在<code>.h</code>文件中创造<code>delegate</code>，并声明他的<code>@required</code>和<code>@optional</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">//DelegateController.h</div><div class="line"></div><div class="line">@interface DelegateController : UIViewController</div><div class="line"></div><div class="line">@property (nonatomic, weak) id&lt;TestDelegate&gt; delegate;        /**&lt; delegate  */</div><div class="line"></div><div class="line">@end</div></pre></td></tr></table></figure>
+<p>然后我们再声明一个<code>delegate</code>，之后我们就可以在<code>DelegateController</code>里使用<code>delegate</code>的方法了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">//DelegateController.m</div><div class="line"></div><div class="line">- (void)viewDidLoad &#123;</div><div class="line">    [super viewDidLoad];</div><div class="line">    // Do any additional setup after loading the view.</div><div class="line">    self.view.backgroundColor = [UIColor blueColor];</div><div class="line">&#125;</div><div class="line"></div><div class="line">//点击改变背景颜色</div><div class="line">- (void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event&#123;</div><div class="line">    if ([self.delegate respondsToSelector:@selector(DelegateTest:)]) &#123;</div><div class="line">        [self.delegate DelegateTest:self];</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>当然，如果我们现在 run 的话，不会有任何的反应，因为<code>delegate</code>里的方法还没有进行实现。</p>
+<p>我们还得这样</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">//mainController.h</div><div class="line">- (void)viewDidLoad &#123;</div><div class="line">    [super viewDidLoad];</div><div class="line">    self.view.backgroundColor = [UIColor whiteColor];</div><div class="line">    [self setupDelegateView]; //delegate</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line">//delegate实现</div><div class="line">-(void)DelegateTest:(DelegatetestVC *)vc&#123;</div><div class="line">    vc.view.backgroundColor = [UIColor orangeColor];</div><div class="line">    NSLog(@&quot;\n delegate Test Success!&quot;);</div><div class="line">&#125;</div><div class="line"></div><div class="line">//切到 DelegateController 页面</div><div class="line">-(void)setupDelegateView&#123;</div><div class="line">    DelegateController *vc = [[DelegatetestVC alloc]init];</div><div class="line">    //将 delegate 指定为自己</div><div class="line">    vc.delegate = self;</div><div class="line">    //延时一秒切换</div><div class="line">    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^&#123;</div><div class="line">        [self presentViewController:vc animated:YES completion:nil];</div><div class="line">    &#125;);</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p> 效果大概就是这样啦</p>
+<iframe height="640" width="360" src="/img/delegate_demo.gif">
+
+
+
+<h2 id="delegate-的循环引用"><a href="#delegate-的循环引用" class="headerlink" title="delegate 的循环引用"></a>delegate 的循环引用</h2><p>　　细心的朋友应该发现了，我们声明 <code>delegate</code>的时候用的是<code>weak</code>属性</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">//weak 属性</div><div class="line">@property (nonatomic, weak) id&lt;TestDelegate&gt; delegate;</div></pre></td></tr></table></figure>
+<p>这是因为我们使用<code>delegate</code>的时候常常会这样</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">//将 delegate 指定为自己</div><div class="line">self.vc.delegate = self;</div></pre></td></tr></table></figure>
+<p>这就让引用变成了<code>self -&gt;  vc -&gt; self</code> ，所以如果这时候用<code>strong</code>就导致循环引用。</p>
+<p>说到循环引用就涉及到 ARC 和内存管理了，可以看我<a href="https://luoyangcan.top/2017/09/13/iOS_ARC/" target="_blank" rel="external">这篇文章</a></p>
+<p>当然，我们也可以将代理指定为其他类，那么我们就需要使用<code>strong</code>来修饰<code>delegate</code>了</p>
+<h1 id="delegate-的一些应用"><a href="#delegate-的一些应用" class="headerlink" title="delegate 的一些应用"></a>delegate 的一些应用</h1><p>　　当我们需要实现<strong>工厂模式</strong>的时候，我们可以使用<code>delegate</code>，先抽象出一个类声明<code>delegate</code>，再在具体的工厂类中实现他，最后我们调用的时候可以将<code>delegate</code>设置成我们需要的具体工厂，这样就可以实现工厂模式啦。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="developer.apple.com">Apple</a></p>
+</iframe>]]></content>
+    
+    <summary type="html">
+    
+      &lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;/assets/css/APlayer.min.css&quot;&gt;&lt;script src=&quot;/assets/js/APlayer.min.js&quot; cla
+    
+    </summary>
+    
+    
+      <category term="iOS" scheme="http://yoursite.com/tags/iOS/"/>
+    
+  </entry>
+  
+  <entry>
     <title>关于 IP地址 的那些事</title>
     <link href="http://yoursite.com/2018/11/24/IP-Address/"/>
     <id>http://yoursite.com/2018/11/24/IP-Address/</id>
     <published>2018-11-24T15:29:42.000Z</published>
-    <updated>2019-01-11T10:48:00.777Z</updated>
+    <updated>2019-02-24T07:49:09.688Z</updated>
     
     <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>　　连接到 Internet 的每个设备至少有一个 IP 地址，但 IP 地址通常被 DNS 挡在我们的视线之外，DNS 让我们习惯使用名称而不是数字地址，有时候我们会自己建立网站（比如这个 blog 的搭建）或者 DNS 莫名失效的时候，我们需要直接处理 IP 地址，那么对于 IP 地址的学习就显得尤为重要了。</p>
 <a id="more"></a>
@@ -89,7 +156,7 @@
 <p>　　大多数 IPv4 地址块最终被细分为一个地址，用于识别连接 Internet 或某些专用的内联网的计算机网络接口。这些地址被称为<strong>单播地址</strong>。</p>
 <p>　　IPv4 大部分是单播地址，而 IPv6 地址还有大部分没有使用。除了单播地址，还会有<strong>广播</strong>、<strong>组播</strong>和<strong>任播</strong>地址，它们可能涉及多个接口。</p>
 <p>　　接下来让我们了解一下 IP 地址的历史演变</p>
-<h2 id="分类寻址"><a href="#分类寻址" class="headerlink" title="分类寻址"></a>分类寻址</h2><p>　　</p>
+<h2 id="分类寻址"><a href="#分类寻址" class="headerlink" title="分类寻址"></a>分类寻址</h2><p>　　暂时搁置</p>
 <h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="https://book.douban.com/subject/1088054/" target="_blank" rel="external">TCP/IP详解 卷1：协议</a></p>
 ]]></content>
     
@@ -201,19 +268,19 @@
     <link href="http://yoursite.com/2018/08/12/internet%20violence/"/>
     <id>http://yoursite.com/2018/08/12/internet violence/</id>
     <published>2018-08-11T18:21:04.000Z</published>
-    <updated>2018-08-15T11:55:42.511Z</updated>
+    <updated>2019-02-24T07:48:25.078Z</updated>
     
     <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><blockquote>
 <p>人们只会看到自己想要看到的</p>
 </blockquote>
 <p>　　<a id="more"></a></p>
 
-        <div id="aplayer-leztCDpf" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+        <div id="aplayer-nuMzBjdh" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
             <pre class="aplayer-lrc-content"></pre>
         </div>
         <script>
           var ap = new APlayer({
-            element: document.getElementById("aplayer-leztCDpf"),
+            element: document.getElementById("aplayer-nuMzBjdh"),
             narrow: false,
             autoplay: true,
             showlrc: false,
@@ -228,17 +295,19 @@
           window.aplayers || (window.aplayers = []);
           window.aplayers.push(ap);
         </script>
-<h1 id="一些想法"><a href="#一些想法" class="headerlink" title="一些想法"></a>一些想法</h1><p>　　最近在 QQ空间 看到一条评价国足的说说，有上万条转发。作为一个职业伪球迷，点进去稍微看了看，却没看到一个国脚，甚至还有几张图还是 J 联赛、K 联赛的图。那么问题来了，为什么会有那么多“关心国足发展的”网友们的转发呢？</p>
-<p>　　在我看来，这是媒体权威性在作怪。</p>
-<p>　　在十几年前，或者可以说几年前，人们都将媒体视作一种权威，因为那是少有的获取新鲜资讯的渠道。所以说当时的报纸、收音机、电视台都是可以引导舆论的存在。</p>
-<p>　　但是近几年，情况发生了一些微妙的变化，越来越多的自媒体涌现出来，它们的质量参差不齐，但是都有一个目的——获取流量。于是媒体这个概念开始被重新定义。</p>
-<p>　　随随便便写一篇比较片面的文章，稍加炒作、转发，就会人尽皆知，人人信服。尤其是那些所谓心灵鸡汤，把每个人的“生活”固化成一个模式，美其名曰那是“为自己而活”，完全否定每个人的生活应有的多样性。还有那些只写消极一面而丝毫不提及积极一面的阴谋论文章，也引得网络上的“理智群众”们的疯狂转发欢呼。</p>
-<p>　　既然大家都知道世间没有十全十美的人或事，但为什么总有人只喜欢看事情的一面呢？更有甚者，为了表现对热点新闻的关注，刻意转发那些“标题党“、毫无逻辑的文章，更可怕的是，他自己可能看都没有看过文章的具体内容。</p>
-<p>　　其实这些我倒是觉得没什么，毕竟从众心理是人类写在基因里的东西，最恶心我的还是那些为了博取关注，刻意制造恐慌的无良自媒体。比如这次爆发的疫苗事件，太多无良自媒体在描述事件的时候，刻意把”假疫苗“写成”毒疫苗“，引得很多受害者恐慌。</p>
-<p>　　我也是”假疫苗“事件的受害者，在我知道这件事的时候，看到四处充斥着的”毒疫苗“的新闻，让我心里泛起恐惧，一度以为自己可能要没了，好在仍有很多正当媒体，真实客观报道事件，挽救了我这颗脆弱的心。我这样的20来岁的青年遇上还好，万一那些受到这个事件影响的孩子的父母看到这些新闻病急乱投医，后果可想而知。而这一切，报道假新闻的自媒体却不用负任何责任。</p>
-<p>　　舆论至上的时代，人们开始只看见自己想看的东西，只要符合自己的想法，就盲目地跟从节奏，随随便便一篇文章评论区都能看到几句谩骂。这哪里是网络啊，完全是释放戾气的地狱。</p>
-<p>　　从之前的薛之谦，到现在的吴亦凡，稍微一有节奏，就会有粉丝出来为爱豆洗地，刻意到处控评，谩骂攻击想法不一的网友。她们一边说着自己的爱豆遭受到了前所未有的网络暴力，一边在制造着更大的有组织、有针对性的大规模网络暴力。</p>
-<p>　　人这种动物，一旦固执起来，谁都纠正不了，偏见和傲慢真的可以毁了一个人。我有时候也在反思，什么时候自己才能成为一个看任何事都能客观公正的人。这点也许就是古时候的圣人之所以伟大的地方吧。</p>
+<h1 id="一些想法"><a href="#一些想法" class="headerlink" title="一些想法"></a>一些想法</h1><p>　　很久没写东西了，最近在 QQ空间 看到一条评价国足的说说，还有上万条转发。</p>
+<p>​    作为一个职业伪球迷，稍微点进去看了看，图片一个国脚没看到，甚至还看到几张 J 联赛、K 联赛的犯二图。那么问题就来了，为什么会引来那么多“关心国足发展的”网友们的转发呢？</p>
+<p>　　在我看来，这是我们对媒体的过度迷信在作怪。</p>
+<p>　　在十几年前，或者可以说几年前，人们将媒体视作权威，因为那是少有的获取新鲜资讯的渠道。当时的报纸、收音机、电视台都是引导舆论的存在。</p>
+<p>　　但近几年，情况有了一些微妙的变化，越来越多的自媒体涌现，质量却参差不齐。还有一个共同目的——获（活）取（下）流（去）量。（简而言之，因为要恰饭的嘛）于是媒体这个概念逐渐被重新定义。</p>
+<p>　　随随便便一篇片面的文章，稍加炒作、转发，在如今爆炸性传播途径下，引起不小的热度。但是这些文字很少有客观的报道，每篇文章几乎都掺杂了一些主观情绪。</p>
+<p>​    尤其是心灵鸡汤文，把每个人的“生活”固化，美其名曰“为自己而活”，否定每个人生活的多样性。还有那些大肆宣扬阴谋论的博主，也引得“理智群众”们的疯狂转发欢呼。</p>
+<p>　　每个人从小都应该知道世间没有十全十美的人或事，但却总是只喜欢看事情的一面呢？人所看见的，其实只是自己想看见。</p>
+<p>　　这些我倒觉得没什么，毕竟从众是一件很平常的事。这个时代信息爆炸，每个人不可能什么都知什么都晓，自媒体应该做的是一种客观的、专业的报道，而不是一种主观意识输出。现在太多的自媒体在不具备专业知识和情报下瞎写了，从”毒疫苗“到”连续快速射电暴是外星人高速飞行的证据“，每一个热度都会引来垃圾媒体的垃圾文章。</p>
+<p>　　作为”假疫苗“事件的受害者，看到四处充斥着的”毒疫苗“的新闻，我心里只会有恐惧，一度以为自己可能没了。我这样的20来岁的青年遇上还好，还会去查资料看报道。万一那些受到事件影响的孩子的父母看到这些新闻乱投医，后果不堪设想。但这一切，报道假新闻的自媒体却不用负任何责任。</p>
+<p>　　舆论至上的时代，人们开始只看见自己想看的东西，只要符合自己的想法，就盲目跟从节奏，不符合自己的”三观“，就往死里怼，这也导致随随便便一篇文章，在评论区都能看到几句谩骂。这哪里是社交网络啊，完全是释放戾气的地狱。</p>
+<p>　　从之前的薛之谦，到现在的吴亦凡，稍微一有节奏，就会有粉丝出来为爱豆洗地，刻意控评，谩骂攻击想法不一的网友。她们一边哭诉自己的爱豆遭受到了前所未有的网络暴力，一边制造着更大的有组织、有针对性的大规模网络暴力。</p>
+<p>　　人这种动物，一旦固执起来，谁都纠正不了，偏见和傲慢真的可以毁了一个人。吾日三省吾身不是没有道理的，如果我们不自己思考一些事，那我们永远也不会有更大的进步。</p>
 <p>　　为什么我们要强调教育，教育并不是说带给我们什么生活用不到的几何代数，而是给予我们思考的方式，让我们在这浮躁的社会中冷静下来，明辨是非。一味怀着满腔热血，带着戾气敲打着键盘并不能帮助我们成为什么。沉住气，多看书，带着客观冷静的态度看世界，对我们的帮助可能更多。</p>
 <h1 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h1><p>　　在北京的最后一个夜晚，突然有感而发，进而胡乱写了一通。</p>
 ]]></content>
@@ -324,12 +393,12 @@
 </blockquote>
 <p>　    <a id="more"></a></p>
 
-        <div id="aplayer-SHcJmAsR" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+        <div id="aplayer-KrtWKIbA" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
             <pre class="aplayer-lrc-content"></pre>
         </div>
         <script>
           var ap = new APlayer({
-            element: document.getElementById("aplayer-SHcJmAsR"),
+            element: document.getElementById("aplayer-KrtWKIbA"),
             narrow: false,
             autoplay: true,
             showlrc: false,
@@ -1192,12 +1261,12 @@
     <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><p>　　好久没看书了，一到放假，看书的效率就从一个月两三本，变成了一个月一本。有点惭愧。</p>
 <p>​    <a id="more"></a></p>
 
-        <div id="aplayer-SzapzpTK" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
+        <div id="aplayer-OFWFnoLi" class="aplayer aplayer-tag-marker" style="margin-bottom: 20px;">
             <pre class="aplayer-lrc-content"></pre>
         </div>
         <script>
           var ap = new APlayer({
-            element: document.getElementById("aplayer-SzapzpTK"),
+            element: document.getElementById("aplayer-OFWFnoLi"),
             narrow: false,
             autoplay: true,
             showlrc: false,
@@ -1486,9 +1555,9 @@ NSLog(@&quot;iOS10 收到本地通知:{\\\\nbody:%@，\\\\ntitle:%@,\\\\nsubtitl
     </summary>
     
     
-      <category term="iOS" scheme="http://yoursite.com/tags/iOS/"/>
-    
       <category term="iBeacon" scheme="http://yoursite.com/tags/iBeacon/"/>
+    
+      <category term="iOS" scheme="http://yoursite.com/tags/iOS/"/>
     
   </entry>
   
