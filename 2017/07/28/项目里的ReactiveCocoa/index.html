@@ -126,19 +126,19 @@
 
 
 
-  <meta name="description" content="​　　最近做了一个蓝牙相关的项目，项目的前辈当时是用的ReactiveCocoa（RAC）做的，才开始接手的时候，看的一头雾水。经过一段时间自学，现在对RAC略知一二。 ​">
+  <meta name="description" content="最近做了一个蓝牙相关的项目，项目的前辈当时是用的ReactiveCocoa（RAC）做的，才开始接手的时候，看的一头雾水。经过一段时间自学，现在对RAC略知一二。 ​">
 <meta name="keywords" content="iOS,RAC">
 <meta property="og:type" content="article">
 <meta property="og:title" content="项目里的ReactiveCocoa">
 <meta property="og:url" content="http://yoursite.com/2017/07/28/项目里的ReactiveCocoa/index.html">
 <meta property="og:site_name" content="阿灿的大树洞">
-<meta property="og:description" content="​　　最近做了一个蓝牙相关的项目，项目的前辈当时是用的ReactiveCocoa（RAC）做的，才开始接手的时候，看的一头雾水。经过一段时间自学，现在对RAC略知一二。 ​">
+<meta property="og:description" content="最近做了一个蓝牙相关的项目，项目的前辈当时是用的ReactiveCocoa（RAC）做的，才开始接手的时候，看的一头雾水。经过一段时间自学，现在对RAC略知一二。 ​">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://yoursite.com/img/FRP.png">
-<meta property="og:updated_time" content="2018-08-11T18:53:31.472Z">
+<meta property="og:updated_time" content="2019-02-24T11:44:06.268Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="项目里的ReactiveCocoa">
-<meta name="twitter:description" content="​　　最近做了一个蓝牙相关的项目，项目的前辈当时是用的ReactiveCocoa（RAC）做的，才开始接手的时候，看的一头雾水。经过一段时间自学，现在对RAC略知一二。 ​">
+<meta name="twitter:description" content="最近做了一个蓝牙相关的项目，项目的前辈当时是用的ReactiveCocoa（RAC）做的，才开始接手的时候，看的一头雾水。经过一段时间自学，现在对RAC略知一二。 ​">
 <meta name="twitter:image" content="http://yoursite.com/img/FRP.png">
 
 
@@ -423,7 +423,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-08-12 02:53:31" itemprop="dateModified" datetime="2018-08-12T02:53:31+08:00">2018-08-12</time>
+                <time title="修改时间：2019-02-24 19:44:06" itemprop="dateModified" datetime="2019-02-24T19:44:06+08:00">2019-02-24</time>
               
             
           </span>
@@ -477,7 +477,7 @@
       
 
       
-        <p>​　　最近做了一个蓝牙相关的项目，项目的前辈当时是用的ReactiveCocoa（RAC）做的，才开始接手的时候，看的一头雾水。经过一段时间自学，现在对RAC略知一二。</p>
+        <p>　　最近做了一个蓝牙相关的项目，项目的前辈当时是用的ReactiveCocoa（RAC）做的，才开始接手的时候，看的一头雾水。经过一段时间自学，现在对RAC略知一二。</p>
 <p>​    <a id="more"></a></p>
 <h2 id="FunctionalReactiveProgramming"><a href="#FunctionalReactiveProgramming" class="headerlink" title="FunctionalReactiveProgramming"></a>FunctionalReactiveProgramming</h2><p>FRP是一种响应变化的编程范式。<img src="/img/FRP.png" alt="FRP"></p>
 <p>就像上面的登录界面，在用户输入用户名和密码之前，登陆按钮是处于无法点击状态的，只有当用户名和密码都被填入一定值的时候，才可以点击登陆按钮。这种一个按钮会由于另外几个控件的改变而改变的联动就是FRP。</p>
@@ -485,16 +485,16 @@
 <p>在这里，<a href="limboy.me">limboy(李忠)</a> 的文章里写的很好</p>
 <p>他把信号比作水龙头，但是水龙头里装的是直径与水龙头内径一样的玻璃球(Value)，这样，玻璃球就是依次出来的（没有并发）。水龙头是关着的，需要有接收方（Subscriber）打开，这样只要有玻璃球(Value)出现，就会自动给接收方(subscriber)。还可以在水龙头上加一个滤嘴(Filter)，不符合的东西也不让过。还可以加一个改动装置，把球改成符合自己的需求（map）。也可以合并多个水龙头(combineLastest:reduce:)，这样只有有一个水龙头出玻璃球，这个新水龙头的接收方就会得到这个球。</p>
 <p>比如</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">//filter某个属性满足一定条件才执行。  </div><div class="line"></div><div class="line">  [[RACObserve(self, count) filter:^BOOL(id count) &#123;</div><div class="line">  if ([count integerValue] == 5) &#123;            </div><div class="line">		return YES;        &#125;</div><div class="line">	else&#123;           </div><div class="line">	 	return NO;        </div><div class="line">	&#125;   </div><div class="line"> &#125;]subscribeNext:^(id count) &#123;//上面return YES 才执行   </div><div class="line"></div><div class="line"> NSLog(@&quot;数量为===%@&quot;,count);    &#125;];</div></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//filter某个属性满足一定条件才执行。  </span></div><div class="line"></div><div class="line">  [[RACObserve(<span class="keyword">self</span>, count) filter:^<span class="built_in">BOOL</span>(<span class="keyword">id</span> count) &#123;</div><div class="line">  <span class="keyword">if</span> ([count integerValue] == <span class="number">5</span>) &#123;            </div><div class="line">		<span class="keyword">return</span> <span class="literal">YES</span>;        &#125;</div><div class="line">	<span class="keyword">else</span>&#123;           </div><div class="line">	 	<span class="keyword">return</span> <span class="literal">NO</span>;        </div><div class="line">	&#125;   </div><div class="line"> &#125;]subscribeNext:^(<span class="keyword">id</span> count) &#123;<span class="comment">//上面return YES 才执行   </span></div><div class="line"></div><div class="line"> <span class="built_in">NSLog</span>(<span class="string">@"数量为===%@"</span>,count);    &#125;];</div></pre></td></tr></table></figure>
 <p>RAC还在<strong>UIButton、UITextFiled</strong>等的Category中添加了很多方法，可以直接设置事件。</p>
 <h2 id="统一了KVO-Event-Notification等的处理"><a href="#统一了KVO-Event-Notification等的处理" class="headerlink" title="统一了KVO Event Notification等的处理"></a>统一了KVO Event Notification等的处理</h2><blockquote>
 <p>KVO</p>
 </blockquote>
-<p>RAC中监听属性改变不再像KVO中用<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">而是使用block</div><div class="line"></div><div class="line">```iOS</div><div class="line">// 只有当名字以&apos;j&apos;开头，才会被记录</div><div class="line">[[RACAble(self.username) filter:^(NSString *newName) &#123;</div><div class="line">       return [newName hasPrefix:@&quot;j&quot;];</div><div class="line">   &#125;]</div><div class="line">   subscribeNext:^(NSString *newName) &#123;</div><div class="line">       NSLog(@&quot;%@&quot;, newName);</div><div class="line">   &#125;];</div></pre></td></tr></table></figure></p>
+<p>RAC中监听属性改变不再像KVO中用<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">而是使用block</div><div class="line"></div><div class="line">```objc</div><div class="line">// 只有当名字以&apos;j&apos;开头，才会被记录</div><div class="line">[[RACAble(self.username) filter:^(NSString *newName) &#123;</div><div class="line">       return [newName hasPrefix:@&quot;j&quot;];</div><div class="line">   &#125;]</div><div class="line">   subscribeNext:^(NSString *newName) &#123;</div><div class="line">       NSLog(@&quot;%@&quot;, newName);</div><div class="line">   &#125;];</div></pre></td></tr></table></figure></p>
 <blockquote>
 <p>Notification</p>
 </blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[[NSNotificationCenter defaultCenter]rac_addObserverForName:@&quot;ReceiveData&quot; object:nil] subscribeNext:^(NSNotification * _Nullable x) &#123;</div><div class="line">                NSlog(@&quot;%@&quot;,x);</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[[<span class="built_in">NSNotificationCenter</span> defaultCenter]rac_addObserverForName:<span class="string">@"ReceiveData"</span> object:<span class="literal">nil</span>] subscribeNext:^(<span class="built_in">NSNotification</span> * _Nullable x) &#123;</div><div class="line">                <span class="built_in">NSlog</span>(<span class="string">@"%@"</span>,x);</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
 <h2 id="冷热信号"><a href="#冷热信号" class="headerlink" title="冷热信号"></a>冷热信号</h2><p>上面提到的只有subscriber订阅时才生效的信号叫做<strong>冷信号</strong></p>
 <p>有冷信号，自然就有<strong>热信号</strong></p>
 <ul>
