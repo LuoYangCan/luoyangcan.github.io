@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2019-02-24T11:42:49.628Z</updated>
+  <updated>2019-03-02T04:44:04.262Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,14 +20,13 @@
     <link href="http://yoursite.com/2019/02/24/protocol-delegate/"/>
     <id>http://yoursite.com/2019/02/24/protocol-delegate/</id>
     <published>2019-02-24T07:49:44.000Z</published>
-    <updated>2019-02-24T11:42:49.628Z</updated>
+    <updated>2019-03-02T04:44:04.262Z</updated>
     
     <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="/assets/css/APlayer.min.css"><script src="/assets/js/APlayer.min.js" class="aplayer-secondary-script-marker"></script><script class="meting-secondary-script-marker" src="/assets/js/Meting.min.js"></script><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>　　大学四年好快就过去了，毕业之前去公司实习，发现了自己对代理的一些概念还不理解，遂写了这篇文章。</p>
 <a id="more"></a>
 <h1 id="关于-protocol-amp-delegate"><a href="#关于-protocol-amp-delegate" class="headerlink" title="关于 protocol &amp; delegate"></a>关于 protocol &amp; delegate</h1><p>　　iOS 的 protocol 和 Android 的有一些不一样，因为 iOS 没有多继承，所以很多时候都是用 protocol 来实现。</p>
 <p>　　而 delegate 是一种代理的模式，他相当于一个人把一些事情代理给其他人做。比如 A 控制器中有一个值是基于<strong>代理</strong>方法而改变的，当我们从 A 切到 B 控制器时，B 使用了 A 的 <code>delegate</code> 将值进行了更改，那当我们回到 A 时，会发现那个值已经改变。</p>
-<p>##iOS 中的 protocol</p>
-<p>　　一个 protocol 会定义一套接口，接口有两种：</p>
+<h2 id="iOS-中的-protocol"><a href="#iOS-中的-protocol" class="headerlink" title="iOS 中的 protocol"></a>iOS 中的 protocol</h2><p>　　一个 protocol 会定义一套接口，接口有两种：</p>
 <ul>
 <li>@required: 必须实现的方法</li>
 <li>@optional: 可选的实现方法</li>
